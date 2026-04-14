@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 
 class AntiCheatService extends WidgetsBindingObserver {
   final VoidCallback onCheatDetected;
@@ -11,13 +10,11 @@ class AntiCheatService extends WidgetsBindingObserver {
   Future<void> startMonitoring() async {
     WidgetsBinding.instance.addObserver(this);
     await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-    await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
   }
 
   Future<void> stopMonitoring() async {
     WidgetsBinding.instance.removeObserver(this);
     await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-    await FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
   }
 
   @override
