@@ -5,7 +5,7 @@ import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 
 class AntiCheatService extends WidgetsBindingObserver {
   final VoidCallback onCheatDetected;
-  
+
   AntiCheatService({required this.onCheatDetected});
 
   Future<void> startMonitoring() async {

@@ -5,7 +5,7 @@ import '../storage/app_storage.dart';
 
 final dioProvider = Provider<Dio>((ref) {
   final storage = ref.read(appStorageProvider);
-  
+
   // Determine the base URL based on platform
   String baseUrl;
   if (kIsWeb) {
@@ -13,7 +13,7 @@ final dioProvider = Provider<Dio>((ref) {
   } else {
     baseUrl = const String.fromEnvironment('API_BASE_URL', defaultValue: 'http://10.0.2.2:8000/api');
   }
-  
+
   final dio = Dio(
     BaseOptions(
       baseUrl: baseUrl,

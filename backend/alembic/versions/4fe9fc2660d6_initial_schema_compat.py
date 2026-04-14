@@ -1,7 +1,7 @@
 """initial schema compat
 
 Revision ID: 4fe9fc2660d6
-Revises: 
+Revises:
 Create Date: 2026-04-14 12:30:00.000000
 
 """

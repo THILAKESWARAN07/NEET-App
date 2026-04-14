@@ -102,7 +102,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         );
         return;
       }
-      
+
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       if (googleUser == null) {
         state = state.copyWith(isLoading: false);
@@ -117,7 +117,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
       };
 
       final response = await dio.post('/auth/google', data: authData);
-      
+
       if (response.statusCode == 200) {
         final token = response.data['access_token'];
         final user = UserProfile.fromJson(response.data['user'] as Map<String, dynamic>);
