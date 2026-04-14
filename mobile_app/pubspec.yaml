@@ -1,0 +1,36 @@
+name: neet_app
+description: A new Flutter project for NEET Preparation.
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # State Management
+  flutter_riverpod: ^2.4.9
+  # Routing
+  go_router: ^12.1.1
+  # Networking
+  dio: ^5.4.0
+  # Authentication
+  google_sign_in: ^6.2.1
+  flutter_secure_storage: ^9.0.0
+  shared_preferences: ^2.2.3
+  # UI & Styling
+  google_fonts: ^6.1.0
+  fl_chart: ^0.68.0
+  file_picker: ^8.0.3
+  flutter_windowmanager: ^0.2.0
+  cupertino_icons: ^1.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true

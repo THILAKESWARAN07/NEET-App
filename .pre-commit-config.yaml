@@ -1,0 +1,19 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: check-yaml
+      - id: end-of-file-fixer
+        exclude: ^(backend/\.venv/|mobile_app/build/|mobile_app/\.dart_tool/)
+      - id: trailing-whitespace
+        exclude: ^(backend/\.venv/|mobile_app/build/|mobile_app/\.dart_tool/)
+      - id: detect-private-key
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.6.9
+    hooks:
+      - id: ruff
+        args: ["--select", "E9,F63,F7,F82"]
+        files: ^(backend/app/|backend/tests/|backend/scripts/|test_api\.py)
+      - id: ruff-format
+        files: ^(backend/app/|backend/tests/|backend/scripts/|test_api\.py)

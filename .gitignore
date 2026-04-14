@@ -1,0 +1,41 @@
+# ---- OS / Editor ----
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.iml
+
+# ---- Repo-level tool caches ----
+.ruff_cache/
+
+# ---- Python backend ----
+backend/.venv/
+backend/**/__pycache__/
+backend/**/*.pyc
+backend/**/*.pyo
+backend/**/*.pyd
+backend/.pytest_cache/
+backend/.mypy_cache/
+backend/.ruff_cache/
+backend/.coverage
+backend/htmlcov/
+
+# ---- Backend env / secrets ----
+backend/.env
+backend/.env.*
+!backend/.env.example
+!backend/.env.production.example
+
+# ---- Local databases / runtime artifacts ----
+backend/*.db
+backend/tests/*.db
+
+# ---- Logs ----
+*.log
+
+# ---- Flutter generated artifacts (safety at repo root) ----
+mobile_app/.dart_tool/
+mobile_app/build/
+mobile_app/.flutter-plugins
+mobile_app/.flutter-plugins-dependencies
+mobile_app/.packages
