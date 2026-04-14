@@ -6,7 +6,10 @@ import '../../../core/api/api_client.dart';
 import '../../../core/storage/app_storage.dart';
 
 const String _webGoogleClientId =
-  String.fromEnvironment('GOOGLE_WEB_CLIENT_ID', defaultValue: '');
+  String.fromEnvironment(
+    'GOOGLE_WEB_CLIENT_ID',
+    defaultValue: '66902840466-r6o7qpk98tuem8j1ljnmqi9rg2i854vs.apps.googleusercontent.com',
+  );
 
 final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
   return AuthNotifier(ref.read(dioProvider), ref.read(appStorageProvider));

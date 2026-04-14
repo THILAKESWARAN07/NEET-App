@@ -6,13 +6,7 @@ import '../storage/app_storage.dart';
 final dioProvider = Provider<Dio>((ref) {
   final storage = ref.read(appStorageProvider);
 
-  // Determine the base URL based on platform
-  String baseUrl;
-  if (kIsWeb) {
-    baseUrl = 'http://localhost:8000/api';
-  } else {
-    baseUrl = const String.fromEnvironment('API_BASE_URL', defaultValue: 'http://10.0.2.2:8000/api');
-  }
+  const baseUrl = 'https://neet-backend-g2d8.onrender.com/api';
 
   final dio = Dio(
     BaseOptions(
