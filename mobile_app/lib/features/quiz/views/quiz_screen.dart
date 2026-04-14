@@ -37,18 +37,23 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
       },
     );
     _antiCheatService.startMonitoring();
-    final notifier = ref.read(quizProvider.notifier);
-    if (widget.mode == QuizStartMode.reattempt) {
-      notifier.startReattemptQuiz(
-        subject: widget.subject,
-        questionIds: widget.questionIds,
-        questionCount: widget.questionCount,
-      );
-    } else if (widget.mode == QuizStartMode.subject) {
-      notifier.startOrResumeQuiz(testType: 'subject', subject: widget.subject);
-    } else {
-      notifier.startOrResumeQuiz(testType: 'full');
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+      final notifier = ref.read(quizProvider.notifier);
+      if (widget.mode == QuizStartMode.reattempt) {
+        notifier.startReattemptQuiz(
+          subject: widget.subject,
+          questionIds: widget.questionIds,
+          questionCount: widget.questionCount,
+        );
+      } else if (widget.mode == QuizStartMode.subject) {
+        notifier.startOrResumeQuiz(testType: 'subject', subject: widget.subject);
+      } else {
+        notifier.startOrResumeQuiz(testType: 'full');
+      }
+    });
   }
 
   @override
