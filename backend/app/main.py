@@ -3,7 +3,7 @@ from fastapi import HTTPException
 from sqlalchemy import text
 from fastapi.middleware.cors import CORSMiddleware
 from .core.config import settings
-from .core.database import engine
+from .core.database import Base, engine
 from .api import admin, ai, auth, materials, quiz
 
 app = FastAPI(
@@ -12,20 +12,19 @@ app = FastAPI(
     description="FastAPI Backend for NEET Preparation App",
 )
 
+
+@app.on_event("startup")
+def create_tables() -> None:
+    Base.metadata.create_all(bind=engine)
+
 # CORS configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost",
-        "http://localhost:56707",
-        "http://localhost:50865",
-        "http://localhost:3000",
-    ],
+    allow_origin_regex=r"http://localhost:\d+",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
 app.include_router(quiz.router, prefix="/api/quiz", tags=["quiz"])
 app.include_router(ai.router, prefix="/api/ai", tags=["ai"])
