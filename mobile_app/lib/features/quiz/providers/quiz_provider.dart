@@ -156,6 +156,25 @@ class QuizNotifier extends StateNotifier<QuizState> {
 
   QuizNotifier(this._dio, this._storage) : super(QuizState());
 
+  String _extractApiError(Object error) {
+    if (error is DioException) {
+      final responseData = error.response?.data;
+      if (responseData is Map<String, dynamic>) {
+        final detail = responseData['detail'];
+        if (detail is String && detail.isNotEmpty) {
+          return detail;
+        }
+      }
+      if (responseData is String && responseData.isNotEmpty) {
+        return responseData;
+      }
+      if (error.message != null && error.message!.isNotEmpty) {
+        return error.message!;
+      }
+    }
+    return error.toString();
+  }
+
   void _initializeAttemptFromResponse(Map<String, dynamic> data) {
     final attemptId = data['id'] as int;
     final questions = (data['questions'] as List<dynamic>)
@@ -174,6 +193,11 @@ class QuizNotifier extends StateNotifier<QuizState> {
   Future<void> startOrResumeQuiz(
       {String testType = 'full', String? subject}) async {
     try {
+      if (testType == 'subject' && (subject == null || subject.trim().isEmpty)) {
+        state = QuizState(error: 'Please select a subject before starting subject practice.');
+        return;
+      }
+
       state = QuizState(isLoading: true);
       final response = await _dio.post(
         '/quiz/start',
@@ -188,8 +212,8 @@ class QuizNotifier extends StateNotifier<QuizState> {
       final attemptId = data['id'] as int;
       await _storage.saveAttemptId(attemptId);
       _initializeAttemptFromResponse(data);
-    } catch (e) {
-      state = QuizState(error: e.toString());
+    } catch (error) {
+      state = QuizState(error: _extractApiError(error));
     }
   }
 
@@ -215,8 +239,8 @@ class QuizNotifier extends StateNotifier<QuizState> {
       final attemptId = data['id'] as int;
       await _storage.saveAttemptId(attemptId);
       _initializeAttemptFromResponse(data);
-    } catch (e) {
-      state = QuizState(error: e.toString());
+    } catch (error) {
+      state = QuizState(error: _extractApiError(error));
     }
   }
 
