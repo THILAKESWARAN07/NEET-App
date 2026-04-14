@@ -50,6 +50,7 @@ def main() -> None:
 
     env = os.environ.copy()
     env.setdefault("DATABASE_URL", "sqlite:///./release_check.db")
+    env.setdefault("PYTEST_DISABLE_PLUGIN_AUTOLOAD", "1")
 
     validate_production_environment()
 
