@@ -6,7 +6,12 @@ import '../storage/app_storage.dart';
 final dioProvider = Provider<Dio>((ref) {
   final storage = ref.read(appStorageProvider);
 
-  const baseUrl = 'https://neet-backend-g2d8.onrender.com/api';
+  final String baseUrl;
+  if (kIsWeb) {
+    baseUrl = 'https://neet-backend-g2d8.onrender.com/api';
+  } else {
+    baseUrl = 'https://neet-backend-g2d8.onrender.com/api';
+  }
 
   final dio = Dio(
     BaseOptions(
