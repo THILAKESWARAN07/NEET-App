@@ -70,10 +70,13 @@ class AuthState {
 class AuthNotifier extends StateNotifier<AuthState> {
   final Dio dio;
   final AppStorage storage;
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: ['email'],
-    clientId: _webGoogleClientId.isNotEmpty ? _webGoogleClientId : null,
-  );
+  final GoogleSignIn _googleSignIn =
+      kIsWeb
+          ? GoogleSignIn(
+            scopes: ['email'],
+            clientId: _webGoogleClientId.isNotEmpty ? _webGoogleClientId : null,
+          )
+          : GoogleSignIn(scopes: ['email']);
 
   AuthNotifier(this.dio, this.storage) : super(const AuthState());
 
