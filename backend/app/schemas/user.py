@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, field_validator
 from typing import Optional, List
 from datetime import datetime
 
@@ -38,6 +38,12 @@ class UserResponse(UserBase):
     streak_days: int
     badges: List[str] = Field(default_factory=list)
     created_at: datetime
+
+    @field_validator("badges", mode="before")
+    @classmethod
+    def normalize_badges(cls, value):
+        # Older rows may have null JSON values; always expose badges as a list.
+        return value or []
 
     class Config:
         from_attributes = True
