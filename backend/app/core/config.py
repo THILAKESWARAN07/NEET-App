@@ -1,8 +1,11 @@
 from pydantic import model_validator
 from pydantic_settings import BaseSettings
+from pydantic_settings import SettingsConfigDict
 
 
 class Settings(BaseSettings):
+    model_config = SettingsConfigDict(env_file=".env", extra="allow")
+
     ENVIRONMENT: str = "development"
     PROJECT_NAME: str = "NEET Prep App"
     DATABASE_URL: str = "sqlite:///neet_app.db"
@@ -44,10 +47,5 @@ class Settings(BaseSettings):
             raise ValueError("In production, GOOGLE_CLIENT_ID must be set")
 
         return self
-
-    class Config:
-        env_file = ".env"
-        extra = "allow"
-
 
 settings = Settings()

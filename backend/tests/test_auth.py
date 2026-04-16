@@ -174,6 +174,33 @@ def test_admin_email_is_promoted_on_login() -> None:
         settings.ADMIN_EMAIL = original_admin_email
 
 
+def test_login_syncs_stale_profile_completed_flag() -> None:
+    email = "stale_profile_user@neet.com"
+
+    db = TestingSessionLocal()
+    try:
+        user = models.User(
+            email=email,
+            hashed_password=get_password_hash("StalePass123!"),
+            full_name="Stale User",
+            dob="2006-08-21",
+            profile_completed=False,
+        )
+        db.add(user)
+        db.commit()
+    finally:
+        db.close()
+
+    with TestClient(app) as client:
+        login_resp = client.post(
+            "/api/auth/login",
+            json={"email": email, "password": "StalePass123!"},
+        )
+        assert login_resp.status_code == 200
+        payload = login_resp.json()
+        assert payload["user"]["profile_completed"] is True
+
+
 def test_gamification_profile_and_streak_update() -> None:
     db = TestingSessionLocal()
     try:

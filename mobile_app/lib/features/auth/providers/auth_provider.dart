@@ -5,15 +5,17 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../../../core/api/api_client.dart';
 import '../../../core/storage/app_storage.dart';
 
-const String _webGoogleClientId =
-  String.fromEnvironment(
-    'GOOGLE_WEB_CLIENT_ID',
-    defaultValue: '66902840466-r6o7qpk98tuem8j1ljnmqi9rg2i854vs.apps.googleusercontent.com',
-  );
+const String _webGoogleClientId = String.fromEnvironment(
+  'GOOGLE_WEB_CLIENT_ID',
+  defaultValue:
+      '66902840466-r6o7qpk98tuem8j1ljnmqi9rg2i854vs.apps.googleusercontent.com',
+);
 
 final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
   return AuthNotifier(ref.read(dioProvider), ref.read(appStorageProvider));
 });
+
+const Object _authStateNoChange = Object();
 
 class UserProfile {
   final int id;
@@ -55,12 +57,21 @@ class AuthState {
 
   const AuthState({this.isLoading = false, this.error, this.token, this.user});
 
-  AuthState copyWith({bool? isLoading, String? error, String? token, UserProfile? user}) {
+  AuthState copyWith({
+    bool? isLoading,
+    Object? error = _authStateNoChange,
+    Object? token = _authStateNoChange,
+    Object? user = _authStateNoChange,
+  }) {
     return AuthState(
       isLoading: isLoading ?? this.isLoading,
-      error: error ?? this.error,
-      token: token ?? this.token,
-      user: user ?? this.user,
+      error:
+          identical(error, _authStateNoChange) ? this.error : error as String?,
+      token:
+          identical(token, _authStateNoChange) ? this.token : token as String?,
+      user: identical(user, _authStateNoChange)
+          ? this.user
+          : user as UserProfile?,
     );
   }
 
@@ -70,13 +81,12 @@ class AuthState {
 class AuthNotifier extends StateNotifier<AuthState> {
   final Dio dio;
   final AppStorage storage;
-  final GoogleSignIn _googleSignIn =
-      kIsWeb
-          ? GoogleSignIn(
-            scopes: ['email'],
-            clientId: _webGoogleClientId.isNotEmpty ? _webGoogleClientId : null,
-          )
-          : GoogleSignIn(scopes: ['email']);
+  final GoogleSignIn _googleSignIn = kIsWeb
+      ? GoogleSignIn(
+          scopes: ['email'],
+          clientId: _webGoogleClientId.isNotEmpty ? _webGoogleClientId : null,
+        )
+      : GoogleSignIn(scopes: ['email']);
 
   AuthNotifier(this.dio, this.storage) : super(const AuthState());
 
@@ -90,10 +100,35 @@ class AuthNotifier extends StateNotifier<AuthState> {
   Future<void> fetchCurrentUser() async {
     try {
       final response = await dio.get('/auth/me');
-      state = state.copyWith(user: UserProfile.fromJson(response.data), error: null);
+      state = state.copyWith(
+          user: UserProfile.fromJson(response.data), error: null);
     } catch (e) {
       await signOut();
     }
+  }
+
+  Future<bool> _applyAuthResponse(Response response) async {
+    if (response.statusCode != 200) {
+      state = state.copyWith(
+          isLoading: false, error: 'Server authentication failed');
+      return false;
+    }
+
+    final data = response.data as Map<String, dynamic>;
+    final token = (data['access_token'] as String?)?.trim();
+    if (token == null || token.isEmpty) {
+      state = state.copyWith(
+        isLoading: false,
+        error: 'Authentication token missing in server response',
+      );
+      return false;
+    }
+
+    final user = UserProfile.fromJson(data['user'] as Map<String, dynamic>);
+    await storage.saveToken(token);
+    state =
+        state.copyWith(isLoading: false, token: token, user: user, error: null);
+    return true;
   }
 
   Future<void> signInWithGoogle() async {
@@ -123,44 +158,55 @@ class AuthNotifier extends StateNotifier<AuthState> {
       };
 
       final response = await dio.post('/auth/google', data: authData);
-
-      if (response.statusCode == 200) {
-        final data = response.data as Map<String, dynamic>;
-        final token = (data['access_token'] as String?)?.trim();
-        if (token == null || token.isEmpty) {
-          state = state.copyWith(
-            isLoading: false,
-            error: 'Authentication token missing in server response',
-          );
-          return;
-        }
-        final user = UserProfile.fromJson(response.data['user'] as Map<String, dynamic>);
-        if (kDebugMode) {
-          debugPrint('[Auth] Received access token. Saving to secure storage.');
-        }
-        await storage.saveToken(token);
-        if (kDebugMode) {
-          final persisted = await storage.readToken();
-          debugPrint(
-            '[Auth] Token saved. persistedTokenPresent=${persisted != null && persisted.isNotEmpty}',
-          );
-        }
-        state = state.copyWith(isLoading: false, token: token, user: user);
-      } else {
-        state = state.copyWith(isLoading: false, error: 'Server authentication failed');
-      }
-
+      await _applyAuthResponse(response);
     } catch (e) {
       final rawError = e.toString();
-      final normalizedError =
-          rawError.toLowerCase().contains('clientid not set')
-              ? 'Google Sign-In is not configured for web. Set GOOGLE_WEB_CLIENT_ID and restart the app.'
-              : rawError;
+      final normalizedError = rawError
+              .toLowerCase()
+              .contains('clientid not set')
+          ? 'Google Sign-In is not configured for web. Set GOOGLE_WEB_CLIENT_ID and restart the app.'
+          : rawError;
       state = state.copyWith(isLoading: false, error: normalizedError);
     }
   }
 
-  Future<void> completeProfile({
+  Future<bool> signInWithEmailPassword({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      state = state.copyWith(isLoading: true, error: null);
+      final response = await dio.post('/auth/login', data: {
+        'email': email.trim(),
+        'password': password,
+      });
+      return await _applyAuthResponse(response);
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> registerWithEmailPassword({
+    required String email,
+    required String password,
+    required String name,
+  }) async {
+    try {
+      state = state.copyWith(isLoading: true, error: null);
+      final response = await dio.post('/auth/register', data: {
+        'email': email.trim(),
+        'password': password,
+        'name': name.trim(),
+      });
+      return await _applyAuthResponse(response);
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> completeProfile({
     required String fullName,
     required String dob,
     int? targetExamYear,
@@ -176,10 +222,13 @@ class AuthNotifier extends StateNotifier<AuthState> {
       });
       state = state.copyWith(
         isLoading: false,
+        error: null,
         user: UserProfile.fromJson(response.data),
       );
+      return true;
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
+      return false;
     }
   }
 

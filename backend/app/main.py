@@ -1,3 +1,5 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi import HTTPException
 from sqlalchemy import text
@@ -13,9 +15,13 @@ app = FastAPI(
 )
 
 
-@app.on_event("startup")
-def create_tables() -> None:
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
     Base.metadata.create_all(bind=engine)
+    yield
+
+
+app.router.lifespan_context = lifespan
 
 # CORS configuration
 app.add_middleware(

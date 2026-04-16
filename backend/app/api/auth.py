@@ -36,6 +36,19 @@ except Exception:
 router = APIRouter()
 
 
+def _has_minimum_profile_details(user: User) -> bool:
+    return bool((user.full_name or "").strip()) and bool((user.dob or "").strip())
+
+
+def _sync_profile_completed(user: User, db: Session) -> User:
+    # Backfill stale rows where profile details exist but profile_completed stayed false.
+    if _has_minimum_profile_details(user) and not user.profile_completed:
+        user.profile_completed = True
+        db.commit()
+        db.refresh(user)
+    return user
+
+
 def _is_admin_email(email: str) -> bool:
     admin_email = settings.ADMIN_EMAIL.strip()
     return bool(admin_email) and email.strip().lower() == admin_email.lower()
@@ -84,6 +97,7 @@ def login(user_in: LoginRequest, db: Session = Depends(get_db)):
         raise HTTPException(status_code=401, detail="Invalid email or password")
 
     user = _promote_admin_user(user, db)
+    user = _sync_profile_completed(user, db)
 
     access_token = create_access_token(data={"sub": user.email})
     return {"access_token": access_token, "token_type": "bearer", "user": user}
@@ -128,14 +142,18 @@ def google_auth(user_in: GoogleAuthRequest, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(user)
     user = _promote_admin_user(user, db)
+    user = _sync_profile_completed(user, db)
 
     access_token = create_access_token(data={"sub": user.email})
     return {"access_token": access_token, "token_type": "bearer", "user": user}
 
 
 @router.get("/me", response_model=UserResponse)
-def read_users_me(current_user: User = Depends(get_current_user)):
-    return current_user
+def read_users_me(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    return _sync_profile_completed(current_user, db)
 
 
 @router.post("/profile/complete", response_model=UserResponse)
@@ -144,8 +162,8 @@ def update_profile(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    current_user.full_name = profile_data.full_name
-    current_user.dob = profile_data.dob
+    current_user.full_name = profile_data.full_name.strip()
+    current_user.dob = profile_data.dob.strip()
     current_user.target_exam_year = profile_data.target_exam_year
     current_user.preferred_language = profile_data.preferred_language
     current_user.profile_completed = True

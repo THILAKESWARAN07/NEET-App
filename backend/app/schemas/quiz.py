@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 from typing import List, Optional, Dict
 from datetime import datetime
 
@@ -18,10 +18,9 @@ class QuestionCreate(QuestionBase):
 
 
 class QuestionResponse(QuestionBase):
-    id: int
+    model_config = ConfigDict(from_attributes=True)
 
-    class Config:
-        from_attributes = True
+    id: int
 
 
 class QuizAttemptBase(BaseModel):
@@ -34,6 +33,8 @@ class QuizAttemptCreate(QuizAttemptBase):
 
 
 class QuizAttemptResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     user_id: int
     start_time: datetime
@@ -46,20 +47,15 @@ class QuizAttemptResponse(BaseModel):
     test_type: str
     subject: Optional[str]
 
-    class Config:
-        from_attributes = True
-
-
 class QuestionPublic(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     subject: str
     topic: str
     difficulty: str
     question_text: str
     options: List[str]
-
-    class Config:
-        from_attributes = True
 
 
 class AttemptDetailResponse(QuizAttemptResponse):
@@ -102,11 +98,10 @@ class StudyMaterialCreate(BaseModel):
 
 
 class StudyMaterialResponse(StudyMaterialCreate):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     uploaded_at: datetime
-
-    class Config:
-        from_attributes = True
 
 
 class BookmarkCreate(BaseModel):
@@ -114,16 +109,17 @@ class BookmarkCreate(BaseModel):
 
 
 class BookmarkResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     user_id: int
     question_id: int
     created_at: datetime
 
-    class Config:
-        from_attributes = True
-
 
 class QuestionRevisionPublic(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     subject: str
     topic: str
@@ -132,9 +128,6 @@ class QuestionRevisionPublic(BaseModel):
     options: List[str]
     correct_answer: str
     explanation: Optional[str] = None
-
-    class Config:
-        from_attributes = True
 
 
 class BookmarkDetailResponse(BaseModel):
@@ -215,11 +208,10 @@ class AnnouncementCreate(BaseModel):
 
 
 class AnnouncementResponse(AnnouncementCreate):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     created_at: datetime
-
-    class Config:
-        from_attributes = True
 
 
 class ScheduledTestCreate(BaseModel):
@@ -231,11 +223,10 @@ class ScheduledTestCreate(BaseModel):
 
 
 class ScheduledTestResponse(ScheduledTestCreate):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     created_at: datetime
-
-    class Config:
-        from_attributes = True
 
 
 class ScheduledTestPublicResponse(BaseModel):

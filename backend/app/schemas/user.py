@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, Field, field_validator
+from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator
 from typing import Optional, List
 from datetime import datetime
 
@@ -28,8 +28,18 @@ class UserUpdate(BaseModel):
     target_exam_year: Optional[int] = None
     preferred_language: Optional[str] = None
 
+    @field_validator("full_name", "dob")
+    @classmethod
+    def required_non_empty_fields(cls, value: str) -> str:
+        cleaned = value.strip()
+        if not cleaned:
+            raise ValueError("This field is required")
+        return cleaned
+
 
 class UserResponse(UserBase):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     google_id: Optional[str] = None
     role: str
@@ -44,10 +54,6 @@ class UserResponse(UserBase):
     def normalize_badges(cls, value):
         # Older rows may have null JSON values; always expose badges as a list.
         return value or []
-
-    class Config:
-        from_attributes = True
-
 
 class UserRoleUpdate(BaseModel):
     role: str
