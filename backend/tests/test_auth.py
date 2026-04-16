@@ -174,6 +174,28 @@ def test_admin_email_is_promoted_on_login() -> None:
         settings.ADMIN_EMAIL = original_admin_email
 
 
+def test_admin_email_is_promoted_on_google_sign_in() -> None:
+    admin_email = "google_admin@neet.com"
+    original_admin_email = settings.ADMIN_EMAIL
+    settings.ADMIN_EMAIL = admin_email
+
+    try:
+        with TestClient(app) as client:
+            google_resp = client.post(
+                "/api/auth/google",
+                json={
+                    "email": admin_email,
+                    "google_id": "google-admin-id-1",
+                    "full_name": "Google Admin",
+                },
+            )
+            assert google_resp.status_code == 200
+            payload = google_resp.json()
+            assert payload["user"]["role"] == "admin"
+    finally:
+        settings.ADMIN_EMAIL = original_admin_email
+
+
 def test_login_syncs_stale_profile_completed_flag() -> None:
     email = "stale_profile_user@neet.com"
 

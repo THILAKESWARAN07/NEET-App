@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../admin/views/admin_screen.dart';
 import '../../dashboard/views/dashboard_screen.dart';
 import '../providers/auth_provider.dart';
 import 'login_screen.dart';
@@ -61,6 +62,11 @@ class _AuthGateScreenState extends ConsumerState<AuthGateScreen> {
     // If profile not completed, show profile setup
     if (!authState.user!.profileCompleted) {
       return const ProfileSetupScreen();
+    }
+
+    final role = authState.user!.role.trim().toLowerCase();
+    if (role == 'admin') {
+      return const AdminScreen();
     }
 
     // Otherwise, show dashboard
