@@ -125,9 +125,26 @@ class AuthNotifier extends StateNotifier<AuthState> {
       final response = await dio.post('/auth/google', data: authData);
 
       if (response.statusCode == 200) {
-        final token = response.data['access_token'];
+        final data = response.data as Map<String, dynamic>;
+        final token = (data['access_token'] as String?)?.trim();
+        if (token == null || token.isEmpty) {
+          state = state.copyWith(
+            isLoading: false,
+            error: 'Authentication token missing in server response',
+          );
+          return;
+        }
         final user = UserProfile.fromJson(response.data['user'] as Map<String, dynamic>);
+        if (kDebugMode) {
+          debugPrint('[Auth] Received access token. Saving to secure storage.');
+        }
         await storage.saveToken(token);
+        if (kDebugMode) {
+          final persisted = await storage.readToken();
+          debugPrint(
+            '[Auth] Token saved. persistedTokenPresent=${persisted != null && persisted.isNotEmpty}',
+          );
+        }
         state = state.copyWith(isLoading: false, token: token, user: user);
       } else {
         state = state.copyWith(isLoading: false, error: 'Server authentication failed');

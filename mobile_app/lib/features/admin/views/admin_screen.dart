@@ -23,6 +23,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
 
   List<dynamic> _users = [];
   List<dynamic> _questions = [];
+  List<dynamic> _materials = [];
   List<dynamic> _announcements = [];
   List<dynamic> _tests = [];
   List<dynamic> _cheatFlags = [];
@@ -40,6 +41,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
   int _cheatsTotal = 0;
 
   int? _editingQuestionId;
+  int? _editingMaterialId;
   int? _editingTestId;
 
   final TextEditingController _searchController = TextEditingController();
@@ -61,6 +63,10 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
   final TextEditingController _questionExplanation = TextEditingController();
   String? _csvImportStatus;
 
+  final TextEditingController _materialSubject = TextEditingController();
+  final TextEditingController _materialTitle = TextEditingController();
+  final TextEditingController _materialPdfUrl = TextEditingController();
+
   final TextEditingController _announcementTitle = TextEditingController();
   final TextEditingController _announcementContent = TextEditingController();
 
@@ -74,7 +80,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 5, vsync: this);
+    _tabController = TabController(length: 6, vsync: this);
     _load();
   }
 
@@ -91,6 +97,9 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
     _questionOptionD.dispose();
     _questionCorrect.dispose();
     _questionExplanation.dispose();
+    _materialSubject.dispose();
+    _materialTitle.dispose();
+    _materialPdfUrl.dispose();
     _announcementTitle.dispose();
     _announcementContent.dispose();
     _testTitle.dispose();
@@ -123,6 +132,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
           'skip': _questionsSkip,
           'limit': _pageSize,
         }),
+        dio.get('/materials/'),
         dio.get('/admin/announcements/paginated', queryParameters: {
           'q': query,
           'skip': _announcementsSkip,
@@ -144,12 +154,14 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
       setState(() {
         final usersPayload = responses[0].data as Map<String, dynamic>;
         final questionsPayload = responses[1].data as Map<String, dynamic>;
-        final announcementsPayload = responses[2].data as Map<String, dynamic>;
-        final testsPayload = responses[3].data as Map<String, dynamic>;
-        final cheatsPayload = responses[4].data as Map<String, dynamic>;
+        final materialsPayload = responses[2].data as List<dynamic>;
+        final announcementsPayload = responses[3].data as Map<String, dynamic>;
+        final testsPayload = responses[4].data as Map<String, dynamic>;
+        final cheatsPayload = responses[5].data as Map<String, dynamic>;
 
         _users = usersPayload['items'] as List<dynamic>;
         _questions = questionsPayload['items'] as List<dynamic>;
+        _materials = materialsPayload;
         _announcements = announcementsPayload['items'] as List<dynamic>;
         _tests = testsPayload['items'] as List<dynamic>;
         _cheatFlags = cheatsPayload['items'] as List<dynamic>;
@@ -280,6 +292,51 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
     });
   }
 
+  Future<void> _saveMaterial() async {
+    final payload = {
+      'subject': _materialSubject.text.trim(),
+      'title': _materialTitle.text.trim(),
+      'pdf_url': _materialPdfUrl.text.trim(),
+    };
+
+    final dio = ref.read(dioProvider);
+    if (_editingMaterialId == null) {
+      await dio.post('/materials/', data: payload);
+    } else {
+      await dio.put('/materials/$_editingMaterialId', data: payload);
+    }
+
+    _clearMaterialForm();
+    await _load();
+  }
+
+  Future<void> _deleteMaterial(int id) async {
+    await ref.read(dioProvider).delete('/materials/$id');
+    if (_editingMaterialId == id) {
+      _clearMaterialForm();
+    }
+    await _load();
+  }
+
+  void _editMaterial(Map<String, dynamic> material) {
+    setState(() {
+      _editingMaterialId = material['id'] as int;
+      _materialSubject.text = (material['subject'] ?? '').toString();
+      _materialTitle.text = (material['title'] ?? '').toString();
+      _materialPdfUrl.text = (material['pdf_url'] ?? '').toString();
+      _tabController.animateTo(2);
+    });
+  }
+
+  void _clearMaterialForm() {
+    setState(() {
+      _editingMaterialId = null;
+      _materialSubject.clear();
+      _materialTitle.clear();
+      _materialPdfUrl.clear();
+    });
+  }
+
   Future<void> _saveAnnouncement() async {
     await ref.read(dioProvider).post('/admin/announcements', data: {
       'title': _announcementTitle.text.trim(),
@@ -364,7 +421,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
       _testScheduledAt.text = (test['scheduled_at'] ?? '').toString();
       _testDurationSeconds.text =
           (test['duration_seconds'] ?? 10800).toString();
-      _tabController.animateTo(3);
+      _tabController.animateTo(4);
     });
   }
 
@@ -426,6 +483,16 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
               .toLowerCase();
       final matchesQuery = query.isEmpty || text.contains(query);
       return matchesSubject && matchesQuery;
+    }).toList();
+  }
+
+  List<Map<String, dynamic>> _filteredMaterials() {
+    final query = _searchController.text.trim().toLowerCase();
+    return _materials.cast<Map<String, dynamic>>().where((material) {
+      final text =
+          '${material['subject'] ?? ''} ${material['title'] ?? ''} ${material['pdf_url'] ?? ''}'
+              .toLowerCase();
+      return query.isEmpty || text.contains(query);
     }).toList();
   }
 
@@ -849,6 +916,75 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
     );
   }
 
+  Widget _buildMaterialsTab() {
+    return RefreshIndicator(
+      onRefresh: _refreshCurrentTab,
+      child: ListView(
+        padding: const EdgeInsets.all(12),
+        children: [
+          _buildSearchBar('Search materials'),
+          _sectionCard(
+            title: _editingMaterialId == null
+                ? 'Add Study Material'
+                : 'Edit Material #$_editingMaterialId',
+            action: TextButton(
+              onPressed: _clearMaterialForm,
+              child: const Text('Clear'),
+            ),
+            child: Column(
+              children: [
+                _textField(_materialSubject, 'Subject'),
+                _textField(_materialTitle, 'Title'),
+                _textField(_materialPdfUrl, 'PDF Link',
+                    hintText: 'Paste direct PDF URL here'),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: _saveMaterial,
+                    child: Text(_editingMaterialId == null
+                        ? 'Add Material'
+                        : 'Update Material'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          _sectionCard(
+            title: 'Materials',
+            child: _filteredMaterials().isEmpty
+                ? const Text('No study materials yet.')
+                : Column(
+                    children: _filteredMaterials().map<Widget>((material) {
+                      return Card(
+                        child: ListTile(
+                          title: Text((material['title'] ?? '').toString()),
+                          subtitle: Text(
+                              '${material['subject'] ?? ''}\n${material['pdf_url'] ?? ''}'),
+                          isThreeLine: true,
+                          trailing: PopupMenuButton<String>(
+                            onSelected: (value) async {
+                              if (value == 'edit') {
+                                _editMaterial(material);
+                              } else if (value == 'delete') {
+                                await _deleteMaterial(material['id'] as int);
+                              }
+                            },
+                            itemBuilder: (_) => const [
+                              PopupMenuItem(value: 'edit', child: Text('Edit')),
+                              PopupMenuItem(
+                                  value: 'delete', child: Text('Delete')),
+                            ],
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildTestsTab() {
     return RefreshIndicator(
       onRefresh: _refreshCurrentTab,
@@ -1109,6 +1245,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
           tabs: const [
             Tab(text: 'Users', icon: Icon(Icons.people)),
             Tab(text: 'Questions', icon: Icon(Icons.quiz)),
+            Tab(text: 'Materials', icon: Icon(Icons.picture_as_pdf)),
             Tab(text: 'Announcements', icon: Icon(Icons.campaign)),
             Tab(text: 'Tests', icon: Icon(Icons.event)),
             Tab(text: 'Cheats', icon: Icon(Icons.shield)),
@@ -1120,6 +1257,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
         children: [
           _buildUserTab(),
           _buildQuestionTab(),
+          _buildMaterialsTab(),
           _buildAnnouncementTab(),
           _buildTestsTab(),
           _buildCheatTab(),

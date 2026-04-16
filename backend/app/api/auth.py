@@ -36,6 +36,19 @@ except Exception:
 router = APIRouter()
 
 
+def _is_admin_email(email: str) -> bool:
+    admin_email = settings.ADMIN_EMAIL.strip()
+    return bool(admin_email) and email.strip().lower() == admin_email.lower()
+
+
+def _promote_admin_user(user: User, db: Session) -> User:
+    if _is_admin_email(user.email) and user.role != "admin":
+        user.role = "admin"
+        db.commit()
+        db.refresh(user)
+    return user
+
+
 # Email/Password Registration
 @router.post("/register", response_model=AuthResponse)
 def register(user_in: RegisterRequest, db: Session = Depends(get_db)):
@@ -52,6 +65,8 @@ def register(user_in: RegisterRequest, db: Session = Depends(get_db)):
         full_name=user_in.name,
         profile_completed=False,
     )
+    if _is_admin_email(user.email):
+        user.role = "admin"
     db.add(user)
     db.commit()
     db.refresh(user)
@@ -67,6 +82,8 @@ def login(user_in: LoginRequest, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == user_in.email).first()
     if not user or not verify_password(user_in.password, user.hashed_password or ""):
         raise HTTPException(status_code=401, detail="Invalid email or password")
+
+    user = _promote_admin_user(user, db)
 
     access_token = create_access_token(data={"sub": user.email})
     return {"access_token": access_token, "token_type": "bearer", "user": user}
@@ -110,6 +127,7 @@ def google_auth(user_in: GoogleAuthRequest, db: Session = Depends(get_db)):
 
     db.commit()
     db.refresh(user)
+    user = _promote_admin_user(user, db)
 
     access_token = create_access_token(data={"sub": user.email})
     return {"access_token": access_token, "token_type": "bearer", "user": user}

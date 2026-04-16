@@ -28,10 +28,25 @@ final dioProvider = Provider<Dio>((ref) {
     InterceptorsWrapper(
       onRequest: (options, handler) async {
         final token = await storage.readToken();
+        if (kDebugMode) {
+          debugPrint(
+            '[API] ${options.method} ${options.path} | tokenPresent=${token != null && token.isNotEmpty}',
+          );
+        }
         if (token != null && token.isNotEmpty) {
           options.headers['Authorization'] = 'Bearer $token';
+        } else {
+          options.headers.remove('Authorization');
         }
         handler.next(options);
+      },
+      onError: (error, handler) {
+        if (kDebugMode && error.response?.statusCode == 401) {
+          debugPrint(
+            '[API] 401 Unauthorized for ${error.requestOptions.method} ${error.requestOptions.path}',
+          );
+        }
+        handler.next(error);
       },
     ),
   );

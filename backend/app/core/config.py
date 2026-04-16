@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7  # 7 days
     VERIFY_GOOGLE_TOKEN: bool = False
     GOOGLE_CLIENT_ID: str = ""
+    ADMIN_EMAIL: str = ""
     OPENAI_API_KEY: str = ""
     OPENAI_MODEL: str = "gpt-4o-mini"
     STORAGE_BASE_URL: str = "https://storage.example.com"

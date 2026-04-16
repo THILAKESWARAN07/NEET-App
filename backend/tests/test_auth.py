@@ -5,6 +5,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from app import models  # noqa: F401
+from app.core.config import settings
+from app.core.security import get_password_hash
 from app.core.database import Base, get_db
 from app.main import app
 
@@ -130,6 +132,46 @@ def test_logout_revokes_token() -> None:
             "/api/auth/me", headers={"Authorization": f"Bearer {token}"}
         )
         assert me_resp.status_code == 401
+
+
+def test_admin_email_is_promoted_on_login() -> None:
+    admin_email = "admin_user@neet.com"
+    original_admin_email = settings.ADMIN_EMAIL
+    settings.ADMIN_EMAIL = admin_email
+
+    db = TestingSessionLocal()
+    try:
+        user = models.User(
+            email=admin_email,
+            hashed_password=get_password_hash("AdminPass123!"),
+            full_name="Admin User",
+            role="user",
+            profile_completed=True,
+        )
+        db.add(user)
+        db.commit()
+    finally:
+        db.close()
+
+    try:
+        with TestClient(app) as client:
+            login_resp = client.post(
+                "/api/auth/login",
+                json={"email": admin_email, "password": "AdminPass123!"},
+            )
+            assert login_resp.status_code == 200
+            payload = login_resp.json()
+            assert payload["user"]["role"] == "admin"
+
+        db = TestingSessionLocal()
+        try:
+            user = db.query(models.User).filter(models.User.email == admin_email).first()
+            assert user is not None
+            assert user.role == "admin"
+        finally:
+            db.close()
+    finally:
+        settings.ADMIN_EMAIL = original_admin_email
 
 
 def test_gamification_profile_and_streak_update() -> None:

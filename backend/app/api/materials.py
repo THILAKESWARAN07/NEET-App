@@ -25,6 +25,25 @@ def create_material(
     return material
 
 
+@router.put("/{material_id}", response_model=StudyMaterialResponse)
+def update_material(
+    material_id: int,
+    payload: StudyMaterialCreate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_admin),
+):
+    material = db.query(StudyMaterial).filter(StudyMaterial.id == material_id).first()
+    if not material:
+        raise HTTPException(status_code=404, detail="Material not found")
+
+    material.subject = payload.subject
+    material.title = payload.title
+    material.pdf_url = payload.pdf_url
+    db.commit()
+    db.refresh(material)
+    return material
+
+
 @router.get("/", response_model=List[StudyMaterialResponse])
 def list_materials(subject: str = "", db: Session = Depends(get_db)):
     query = db.query(StudyMaterial)

@@ -133,6 +133,7 @@ alembic upgrade head
 - `GET /api/quiz/scheduled-tests`
 - `GET /api/materials/`
 - `POST /api/materials/` (admin)
+- `PUT /api/materials/{material_id}` (admin)
 - `DELETE /api/materials/{material_id}` (admin)
 - `POST /api/ai/chat`
 - `POST /api/ai/summarize-pdf`
@@ -192,6 +193,7 @@ flutter run --dart-define=API_BASE_URL=http://<your-host>:8000/api
 
 - Splash/Auth gate
 - Google login
+- Optional admin override via `ADMIN_EMAIL`
 - First-time profile setup
 - Dashboard with all requested modules
 - Quiz screen with timer, anti-cheat warnings, and auto-submit
