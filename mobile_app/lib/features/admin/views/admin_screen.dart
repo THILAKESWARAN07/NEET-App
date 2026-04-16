@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:dio/dio.dart';
 
 import '../../../core/api/api_client.dart';
+import '../../auth/providers/auth_provider.dart';
 
 class AdminScreen extends ConsumerStatefulWidget {
   const AdminScreen({super.key});
@@ -1206,6 +1207,10 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
           title: const Text('Admin Panel'),
           actions: [
             IconButton(
+              icon: const Icon(Icons.logout),
+              onPressed: () => ref.read(authProvider.notifier).signOut(),
+            ),
+            IconButton(
               icon: const Icon(Icons.refresh),
               onPressed: _load,
             ),
@@ -1234,6 +1239,10 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
       appBar: AppBar(
         title: const Text('Admin Panel'),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () => ref.read(authProvider.notifier).signOut(),
+          ),
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: _load,
