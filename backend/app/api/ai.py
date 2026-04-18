@@ -143,17 +143,21 @@ def ask_ai(
             "Use the conversation history to stay consistent with previous follow-up questions."
         )
         if _ai_configured():
-            response = client.chat.completions.create(
-                model=settings.OPENAI_MODEL,
-                messages=_build_chat_messages(
-                    system_prompt,
-                    recent_history,
-                    f"Subject: {request.subject}\nQuestion: {request.message}",
-                ),
-                temperature=0.4,
-                max_tokens=700,
-            )
-            reply = response.choices[0].message.content or ""
+            try:
+                response = client.chat.completions.create(
+                    model=settings.OPENAI_MODEL,
+                    messages=_build_chat_messages(
+                        system_prompt,
+                        recent_history,
+                        f"Subject: {request.subject}\nQuestion: {request.message}",
+                    ),
+                    temperature=0.4,
+                    max_tokens=700,
+                )
+                reply = response.choices[0].message.content or ""
+            except Exception as e:
+                print("AI ERROR:", str(e))
+                raise HTTPException(status_code=500, detail=str(e))
         else:
             reply = _generate_with_ai(
                 system_prompt=system_prompt,
