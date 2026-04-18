@@ -651,8 +651,8 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
       final minutes = ((entry['time_taken'] as num).toDouble() / 60).clamp(0, 180);
       final score = (entry['score'] as num).toDouble().clamp(0, 720);
       return ScatterSpot(
-        minutes,
-        score,
+        minutes.toDouble(),
+        score.toDouble(),
         dotPainter: FlDotCirclePainter(
           radius: 4,
           color: Colors.indigo,

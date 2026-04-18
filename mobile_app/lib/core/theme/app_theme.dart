@@ -24,7 +24,7 @@ class AppTheme {
             color: textLight, fontWeight: FontWeight.bold, fontSize: 32),
         bodyLarge: TextStyle(color: textLight, fontSize: 16),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         elevation: 0,
         margin: const EdgeInsets.symmetric(vertical: 6),
         shape: RoundedRectangleBorder(
@@ -60,7 +60,7 @@ class AppTheme {
             color: textDark, fontWeight: FontWeight.bold, fontSize: 32),
         bodyLarge: TextStyle(color: textDark, fontSize: 16),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         elevation: 0,
         margin: const EdgeInsets.symmetric(vertical: 6),
         shape: RoundedRectangleBorder(
