@@ -511,6 +511,110 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
     await _load();
   }
 
+  String _formatDuration(int seconds) {
+    final safeSeconds = seconds < 0 ? 0 : seconds;
+    final h = safeSeconds ~/ 3600;
+    final m = (safeSeconds % 3600) ~/ 60;
+    final s = safeSeconds % 60;
+    return '${h.toString().padLeft(2, '0')}:${m.toString().padLeft(2, '0')}:${s.toString().padLeft(2, '0')}';
+  }
+
+  String _formatAttemptedAt(String raw) {
+    final parsed = DateTime.tryParse(raw);
+    if (parsed == null) {
+      return 'Unknown time';
+    }
+    final local = parsed.toLocal();
+    final day = local.day.toString().padLeft(2, '0');
+    final month = local.month.toString().padLeft(2, '0');
+    final year = local.year;
+    final hour = local.hour.toString().padLeft(2, '0');
+    final minute = local.minute.toString().padLeft(2, '0');
+    return '$day/$month/$year $hour:$minute';
+  }
+
+  void _showUserHistoryDialog(Map<String, dynamic> user) {
+    final scoreHistory = (user['score_history'] as List<dynamic>? ?? const [])
+        .map((e) => (e as num).toDouble())
+        .toList();
+    final timeHistory = (user['time_history'] as List<dynamic>? ?? const [])
+        .map((e) => (e as num).toInt())
+        .toList();
+    final attemptedAtHistory =
+      (user['attempted_at_history'] as List<dynamic>? ?? const [])
+        .map((e) => e.toString())
+        .toList();
+
+    showDialog<void>(
+      context: context,
+      builder: (ctx) {
+        return AlertDialog(
+          title: Text(
+            'History: ${(user['full_name'] ?? user['email'] ?? 'User').toString()}',
+          ),
+          content: SizedBox(
+            width: 420,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Score History (latest first)',
+                  style: TextStyle(fontWeight: FontWeight.w700),
+                ),
+                const SizedBox(height: 6),
+                if (scoreHistory.isEmpty)
+                  const Text('No completed test scores yet.')
+                else
+                  Column(
+                    children: List.generate(scoreHistory.length, (index) {
+                      final when = index < attemptedAtHistory.length
+                          ? _formatAttemptedAt(attemptedAtHistory[index])
+                          : 'Unknown time';
+                      return ListTile(
+                        dense: true,
+                        contentPadding: EdgeInsets.zero,
+                        title: Text('Score: ${scoreHistory[index].toStringAsFixed(0)}'),
+                        subtitle: Text(when),
+                      );
+                    }),
+                  ),
+                const SizedBox(height: 14),
+                const Text(
+                  'Time History (latest first)',
+                  style: TextStyle(fontWeight: FontWeight.w700),
+                ),
+                const SizedBox(height: 6),
+                if (timeHistory.isEmpty)
+                  const Text('No completed test timings yet.')
+                else
+                  Column(
+                    children: List.generate(timeHistory.length, (index) {
+                      final when = index < attemptedAtHistory.length
+                          ? _formatAttemptedAt(attemptedAtHistory[index])
+                          : 'Unknown time';
+                      return ListTile(
+                        dense: true,
+                        contentPadding: EdgeInsets.zero,
+                        title: Text('Time: ${_formatDuration(timeHistory[index])}'),
+                        subtitle: Text(when),
+                      );
+                    }),
+                  ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(),
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _resetPagination() {
     _usersSkip = 0;
     _questionsSkip = 0;
@@ -702,11 +806,23 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
                 : Column(
                     children: _filteredUsers().map<Widget>((user) {
                       final role = (user['role'] ?? 'user').toString();
+                      final latestScore =
+                          (user['latest_score'] as num?)?.toDouble() ?? 0.0;
+                      final latestTimeTaken =
+                          (user['latest_time_taken'] as num?)?.toInt() ?? 0;
+                      final completedTests =
+                          (user['completed_tests'] as num?)?.toInt() ?? 0;
                       return ListTile(
                         contentPadding: EdgeInsets.zero,
+                        onTap: () => _showUserHistoryDialog(user),
                         title: Text((user['full_name'] ?? 'User').toString()),
                         subtitle: Text(
-                            '${user['email'] ?? ''} • ${user['points'] ?? 0} points'),
+                          '${user['email'] ?? ''} • ${user['points'] ?? 0} points\n'
+                          'Latest score: ${latestScore.toStringAsFixed(0)} | '
+                          'Latest time: ${_formatDuration(latestTimeTaken)} | '
+                          'Completed tests: $completedTests | Tap row for history',
+                        ),
+                        isThreeLine: true,
                         trailing: DropdownButton<String>(
                           value: role,
                           items: const [

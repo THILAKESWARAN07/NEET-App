@@ -17,6 +17,28 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
   Map<String, dynamic>? data;
   String? error;
 
+  String _formatDuration(int seconds) {
+    final safeSeconds = seconds < 0 ? 0 : seconds;
+    final h = safeSeconds ~/ 3600;
+    final m = (safeSeconds % 3600) ~/ 60;
+    final s = safeSeconds % 60;
+    return '${h.toString().padLeft(2, '0')}:${m.toString().padLeft(2, '0')}:${s.toString().padLeft(2, '0')}';
+  }
+
+  String _formatAttemptedAt(String raw) {
+    final parsed = DateTime.tryParse(raw);
+    if (parsed == null) {
+      return 'Unknown time';
+    }
+    final local = parsed.toLocal();
+    final day = local.day.toString().padLeft(2, '0');
+    final month = local.month.toString().padLeft(2, '0');
+    final year = local.year;
+    final hour = local.hour.toString().padLeft(2, '0');
+    final minute = local.minute.toString().padLeft(2, '0');
+    return '$day/$month/$year $hour:$minute';
+  }
+
   @override
   void initState() {
     super.initState();
@@ -394,6 +416,62 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                     const Text('X-axis: Time (minutes), Y-axis: Score'),
                   ],
                 ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              'Score History (Recent)',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: trend.isEmpty
+                    ? const Text('No score history yet.')
+                    : Column(
+                        children: trend.map((entry) {
+                          final attemptedAt = _formatAttemptedAt(
+                            (entry['attempted_at'] ?? '').toString(),
+                          );
+                          return ListTile(
+                            dense: true,
+                            contentPadding: EdgeInsets.zero,
+                            title: Text(
+                              'Score: ${(entry['score'] as num).toStringAsFixed(0)}',
+                            ),
+                            subtitle: Text(attemptedAt),
+                          );
+                        }).toList(),
+                      ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              'Time History (Recent)',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: trend.isEmpty
+                    ? const Text('No time history yet.')
+                    : Column(
+                        children: trend.map((entry) {
+                          final attemptedAt = _formatAttemptedAt(
+                            (entry['attempted_at'] ?? '').toString(),
+                          );
+                          return ListTile(
+                            dense: true,
+                            contentPadding: EdgeInsets.zero,
+                            title: Text(
+                              'Time: ${_formatDuration((entry['time_taken'] as num).toInt())}',
+                            ),
+                            subtitle: Text(attemptedAt),
+                          );
+                        }).toList(),
+                      ),
               ),
             ),
             const SizedBox(height: 16),

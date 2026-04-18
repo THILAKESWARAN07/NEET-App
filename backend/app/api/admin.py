@@ -55,11 +55,54 @@ def list_users_paginated(
         .limit(bounded_limit)
         .all()
     )
+
+    user_ids = [item.id for item in items]
+    attempts_by_user: dict[int, list[QuizAttempt]] = {}
+    if user_ids:
+        attempts = (
+            db.query(QuizAttempt)
+            .filter(
+                QuizAttempt.user_id.in_(user_ids),
+                QuizAttempt.status.in_(["completed", "timeout", "terminated"]),
+            )
+            .order_by(QuizAttempt.user_id.asc(), QuizAttempt.end_time.desc(), QuizAttempt.id.desc())
+            .all()
+        )
+        for attempt in attempts:
+            attempts_by_user.setdefault(attempt.user_id, []).append(attempt)
+
+    payload_items = []
+    for item in items:
+        user_attempts = attempts_by_user.get(item.id, [])
+        latest_attempt = user_attempts[0] if user_attempts else None
+        payload = UserResponse.model_validate(item).model_dump()
+        score_history = [float(attempt.score) for attempt in user_attempts[:10]]
+        time_history = [int(attempt.time_taken) for attempt in user_attempts[:10]]
+        attempted_at_history = [
+            (
+                attempt.end_time.isoformat()
+                if attempt.end_time
+                else (attempt.start_time.isoformat() if attempt.start_time else "")
+            )
+            for attempt in user_attempts[:10]
+        ]
+        payload.update(
+            {
+                "latest_score": float(latest_attempt.score) if latest_attempt else 0.0,
+                "latest_time_taken": int(latest_attempt.time_taken) if latest_attempt else 0,
+                "completed_tests": len(user_attempts),
+                "score_history": score_history,
+                "time_history": time_history,
+                "attempted_at_history": attempted_at_history,
+            }
+        )
+        payload_items.append(payload)
+
     return {
         "total": total,
         "skip": bounded_skip,
         "limit": bounded_limit,
-        "items": [UserResponse.model_validate(item).model_dump() for item in items],
+        "items": payload_items,
     }
 
 

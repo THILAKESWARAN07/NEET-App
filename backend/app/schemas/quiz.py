@@ -168,7 +168,7 @@ class DashboardAnalyticsResponse(BaseModel):
     in_progress_tests: int
     weak_topics: List[str]
     strong_topics: List[str]
-    trend: List[Dict[str, float]]
+    trend: List[Dict[str, float | str]]
 
 
 class StudyPlanItem(BaseModel):

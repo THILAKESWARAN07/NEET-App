@@ -753,8 +753,17 @@ def dashboard_analytics(
 
     trend = []
     for attempt in completed[-10:]:
+        attempted_at = (
+            attempt.end_time.isoformat()
+            if attempt.end_time
+            else (attempt.start_time.isoformat() if attempt.start_time else "")
+        )
         trend.append(
-            {"score": float(attempt.score), "time_taken": float(attempt.time_taken)}
+            {
+                "score": float(attempt.score),
+                "time_taken": float(attempt.time_taken),
+                "attempted_at": attempted_at,
+            }
         )
 
     return DashboardAnalyticsResponse(
