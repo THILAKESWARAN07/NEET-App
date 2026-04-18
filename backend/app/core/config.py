@@ -8,7 +8,7 @@ class Settings(BaseSettings):
 
     ENVIRONMENT: str = "development"
     PROJECT_NAME: str = "NEET Prep App"
-    DATABASE_URL: str = "sqlite:///neet_app.db"
+    DATABASE_URL: str = "sqlite:///./neet_app.db"
     SECRET_KEY: str = "super-secret-jwt-key!@#"
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7  # 7 days
@@ -18,6 +18,11 @@ class Settings(BaseSettings):
     OPENAI_API_KEY: str = ""
     OPENAI_MODEL: str = "gpt-4o-mini"
     STORAGE_BASE_URL: str = "https://storage.example.com"
+    STORAGE_PROVIDER: str = ""
+    STORAGE_BUCKET_NAME: str = ""
+    STORAGE_REGION: str = "us-east-1"
+    STORAGE_ENDPOINT_URL: str = ""
+    STORAGE_OBJECT_PREFIX: str = "neet-app"
     ALLOWED_ORIGINS: str = "*"
 
     @property

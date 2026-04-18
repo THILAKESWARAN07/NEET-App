@@ -2,8 +2,17 @@ import re
 from datetime import datetime, timezone
 from uuid import uuid4
 
-import boto3
-from botocore.exceptions import BotoCoreError, ClientError
+try:
+    import boto3
+    from botocore.exceptions import BotoCoreError, ClientError
+except ModuleNotFoundError:  # pragma: no cover - handled at runtime for optional deps
+    boto3 = None
+
+    class BotoCoreError(Exception):
+        pass
+
+    class ClientError(Exception):
+        pass
 
 from ..core.config import settings
 
@@ -26,6 +35,11 @@ def _build_object_key(subject: str, original_filename: str) -> str:
 
 def _upload_object(file_bytes: bytes, object_key: str, content_type: str) -> str:
     provider = settings.STORAGE_PROVIDER.lower().strip()
+
+    if boto3 is None:
+        raise ValueError(
+            "boto3 is not installed. Add boto3 to requirements to enable S3 uploads."
+        )
 
     if provider != "s3":
         raise ValueError(
