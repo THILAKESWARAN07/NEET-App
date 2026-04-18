@@ -1,11 +1,13 @@
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi import HTTPException
 from sqlalchemy import text
+from sqlalchemy.exc import OperationalError
 from fastapi.middleware.cors import CORSMiddleware
 from .core.config import settings
-from .core.database import Base, engine
+from .core.database import Base, engine, set_engine
 from .api import admin, ai, auth, materials, quiz
 
 app = FastAPI(
@@ -14,10 +16,28 @@ app = FastAPI(
     description="FastAPI Backend for NEET Preparation App",
 )
 
+active_engine = engine
+
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
-    Base.metadata.create_all(bind=engine)
+    global active_engine
+    try:
+        Base.metadata.create_all(bind=active_engine)
+    except OperationalError as exc:
+        error_message = str(exc).lower()
+        can_fallback = (
+            settings.ENVIRONMENT.lower() != "production"
+            and "postgres" in settings.DATABASE_URL
+            and "does not exist" in error_message
+        )
+        if not can_fallback:
+            raise
+
+        sqlite_path = Path("neet_app.db").resolve().as_posix()
+        sqlite_url = f"sqlite:///{sqlite_path}"
+        active_engine = set_engine(sqlite_url)
+        Base.metadata.create_all(bind=active_engine)
     yield
 
 
@@ -51,7 +71,7 @@ def health_check():
 @app.get("/ready")
 def readiness_check():
     try:
-        with engine.connect() as connection:
+        with active_engine.connect() as connection:
             connection.execute(text("SELECT 1"))
         return {"status": "ready", "database": "ok"}
     except Exception as exc:  # pragma: no cover - only triggers on infra failure
