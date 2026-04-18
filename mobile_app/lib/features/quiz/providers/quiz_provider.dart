@@ -14,6 +14,7 @@ class QuizQuestion {
   final String topic;
   final String questionText;
   final List<String> options;
+  final String? imageUrl;
 
   QuizQuestion({
     required this.id,
@@ -21,6 +22,7 @@ class QuizQuestion {
     required this.topic,
     required this.questionText,
     required this.options,
+    this.imageUrl,
   });
 
   factory QuizQuestion.fromJson(Map<String, dynamic> json) {
@@ -31,6 +33,9 @@ class QuizQuestion {
       questionText: json['question_text'] as String,
       options:
           (json['options'] as List<dynamic>).map((e) => e.toString()).toList(),
+      imageUrl: (json['image_url'] ?? '').toString().trim().isEmpty
+          ? null
+          : json['image_url'].toString(),
     );
   }
 }

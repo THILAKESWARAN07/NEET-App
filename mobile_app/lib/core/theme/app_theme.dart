@@ -24,6 +24,14 @@ class AppTheme {
             color: textLight, fontWeight: FontWeight.bold, fontSize: 32),
         bodyLarge: TextStyle(color: textLight, fontSize: 16),
       ),
+      cardTheme: CardTheme(
+        elevation: 0,
+        margin: const EdgeInsets.symmetric(vertical: 6),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+          side: const BorderSide(color: Color(0xFFD1D5DB), width: 1),
+        ),
+      ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: primaryColor,
@@ -51,6 +59,14 @@ class AppTheme {
         displayLarge: TextStyle(
             color: textDark, fontWeight: FontWeight.bold, fontSize: 32),
         bodyLarge: TextStyle(color: textDark, fontSize: 16),
+      ),
+      cardTheme: CardTheme(
+        elevation: 0,
+        margin: const EdgeInsets.symmetric(vertical: 6),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+          side: const BorderSide(color: Color(0xFF374151), width: 1),
+        ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(

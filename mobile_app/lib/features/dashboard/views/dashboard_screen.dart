@@ -12,12 +12,56 @@ import '../../plan/views/scheduled_tests_screen.dart';
 import '../../quiz/views/quiz_screen.dart';
 import '../../quiz/views/wrong_questions_screen.dart';
 import '../../ai/views/ai_chat_screen.dart';
+import '../../../core/api/api_client.dart';
 
-class DashboardScreen extends ConsumerWidget {
+class DashboardScreen extends ConsumerStatefulWidget {
   const DashboardScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends ConsumerState<DashboardScreen> {
+  int _estimatedScore = 0;
+  int _completedTests = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPredictorScore();
+  }
+
+  Future<void> _loadPredictorScore() async {
+    try {
+      final response =
+          await ref.read(dioProvider).get('/quiz/analytics/dashboard');
+      final data = response.data as Map<String, dynamic>;
+      final completed = (data['completed_tests'] as num?)?.toInt() ?? 0;
+      final avgScoreRaw = (data['avg_score'] as num?)?.toDouble() ?? 0.0;
+
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        _completedTests = completed;
+        // Show 0 for new users with no completed tests.
+        _estimatedScore =
+            completed == 0 ? 0 : avgScoreRaw.round().clamp(0, 720).toInt();
+      });
+    } catch (_) {
+      if (!mounted) {
+        return;
+      }
+      setState(() {
+        _completedTests = 0;
+        _estimatedScore = 0;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final user = ref.watch(authProvider).user;
     return Scaffold(
       appBar: AppBar(
@@ -48,25 +92,7 @@ class DashboardScreen extends ConsumerWidget {
                 ),
                 borderRadius: BorderRadius.circular(16.0),
               ),
-              child: const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('NEET Rank Predictor',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold)),
-                  SizedBox(height: 8),
-                  Text('Current Est. Score: 620/720',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold)),
-                  SizedBox(height: 4),
-                  Text('Keep up the good work in Physics!',
-                      style: TextStyle(color: Colors.white70)),
-                ],
-              ),
+              child: _buildPredictorCard(),
             ),
             const SizedBox(height: 24),
             const Text('Your Toolkit',
@@ -218,6 +244,31 @@ class DashboardScreen extends ConsumerWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildPredictorCard() {
+    final subtitle = _completedTests == 0
+        ? 'Start a quiz to unlock your NEET score prediction.'
+        : 'Based on your recent quiz performance.';
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text('NEET Rank Predictor',
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.bold)),
+        const SizedBox(height: 8),
+        Text('Current Est. Score: $_estimatedScore/720',
+            style: const TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.bold)),
+        const SizedBox(height: 4),
+        Text(subtitle, style: const TextStyle(color: Colors.white70)),
+      ],
     );
   }
 

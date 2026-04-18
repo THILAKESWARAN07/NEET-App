@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session
 from ..core.database import get_db
 from ..models.quiz import Announcement, Question, QuizAttempt, ScheduledTest
 from ..models.user import User
+from ..services.storage import upload_question_image
 from ..schemas.quiz import (
     AnnouncementCreate,
     AnnouncementResponse,
@@ -102,6 +103,26 @@ def list_questions_paginated(
     }
 
 
+@router.post("/questions/image")
+async def upload_question_image_file(
+    file: UploadFile = File(...),
+    admin: User = Depends(require_admin),
+):
+    if not file.filename:
+        raise HTTPException(status_code=400, detail="Image file is required")
+
+    file_bytes = await file.read()
+    if not file_bytes:
+        raise HTTPException(status_code=400, detail="Image file is empty")
+
+    image_url = upload_question_image(
+        file_bytes=file_bytes,
+        original_filename=file.filename,
+        content_type=file.content_type or "image/jpeg",
+    )
+    return {"image_url": image_url}
+
+
 @router.put("/users/{user_id}/role", response_model=UserResponse)
 def update_user_role(
     user_id: int,
@@ -184,6 +205,7 @@ def bulk_upload_questions(
             options=options,
             correct_answer=row.get("correct_answer", "A"),
             explanation=row.get("explanation", ""),
+            image_url=row.get("image_url") or None,
         )
         db.add(question)
         created += 1

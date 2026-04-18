@@ -62,6 +62,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
   final TextEditingController _questionCorrect =
       TextEditingController(text: 'A');
   final TextEditingController _questionExplanation = TextEditingController();
+  final TextEditingController _questionImageUrl = TextEditingController();
   String? _csvImportStatus;
 
   final TextEditingController _materialSubject = TextEditingController();
@@ -81,6 +82,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
   @override
   void initState() {
     super.initState();
+    _questionImageUrl.addListener(_handleQuestionImageChanged);
     _tabController = TabController(length: 6, vsync: this);
     _load();
   }
@@ -88,6 +90,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
   @override
   void dispose() {
     _tabController.dispose();
+    _questionImageUrl.removeListener(_handleQuestionImageChanged);
     _questionSubject.dispose();
     _questionTopic.dispose();
     _questionDifficulty.dispose();
@@ -98,6 +101,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
     _questionOptionD.dispose();
     _questionCorrect.dispose();
     _questionExplanation.dispose();
+    _questionImageUrl.dispose();
     _materialSubject.dispose();
     _materialTitle.dispose();
     _materialPdfUrl.dispose();
@@ -109,6 +113,12 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
     _testDurationSeconds.dispose();
     _searchController.dispose();
     super.dispose();
+  }
+
+  void _handleQuestionImageChanged() {
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   Future<void> _load() async {
@@ -201,6 +211,9 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
       ],
       'correct_answer': _questionCorrect.text.trim(),
       'explanation': _questionExplanation.text.trim(),
+      'image_url': _questionImageUrl.text.trim().isEmpty
+          ? null
+          : _questionImageUrl.text.trim(),
     };
 
     final dio = ref.read(dioProvider);
@@ -212,6 +225,54 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
 
     _clearQuestionForm();
     await _load();
+  }
+
+  Future<void> _uploadQuestionImage() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+      withData: true,
+    );
+    if (result == null) {
+      return;
+    }
+
+    final file = result.files.single;
+    MultipartFile multipartFile;
+    if (file.bytes != null) {
+      multipartFile = MultipartFile.fromBytes(
+        file.bytes!,
+        filename: file.name,
+      );
+    } else if (file.path != null) {
+      multipartFile = await MultipartFile.fromFile(
+        file.path!,
+        filename: file.name,
+      );
+    } else {
+      setState(() {
+        _csvImportStatus = 'Image upload failed: file path not available.';
+      });
+      return;
+    }
+
+    setState(() {
+      _csvImportStatus = 'Uploading question image...';
+    });
+
+    try {
+      final form = FormData.fromMap({'file': multipartFile});
+      final response = await ref
+          .read(dioProvider)
+          .post('/admin/questions/image', data: form);
+      setState(() {
+        _questionImageUrl.text = (response.data['image_url'] ?? '').toString();
+        _csvImportStatus = 'Question image uploaded.';
+      });
+    } catch (e) {
+      setState(() {
+        _csvImportStatus = 'Image upload failed: $e';
+      });
+    }
   }
 
   Future<void> _importQuestionsCsv() async {
@@ -273,6 +334,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
       _questionOptionD.text = options.length > 3 ? options[3] : '';
       _questionCorrect.text = (question['correct_answer'] ?? 'A').toString();
       _questionExplanation.text = (question['explanation'] ?? '').toString();
+      _questionImageUrl.text = (question['image_url'] ?? '').toString();
       _tabController.animateTo(1);
     });
   }
@@ -290,6 +352,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
       _questionOptionD.clear();
       _questionCorrect.text = 'A';
       _questionExplanation.clear();
+      _questionImageUrl.clear();
     });
   }
 
@@ -731,6 +794,39 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
                 _textField(_questionTopic, 'Topic'),
                 _textField(_questionDifficulty, 'Difficulty'),
                 _textField(_questionText, 'Question text', maxLines: 4),
+                _textField(
+                  _questionImageUrl,
+                  'Image URL (optional)',
+                  hintText: 'Attach a question image or leave blank',
+                ),
+                if (_questionImageUrl.text.trim().isNotEmpty) ...[
+                  const SizedBox(height: 8),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.network(
+                      _questionImageUrl.text.trim(),
+                      height: 180,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          height: 180,
+                          color: Colors.black12,
+                          alignment: Alignment.center,
+                          child: const Text('Image preview unavailable'),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+                const SizedBox(height: 8),
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton.icon(
+                    onPressed: _uploadQuestionImage,
+                    icon: const Icon(Icons.image_outlined),
+                    label: const Text('Upload Question Image'),
+                  ),
+                ),
                 Row(
                   children: [
                     Expanded(child: _textField(_questionOptionA, 'Option A')),
@@ -795,12 +891,33 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
                               .toList();
                       return Card(
                         child: ListTile(
+                          leading: (question['image_url'] ?? '').toString().isEmpty
+                              ? const Icon(Icons.quiz_outlined)
+                              : ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Image.network(
+                                    question['image_url'].toString(),
+                                    width: 56,
+                                    height: 56,
+                                    fit: BoxFit.cover,
+                                    errorBuilder:
+                                        (context, error, stackTrace) {
+                                      return Container(
+                                        width: 56,
+                                        height: 56,
+                                        color: Colors.black12,
+                                        alignment: Alignment.center,
+                                        child: const Icon(Icons.image),
+                                      );
+                                    },
+                                  ),
+                                ),
                           title: Text(
                               (question['question_text'] ?? '').toString(),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis),
                           subtitle: Text(
-                              '${question['subject']} • ${question['topic']} • ${question['difficulty']}\n${options.join(' | ')}'),
+                              '${question['subject']} • ${question['topic']} • ${question['difficulty']}\n${options.join(' | ')}${(question['image_url'] ?? '').toString().isNotEmpty ? '\nImage attached' : ''}'),
                           isThreeLine: true,
                           trailing: PopupMenuButton<String>(
                             onSelected: (value) async {
@@ -1181,14 +1298,17 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
     int maxLines = 1,
     TextInputType keyboardType = TextInputType.text,
   }) {
-    return TextField(
-      controller: controller,
-      maxLines: maxLines,
-      keyboardType: keyboardType,
-      decoration: InputDecoration(
-        labelText: label,
-        hintText: hintText,
-        border: const OutlineInputBorder(),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: TextField(
+        controller: controller,
+        maxLines: maxLines,
+        keyboardType: keyboardType,
+        decoration: InputDecoration(
+          labelText: label,
+          hintText: hintText,
+          border: const OutlineInputBorder(),
+        ),
       ),
     );
   }

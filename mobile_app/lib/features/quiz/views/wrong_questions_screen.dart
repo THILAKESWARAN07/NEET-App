@@ -176,8 +176,35 @@ class _WrongQuestionsScreenState extends ConsumerState<WrongQuestionsScreen> {
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        subtitle: Text(
-                          '${item.question.subject} | Your answer: ${item.selectedOption} | Correct: ${item.correctAnswer}',
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (item.question.imageUrl != null) ...[
+                              const SizedBox(height: 8),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Image.network(
+                                  item.question.imageUrl!,
+                                  height: 140,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Container(
+                                      height: 140,
+                                      color: Colors.black12,
+                                      alignment: Alignment.center,
+                                      child: const Text('Image unavailable'),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                            const SizedBox(height: 8),
+                            Text(
+                              '${item.question.subject} | Your answer: ${item.selectedOption} | Correct: ${item.correctAnswer}',
+                            ),
+                          ],
                         ),
                         controlAffinity: ListTileControlAffinity.leading,
                       ),

@@ -16,6 +16,7 @@ class Question(Base):
     options = Column(JSON, nullable=False)  # Store options as a list of strings
     correct_answer = Column(String, nullable=False)
     explanation = Column(Text, nullable=True)
+    image_url = Column(String, nullable=True)
 
     answers = relationship("Answer", back_populates="question")
     attempt_questions = relationship("QuizAttemptQuestion", back_populates="question")

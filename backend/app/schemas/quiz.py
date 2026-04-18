@@ -1,4 +1,4 @@
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 from typing import List, Optional, Dict
 from datetime import datetime
 
@@ -11,6 +11,13 @@ class QuestionBase(BaseModel):
     options: List[str]
     correct_answer: str
     explanation: Optional[str] = None
+    image_url: Optional[str] = None
+
+    @model_validator(mode="after")
+    def _normalize_image_url(self):
+        if self.image_url is not None and not self.image_url.strip():
+            self.image_url = None
+        return self
 
 
 class QuestionCreate(QuestionBase):
@@ -56,6 +63,7 @@ class QuestionPublic(BaseModel):
     difficulty: str
     question_text: str
     options: List[str]
+    image_url: Optional[str] = None
 
 
 class AttemptDetailResponse(QuizAttemptResponse):
@@ -128,6 +136,7 @@ class QuestionRevisionPublic(BaseModel):
     options: List[str]
     correct_answer: str
     explanation: Optional[str] = None
+    image_url: Optional[str] = None
 
 
 class BookmarkDetailResponse(BaseModel):

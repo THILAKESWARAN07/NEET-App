@@ -247,29 +247,66 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
-              currentQuestion.questionText,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 24),
-            for (final option in currentQuestion.options)
-              Card(
-                child: ListTile(
-                  leading: Icon(
-                    selectedOption == option
-                        ? Icons.radio_button_checked
-                        : Icons.radio_button_off,
-                    color: selectedOption == option
-                        ? Theme.of(context).primaryColor
-                        : null,
-                  ),
-                  title: Text(option),
-                  selected: selectedOption == option,
-                  onTap: () =>
-                      ref.read(quizProvider.notifier).selectOption(option),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      currentQuestion.questionText,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    if (currentQuestion.imageUrl != null) ...[
+                      const SizedBox(height: 16),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.network(
+                          currentQuestion.imageUrl!,
+                          fit: BoxFit.contain,
+                          loadingBuilder: (context, child, progress) {
+                            if (progress == null) return child;
+                            return const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 24),
+                              child: Center(child: CircularProgressIndicator()),
+                            );
+                          },
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              padding: const EdgeInsets.all(16),
+                              color: Colors.black12,
+                              child: const Text('Image could not be loaded.'),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                    const SizedBox(height: 24),
+                    for (final option in currentQuestion.options)
+                      Card(
+                        child: ListTile(
+                          leading: Icon(
+                            selectedOption == option
+                                ? Icons.radio_button_checked
+                                : Icons.radio_button_off,
+                            color: selectedOption == option
+                                ? Theme.of(context).primaryColor
+                                : null,
+                          ),
+                          title: Text(option),
+                          selected: selectedOption == option,
+                          onTap: () => ref
+                              .read(quizProvider.notifier)
+                              .selectOption(option),
+                        ),
+                      ),
+                  ],
                 ),
               ),
-            const Spacer(),
+            ),
+            const SizedBox(height: 16),
             Row(
               children: [
                 Expanded(
