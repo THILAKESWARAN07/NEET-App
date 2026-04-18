@@ -59,21 +59,17 @@ class ChatNotifier extends StateNotifier<List<ChatMessage>> {
     state = [...state, ChatMessage(content: text, isUser: true)];
 
     try {
-      final response = await dio
-          .post('/ai/chat', data: {"message": text, "subject": subject});
+      final response = await dio.post('/ai/chat', data: {
+        "message": text,
+        "subject": subject,
+      });
 
-      print('[AI] Response status: ${response.statusCode}');
-      print('[AI] Response data: ${response.data}');
+      print("RESPONSE: ${response.data}");
       
       final reply = response.data['response'];
       state = [...state, ChatMessage(content: reply, isUser: false)];
     } catch (e) {
-      print('[AI] Error caught: $e');
-      if (e is DioException) {
-        print('[AI] DioException response: ${e.response?.statusCode}');
-        print('[AI] DioException data: ${e.response?.data}');
-        print('[AI] DioException message: ${e.message}');
-      }
+      print("ERROR: $e");
       state = [
         ...state,
         ChatMessage(
