@@ -116,8 +116,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) =>
-                          const QuizScreen(mode: QuizStartMode.full),
+                      builder: (_) => const RemoteQuestionPreviewScreen(),
                     ),
                   ),
                 ),
@@ -151,18 +150,6 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                     context,
                     MaterialPageRoute(
                         builder: (_) => const WrongQuestionsScreen()),
-                  ),
-                ),
-                _buildActionCard(
-                  context,
-                  title: 'Render Quiz JSON',
-                  icon: Icons.cloud_download,
-                  color: Colors.blueGrey,
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const RemoteQuestionPreviewScreen(),
-                    ),
                   ),
                 ),
                 _buildActionCard(
