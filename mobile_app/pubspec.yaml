@@ -16,6 +16,7 @@ dependencies:
   go_router: ^12.1.1
   # Networking
   dio: ^5.4.0
+  http: ^1.2.2
   # Authentication
   google_sign_in: ^6.2.1
   flutter_secure_storage: ^9.0.0

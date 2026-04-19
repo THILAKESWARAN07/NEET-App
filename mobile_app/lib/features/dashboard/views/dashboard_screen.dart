@@ -10,6 +10,7 @@ import '../../materials/views/materials_screen.dart';
 import '../../plan/views/study_plan_screen.dart';
 import '../../plan/views/scheduled_tests_screen.dart';
 import '../../quiz/views/quiz_screen.dart';
+import '../../quiz/views/remote_question_preview_screen.dart';
 import '../../quiz/views/wrong_questions_screen.dart';
 import '../../ai/views/ai_chat_screen.dart';
 import '../../../core/api/api_client.dart';
@@ -150,6 +151,18 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                     context,
                     MaterialPageRoute(
                         builder: (_) => const WrongQuestionsScreen()),
+                  ),
+                ),
+                _buildActionCard(
+                  context,
+                  title: 'Render Quiz JSON',
+                  icon: Icons.cloud_download,
+                  color: Colors.blueGrey,
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const RemoteQuestionPreviewScreen(),
+                    ),
                   ),
                 ),
                 _buildActionCard(

@@ -1,6 +1,9 @@
 from contextlib import asynccontextmanager
+import json
+import os
 from pathlib import Path
 
+from fastapi import APIRouter
 from fastapi import FastAPI
 from fastapi import HTTPException
 from sqlalchemy import text
@@ -16,7 +19,20 @@ app = FastAPI(
     description="FastAPI Backend for NEET Preparation App",
 )
 
+router = APIRouter()
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+FILE_PATH = os.path.join(BASE_DIR, "questions.json")
+
 active_engine = engine
+
+
+@router.get("/questions")
+def get_questions():
+    if not os.path.exists(FILE_PATH):
+        return []
+    with open(FILE_PATH, "r", encoding="utf-8") as f:
+        return json.load(f)
 
 
 @asynccontextmanager
@@ -56,6 +72,7 @@ app.include_router(quiz.router, prefix="/api/quiz", tags=["quiz"])
 app.include_router(ai.router, prefix="/api/ai", tags=["ai"])
 app.include_router(materials.router, prefix="/api/materials", tags=["materials"])
 app.include_router(admin.router, prefix="/api/admin", tags=["admin"])
+app.include_router(router)
 
 
 @app.get("/")
