@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../core/utils/latex_renderer.dart';
 import '../providers/quiz_provider.dart';
 import '../services/anti_cheat_service.dart';
 import 'result_screen.dart';
@@ -213,6 +214,16 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
       appBar: AppBar(
         title: Text(
             'Question ${quizState.currentQuestionIndex + 1}/${quizState.questions.length}'),
+        bottom: const PreferredSize(
+          preferredSize: Size.fromHeight(28),
+          child: Padding(
+            padding: EdgeInsets.only(bottom: 8),
+            child: Text(
+              'Marking: +4 correct | -1 wrong | 0 unattempted',
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+            ),
+          ),
+        ),
         automaticallyImplyLeading: false, // Prevent back button easily
         actions: [
           IconButton(
@@ -252,9 +263,9 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Text(
+                    safeMath(
                       currentQuestion.questionText,
-                      style: const TextStyle(
+                      textStyle: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
@@ -295,7 +306,7 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                                 ? Theme.of(context).primaryColor
                                 : null,
                           ),
-                          title: Text(option),
+                          title: safeMath(option),
                           selected: selectedOption == option,
                           onTap: () => ref
                               .read(quizProvider.notifier)

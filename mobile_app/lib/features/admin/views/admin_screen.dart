@@ -1558,6 +1558,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
       padding: const EdgeInsets.only(bottom: 12),
       child: TextField(
         controller: controller,
+        style: const TextStyle(color: Colors.white),
         maxLines: maxLines,
         keyboardType: keyboardType,
         decoration: InputDecoration(
@@ -1565,6 +1566,45 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
           hintText: hintText,
           border: const OutlineInputBorder(),
         ),
+      ),
+    );
+  }
+
+  ThemeData _adminTheme(BuildContext context) {
+    final base = Theme.of(context);
+    final whiteTextTheme = base.textTheme.apply(
+      bodyColor: Colors.white,
+      displayColor: Colors.white,
+    );
+
+    return base.copyWith(
+      textTheme: whiteTextTheme,
+      primaryTextTheme: whiteTextTheme,
+      appBarTheme: base.appBarTheme.copyWith(
+        foregroundColor: Colors.white,
+        titleTextStyle: whiteTextTheme.titleLarge,
+      ),
+      tabBarTheme: base.tabBarTheme.copyWith(
+        labelColor: Colors.white,
+        unselectedLabelColor: Colors.white70,
+      ),
+      inputDecorationTheme: base.inputDecorationTheme.copyWith(
+        labelStyle: const TextStyle(color: Colors.white70),
+        hintStyle: const TextStyle(color: Colors.white60),
+        enabledBorder: const OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.white54),
+        ),
+        focusedBorder: const OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.white),
+        ),
+      ),
+      dropdownMenuTheme: base.dropdownMenuTheme.copyWith(
+        textStyle: const TextStyle(color: Colors.white),
+      ),
+      iconTheme: base.iconTheme.copyWith(color: Colors.white),
+      listTileTheme: base.listTileTheme.copyWith(
+        textColor: Colors.white,
+        iconColor: Colors.white,
       ),
     );
   }
@@ -1578,7 +1618,45 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
     }
 
     if (_error != null) {
-      return Scaffold(
+      return Theme(
+        data: _adminTheme(context),
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Admin Panel'),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.logout),
+                onPressed: () => ref.read(authProvider.notifier).signOut(),
+              ),
+              IconButton(
+                icon: const Icon(Icons.refresh),
+                onPressed: _load,
+              ),
+            ],
+          ),
+          body: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(_error!, textAlign: TextAlign.center),
+                  const SizedBox(height: 12),
+                  ElevatedButton(
+                    onPressed: _load,
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    return Theme(
+      data: _adminTheme(context),
+      child: Scaffold(
         appBar: AppBar(
           title: const Text('Admin Panel'),
           actions: [
@@ -1591,62 +1669,30 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
               onPressed: _load,
             ),
           ],
-        ),
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(_error!, textAlign: TextAlign.center),
-                const SizedBox(height: 12),
-                ElevatedButton(
-                  onPressed: _load,
-                  child: const Text('Retry'),
-                ),
-              ],
-            ),
+          bottom: TabBar(
+            controller: _tabController,
+            isScrollable: true,
+            tabs: const [
+              Tab(text: 'Users', icon: Icon(Icons.people)),
+              Tab(text: 'Questions', icon: Icon(Icons.quiz)),
+              Tab(text: 'Materials', icon: Icon(Icons.picture_as_pdf)),
+              Tab(text: 'Announcements', icon: Icon(Icons.campaign)),
+              Tab(text: 'Tests', icon: Icon(Icons.event)),
+              Tab(text: 'Cheats', icon: Icon(Icons.shield)),
+            ],
           ),
         ),
-      );
-    }
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Admin Panel'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () => ref.read(authProvider.notifier).signOut(),
-          ),
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: _load,
-          ),
-        ],
-        bottom: TabBar(
+        body: TabBarView(
           controller: _tabController,
-          isScrollable: true,
-          tabs: const [
-            Tab(text: 'Users', icon: Icon(Icons.people)),
-            Tab(text: 'Questions', icon: Icon(Icons.quiz)),
-            Tab(text: 'Materials', icon: Icon(Icons.picture_as_pdf)),
-            Tab(text: 'Announcements', icon: Icon(Icons.campaign)),
-            Tab(text: 'Tests', icon: Icon(Icons.event)),
-            Tab(text: 'Cheats', icon: Icon(Icons.shield)),
+          children: [
+            _buildUserTab(),
+            _buildQuestionTab(),
+            _buildMaterialsTab(),
+            _buildAnnouncementTab(),
+            _buildTestsTab(),
+            _buildCheatTab(),
           ],
         ),
-      ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          _buildUserTab(),
-          _buildQuestionTab(),
-          _buildMaterialsTab(),
-          _buildAnnouncementTab(),
-          _buildTestsTab(),
-          _buildCheatTab(),
-        ],
       ),
     );
   }

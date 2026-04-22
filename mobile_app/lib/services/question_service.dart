@@ -68,6 +68,8 @@ class QuestionService {
     String testType = 'json_mock',
     String? subject,
     String? authToken,
+    double? accuracyPercent,
+    List<Map<String, dynamic>>? questionAttempts,
   }) async {
     try {
       final token = authToken ?? await _storage.readToken();
@@ -84,10 +86,13 @@ class QuestionService {
         'time_taken_seconds': timeInSeconds,
         'duration_seconds': durationSeconds,
         'accuracy_percent': double.parse(
-          (score / total * 100).toStringAsFixed(2),
+          (accuracyPercent ?? (total == 0 ? 0.0 : (score / total) * 100))
+              .toStringAsFixed(2),
         ),
         'test_type': testType,
         if (subject != null) 'subject': subject,
+        if (questionAttempts != null && questionAttempts.isNotEmpty)
+          'question_attempts': questionAttempts,
       };
 
       final response = await http

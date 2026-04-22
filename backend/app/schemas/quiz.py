@@ -88,6 +88,14 @@ class SubjectAnalytics(BaseModel):
     accuracy_percent: float
 
 
+class QuestionResultItem(BaseModel):
+    question_number: int
+    question_id: int
+    status: str
+    selected_option: Optional[str] = None
+    correct_answer: str
+
+
 class QuizResultResponse(BaseModel):
     attempt_id: int
     score: int
@@ -97,6 +105,7 @@ class QuizResultResponse(BaseModel):
     accuracy_percent: float
     time_taken: int
     subject_wise: List[SubjectAnalytics]
+    question_results: List[QuestionResultItem] = []
 
 
 class StudyMaterialCreate(BaseModel):
@@ -249,6 +258,11 @@ class ScheduledTestPublicResponse(BaseModel):
     seconds_to_start: int
 
 
+class JsonQuestionAttemptSubmit(BaseModel):
+    question_id: int
+    selected_option: Optional[str] = None
+
+
 class JsonQuizResultSubmit(BaseModel):
     """Schema for submitting JSON quiz results (local quiz)"""
     score: int
@@ -258,3 +272,4 @@ class JsonQuizResultSubmit(BaseModel):
     accuracy_percent: Optional[float] = None
     test_type: str = "json_mock"
     subject: Optional[str] = None
+    question_attempts: Optional[List[JsonQuestionAttemptSubmit]] = None

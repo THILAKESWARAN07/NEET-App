@@ -48,6 +48,7 @@ class QuizResult {
   final int unattempted;
   final double accuracyPercent;
   final int timeTaken;
+  final List<QuestionResultItem> questionResults;
 
   QuizResult({
     required this.attemptId,
@@ -57,6 +58,7 @@ class QuizResult {
     required this.unattempted,
     required this.accuracyPercent,
     required this.timeTaken,
+    this.questionResults = const [],
   });
 
   factory QuizResult.fromJson(Map<String, dynamic> json) {
@@ -68,6 +70,37 @@ class QuizResult {
       unattempted: json['unattempted'] as int,
       accuracyPercent: (json['accuracy_percent'] as num).toDouble(),
       timeTaken: json['time_taken'] as int,
+      questionResults: (json['question_results'] as List<dynamic>? ?? const [])
+          .map((e) => QuestionResultItem.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+  }
+}
+
+class QuestionResultItem {
+  final int questionNumber;
+  final int questionId;
+  final String status;
+  final String? selectedOption;
+  final String correctAnswer;
+
+  QuestionResultItem({
+    required this.questionNumber,
+    required this.questionId,
+    required this.status,
+    this.selectedOption,
+    required this.correctAnswer,
+  });
+
+  factory QuestionResultItem.fromJson(Map<String, dynamic> json) {
+    return QuestionResultItem(
+      questionNumber: json['question_number'] as int,
+      questionId: json['question_id'] as int,
+      status: (json['status'] ?? '').toString(),
+      selectedOption: (json['selected_option'] ?? '').toString().isEmpty
+          ? null
+          : json['selected_option'].toString(),
+      correctAnswer: (json['correct_answer'] ?? '').toString(),
     );
   }
 }

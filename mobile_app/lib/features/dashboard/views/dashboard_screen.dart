@@ -28,6 +28,33 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   int _completedTests = 0;
   List<Map<String, dynamic>> _trend = [];
 
+  Future<bool> _confirmNeetMarkingScheme(BuildContext context) async {
+    final accepted = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('NEET Marking Scheme'),
+        content: const Text(
+          'Each question follows NEET marking:\n\n'
+          'Correct answer: +4 marks\n'
+          'Wrong answer: -1 mark\n'
+          'Unattempted: 0 marks',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(false),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(ctx).pop(true),
+            child: const Text('Start Test'),
+          ),
+        ],
+      ),
+    );
+
+    return accepted ?? false;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -119,6 +146,11 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   icon: Icons.timer,
                   color: Colors.redAccent,
                   onTap: () async {
+                    final shouldStart =
+                        await _confirmNeetMarkingScheme(context);
+                    if (!shouldStart || !context.mounted) {
+                      return;
+                    }
                     await Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -137,6 +169,11 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   icon: Icons.science,
                   color: Colors.teal,
                   onTap: () async {
+                    final shouldStart =
+                        await _confirmNeetMarkingScheme(context);
+                    if (!shouldStart || !context.mounted) {
+                      return;
+                    }
                     final subject = await _pickSubject(context);
                     if (!context.mounted || subject == null) {
                       return;

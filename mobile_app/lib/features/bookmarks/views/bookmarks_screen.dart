@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/api/api_client.dart';
+import '../../../core/utils/latex_renderer.dart';
 
 class BookmarksScreen extends ConsumerStatefulWidget {
   const BookmarksScreen({super.key});
@@ -63,13 +64,12 @@ class _BookmarksScreenState extends ConsumerState<BookmarksScreen> {
                               style: Theme.of(context).textTheme.bodySmall,
                             ),
                             const SizedBox(height: 8),
-                            Text(
+                            safeMath(
                               question['question_text'].toString(),
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.w600),
+                              textStyle: const TextStyle(fontWeight: FontWeight.w600),
                             ),
                             const SizedBox(height: 8),
-                            ...options.map((option) => Text('• $option')),
+                            ...options.map((option) => safeMath('• $option')),
                             const SizedBox(height: 8),
                             Text(
                               'Correct answer: ${question['correct_answer']}',
@@ -80,7 +80,7 @@ class _BookmarksScreenState extends ConsumerState<BookmarksScreen> {
                             if ((question['explanation'] ?? '')
                                 .toString()
                                 .isNotEmpty)
-                              Text('Explanation: ${question['explanation']}'),
+                              safeMath('Explanation: ${question['explanation']}'),
                             const SizedBox(height: 8),
                             Row(
                               children: [

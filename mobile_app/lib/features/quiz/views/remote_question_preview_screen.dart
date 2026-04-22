@@ -1,9 +1,8 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_math_fork/flutter_math.dart';
 
+import '../../../core/utils/latex_renderer.dart';
 import '../../../services/question_service.dart';
 import 'result_screen.dart';
 
@@ -23,11 +22,44 @@ class _RemoteQuestionPreviewScreenState
   String? _errorMessage;
   List<dynamic> _questions = const [];
   int _currentIndex = 0;
-  int _lastIndex = -1;
   int? _selectedOptionIndex;
   final Map<int, int> _selectedAnswers = {};
   int _remainingSeconds = _mockTestDurationSeconds;
   bool _isSubmitted = false;
+
+  ({int score, int correct, int wrong, int unattempted, double accuracyPercent})
+      _calculateStats(List questions, Map<int, int> selectedAnswers) {
+    int correct = 0;
+    int wrong = 0;
+    int unattempted = 0;
+
+    for (int i = 0; i < questions.length; i++) {
+      final q = questions[i];
+      final correctIndex = q['correct_answer'].toString().codeUnitAt(0) - 65;
+      final selected = selectedAnswers[i];
+
+      if (selected == null) {
+        unattempted++;
+      } else if (selected == correctIndex) {
+        correct++;
+      } else {
+        wrong++;
+      }
+    }
+
+    final score = (correct * 4) - wrong;
+    final attempted = correct + wrong;
+    final accuracyPercent =
+        attempted == 0 ? 0.0 : (correct / attempted) * 100.0;
+
+    return (
+      score: score,
+      correct: correct,
+      wrong: wrong,
+      unattempted: unattempted,
+      accuracyPercent: accuracyPercent,
+    );
+  }
 
   @override
   void initState() {
@@ -86,7 +118,7 @@ class _RemoteQuestionPreviewScreenState
           }
           _remainingSeconds = preservedRemainingSeconds;
         } else {
-          _currentIndex = questions.isEmpty ? 0 : getRandomIndex(questions.length);
+          _currentIndex = 0;
           _selectedOptionIndex = null;
           _selectedAnswers.clear();
           _remainingSeconds = _mockTestDurationSeconds;
@@ -104,16 +136,6 @@ class _RemoteQuestionPreviewScreenState
         _loading = false;
       });
     }
-  }
-
-  int getRandomIndex(int length) {
-    int newIndex;
-    do {
-      newIndex = Random().nextInt(length);
-    } while (newIndex == _lastIndex && length > 1);
-
-    _lastIndex = newIndex;
-    return newIndex;
   }
 
   void _startTimer() {
@@ -163,19 +185,33 @@ class _RemoteQuestionPreviewScreenState
     });
   }
 
-  int calculateScore(List questions, Map<int, int> selectedAnswers) {
-    int score = 0;
-
-    for (int i = 0; i < questions.length; i++) {
-      final q = questions[i];
-      final correctIndex = q['correct_answer'].toString().codeUnitAt(0) - 65;
-
-      if (selectedAnswers[i] == correctIndex) {
-        score++;
+  List<Map<String, dynamic>> _buildQuestionAttemptsPayload() {
+    final attempts = <Map<String, dynamic>>[];
+    for (int index = 0; index < _questions.length; index++) {
+      final question = _questions[index] as Map<String, dynamic>;
+      final questionId = question['id'] as int?;
+      if (questionId == null) {
+        continue;
       }
+
+      final selectedOptionIndex = _selectedAnswers[index];
+      String? selectedOption;
+      if (selectedOptionIndex != null) {
+        final options = (question['options'] as List<dynamic>)
+            .map((e) => e.toString())
+            .toList();
+        if (selectedOptionIndex >= 0 && selectedOptionIndex < options.length) {
+          selectedOption = options[selectedOptionIndex];
+        }
+      }
+
+      attempts.add({
+        'question_id': questionId,
+        'selected_option': selectedOption,
+      });
     }
 
-    return score;
+    return attempts;
   }
 
   void _submitQuiz() {
@@ -188,23 +224,25 @@ class _RemoteQuestionPreviewScreenState
       _isSubmitted = true;
     });
 
-    final score = calculateScore(_questions, _selectedAnswers);
+    final stats = _calculateStats(_questions, _selectedAnswers);
     final timeInSeconds = _mockTestDurationSeconds - _remainingSeconds;
 
     // Save score to backend (non-blocking)
     QuestionService.submitQuizScore(
-      score: score,
+      score: stats.score,
       total: _questions.length,
       timeInSeconds: timeInSeconds,
       durationSeconds: _mockTestDurationSeconds,
       testType: 'json_mock',
+      accuracyPercent: stats.accuracyPercent,
+      questionAttempts: _buildQuestionAttemptsPayload(),
     );
 
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (_) => ResultScreen(
-          score: score,
+          score: stats.score,
           total: _questions.length,
           questions: _questions,
           answers: _selectedAnswers,
@@ -221,23 +259,25 @@ class _RemoteQuestionPreviewScreenState
     setState(() {
       _isSubmitted = true;
     });
-    final score = calculateScore(_questions, _selectedAnswers);
+    final stats = _calculateStats(_questions, _selectedAnswers);
     final timeInSeconds = _mockTestDurationSeconds - _remainingSeconds;
 
     // Save score to backend (non-blocking)
     QuestionService.submitQuizScore(
-      score: score,
+      score: stats.score,
       total: _questions.length,
       timeInSeconds: timeInSeconds,
       durationSeconds: _mockTestDurationSeconds,
       testType: 'json_mock',
+      accuracyPercent: stats.accuracyPercent,
+      questionAttempts: _buildQuestionAttemptsPayload(),
     );
 
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (_) => ResultScreen(
-          score: score,
+          score: stats.score,
           total: _questions.length,
           questions: _questions,
           answers: _selectedAnswers,
@@ -246,50 +286,9 @@ class _RemoteQuestionPreviewScreenState
     );
   }
 
-  bool _looksLikeLatex(String text) {
-    final normalized = text.trim();
-    if (normalized.isEmpty) {
-      return false;
-    }
+  bool _looksLikeLatex(String text) => looksLikeLatex(text);
 
-    const latexSignals = <String>[
-      '\\frac',
-      '\\sqrt',
-      '\\left',
-      '\\right',
-      '\\alpha',
-      '\\beta',
-      '\\gamma',
-      '\\theta',
-      '\\pi',
-      '\\times',
-      '\\cdot',
-      '^',
-      '_',
-    ];
-
-    return latexSignals.any(normalized.contains);
-  }
-
-  Widget safeMath(String text, {TextStyle? textStyle}) {
-    final normalized = text.trim();
-    if (normalized.isEmpty) {
-      return Text('', style: textStyle);
-    }
-
-    if (!_looksLikeLatex(normalized)) {
-      return Text(normalized, style: textStyle);
-    }
-
-    try {
-      return Math.tex(
-        normalized,
-        textStyle: textStyle,
-      );
-    } catch (_) {
-      return Text(normalized, style: textStyle);
-    }
-  }
+  String _stripLatexDelimiters(String text) => stripLatexDelimiters(text);
 
   @override
   Widget build(BuildContext context) {
@@ -309,6 +308,16 @@ class _RemoteQuestionPreviewScreenState
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Quiz'),
+          bottom: const PreferredSize(
+            preferredSize: Size.fromHeight(28),
+            child: Padding(
+              padding: EdgeInsets.only(bottom: 8),
+              child: Text(
+                'Marking: +4 correct | -1 wrong | 0 unattempted',
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+              ),
+            ),
+          ),
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 12),

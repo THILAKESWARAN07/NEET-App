@@ -3,7 +3,6 @@ from typing import Dict, List
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from sqlalchemy import func
 
 from ..core.database import get_db
 from ..models.user import User
@@ -27,6 +26,7 @@ from ..schemas.quiz import (
     LeaderboardEntry,
     JsonQuizResultSubmit,
     QuestionCreate,
+    QuestionResultItem,
     QuestionPublic,
     QuestionResponse,
     QuizAttemptCreate,
@@ -45,6 +45,22 @@ from ..schemas.quiz import (
 from .deps import get_current_user, require_admin
 
 router = APIRouter()
+
+
+def _get_ordered_attempt_questions(db: Session, attempt_id: int) -> List[Question]:
+    assigned = (
+        db.query(QuizAttemptQuestion)
+        .filter(QuizAttemptQuestion.attempt_id == attempt_id)
+        .order_by(QuizAttemptQuestion.id.asc())
+        .all()
+    )
+    q_ids = [item.question_id for item in assigned]
+    if not q_ids:
+        return []
+
+    questions = db.query(Question).filter(Question.id.in_(q_ids)).all()
+    question_by_id = {question.id: question for question in questions}
+    return [question_by_id[qid] for qid in q_ids if qid in question_by_id]
 
 
 def _award_gamification(current_user: User, now: datetime) -> None:
@@ -111,6 +127,7 @@ def _compute_result(attempt: QuizAttempt, db: Session) -> QuizResultResponse:
             accuracy_percent=0,
             time_taken=attempt.time_taken,
             subject_wise=[],
+            question_results=[],
         )
 
     questions = {
@@ -126,8 +143,9 @@ def _compute_result(attempt: QuizAttempt, db: Session) -> QuizResultResponse:
     wrong = 0
     unattempted = 0
     subject_map: Dict[str, Dict[str, int]] = {}
+    question_results: List[QuestionResultItem] = []
 
-    for question_id in assigned_question_ids:
+    for index, question_id in enumerate(assigned_question_ids, start=1):
         question = questions.get(question_id)
         if not question:
             continue
@@ -143,6 +161,15 @@ def _compute_result(attempt: QuizAttempt, db: Session) -> QuizResultResponse:
         answer = answers.get(question_id)
         if not answer or not answer.selected_option:
             unattempted += 1
+            question_results.append(
+                QuestionResultItem(
+                    question_number=index,
+                    question_id=question_id,
+                    status="unattempted",
+                    selected_option=None,
+                    correct_answer=question.correct_answer,
+                )
+            )
             continue
 
         subject_map[subject]["attempted"] += 1
@@ -150,10 +177,28 @@ def _compute_result(attempt: QuizAttempt, db: Session) -> QuizResultResponse:
             correct += 1
             subject_map[subject]["correct"] += 1
             subject_map[subject]["score"] += 4
+            question_results.append(
+                QuestionResultItem(
+                    question_number=index,
+                    question_id=question_id,
+                    status="correct",
+                    selected_option=answer.selected_option,
+                    correct_answer=question.correct_answer,
+                )
+            )
         else:
             wrong += 1
             subject_map[subject]["wrong"] += 1
             subject_map[subject]["score"] -= 1
+            question_results.append(
+                QuestionResultItem(
+                    question_number=index,
+                    question_id=question_id,
+                    status="wrong",
+                    selected_option=answer.selected_option,
+                    correct_answer=question.correct_answer,
+                )
+            )
 
     score = (correct * 4) - wrong
     attempted = correct + wrong
@@ -185,6 +230,7 @@ def _compute_result(attempt: QuizAttempt, db: Session) -> QuizResultResponse:
         accuracy_percent=accuracy,
         time_taken=attempt.time_taken,
         subject_wise=subject_wise,
+        question_results=question_results,
     )
 
 
@@ -293,7 +339,7 @@ def get_questions(subject: str = None, db: Session = Depends(get_db)):
     query = db.query(Question)
     if subject:
         query = query.filter(Question.subject == subject)
-    return query.all()
+    return query.order_by(Question.id.asc()).all()
 
 
 @router.get("/wrong-questions", response_model=WrongQuestionListResponse)
@@ -472,15 +518,7 @@ def start_quiz(
             db.commit()
             raise HTTPException(status_code=409, detail="Active attempt timed out")
 
-        assigned = (
-            db.query(QuizAttemptQuestion)
-            .filter(QuizAttemptQuestion.attempt_id == active_attempt.id)
-            .all()
-        )
-        q_ids = [a.question_id for a in assigned]
-        questions = (
-            db.query(Question).filter(Question.id.in_(q_ids)).all() if q_ids else []
-        )
+        questions = _get_ordered_attempt_questions(db, active_attempt.id)
         return {
             **QuizAttemptResponse.model_validate(active_attempt).model_dump(),
             "questions": [QuestionPublic.model_validate(q) for q in questions],
@@ -495,7 +533,7 @@ def start_quiz(
             )
         query = query.filter(Question.subject == payload.subject)
 
-    selected_questions = query.order_by(func.random()).limit(question_count).all()
+    selected_questions = query.order_by(Question.id.asc()).limit(question_count).all()
     if not selected_questions:
         raise HTTPException(
             status_code=400, detail="No questions found for selected test"
@@ -544,13 +582,7 @@ def get_active_attempt(
         db.commit()
         raise HTTPException(status_code=409, detail="Attempt timed out")
 
-    assigned = (
-        db.query(QuizAttemptQuestion)
-        .filter(QuizAttemptQuestion.attempt_id == attempt.id)
-        .all()
-    )
-    q_ids = [a.question_id for a in assigned]
-    questions = db.query(Question).filter(Question.id.in_(q_ids)).all() if q_ids else []
+    questions = _get_ordered_attempt_questions(db, attempt.id)
     return {
         **QuizAttemptResponse.model_validate(attempt).model_dump(),
         "questions": [QuestionPublic.model_validate(q) for q in questions],
@@ -746,6 +778,47 @@ def submit_json_quiz(
     
     db.add(new_attempt)
     db.flush()
+
+    if payload.question_attempts:
+        seen_question_ids: set[int] = set()
+        ordered_attempts = []
+        for attempt_item in payload.question_attempts:
+            if attempt_item.question_id in seen_question_ids:
+                continue
+            seen_question_ids.add(attempt_item.question_id)
+            ordered_attempts.append(attempt_item)
+
+        available_questions = {
+            question.id: question
+            for question in db.query(Question)
+            .filter(Question.id.in_([item.question_id for item in ordered_attempts]))
+            .all()
+        }
+
+        for attempt_item in ordered_attempts:
+            if attempt_item.question_id not in available_questions:
+                continue
+
+            db.add(
+                QuizAttemptQuestion(
+                    attempt_id=new_attempt.id,
+                    question_id=attempt_item.question_id,
+                )
+            )
+
+            selected_option = (
+                attempt_item.selected_option.strip()
+                if attempt_item.selected_option
+                else None
+            )
+            if selected_option:
+                db.add(
+                    Answer(
+                        attempt_id=new_attempt.id,
+                        question_id=attempt_item.question_id,
+                        selected_option=selected_option,
+                    )
+                )
     
     # Award gamification points
     current_user.points += max(payload.score, 0)

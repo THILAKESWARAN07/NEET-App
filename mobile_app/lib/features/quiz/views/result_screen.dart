@@ -35,6 +35,7 @@ class ResultScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (result != null) {
+      final backendQuestionResults = result!.questionResults;
       return Scaffold(
         appBar: AppBar(title: const Text('Test Result')),
         body: Padding(
@@ -64,6 +65,56 @@ class ResultScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
+              if (backendQuestionResults.isNotEmpty)
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: backendQuestionResults.length,
+                    itemBuilder: (context, index) {
+                      final item = backendQuestionResults[index];
+                      final isUnattempted = item.status == 'unattempted';
+                      final isCorrect = item.status == 'correct';
+
+                      return Card(
+                        margin: const EdgeInsets.symmetric(vertical: 6),
+                        color: isUnattempted
+                            ? Colors.grey.shade200
+                            : isCorrect
+                                ? Colors.green.shade50
+                                : Colors.red.shade50,
+                        child: ListTile(
+                          title: Text(
+                            'Q${item.questionNumber}',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                          subtitle: Text(
+                            '${isUnattempted
+                                ? 'Unattempted'
+                                : isCorrect
+                                    ? 'Correct (+4)'
+                                    : 'Wrong (-1)'}\n'
+                            'Your answer: ${item.selectedOption ?? 'Not Attempted'}',
+                            style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              color: isUnattempted
+                                  ? Colors.black54
+                                  : isCorrect
+                                      ? Colors.green
+                                      : Colors.red,
+                            ),
+                          ),
+                          trailing: Text(
+                            'Ans: ${item.correctAnswer}',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
               ElevatedButton.icon(
                 onPressed: () => Navigator.push(
                   context,
@@ -87,6 +138,26 @@ class ResultScreen extends StatelessWidget {
     final localTotal = total ?? 0;
     final localQuestions = questions ?? const [];
     final localAnswers = answers ?? const <int, int>{};
+    int localCorrect = 0;
+    int localWrong = 0;
+    int localUnattempted = 0;
+
+    for (int index = 0; index < localTotal; index++) {
+      final q = localQuestions[index];
+      final correctIndex = q['correct_answer'].toString().codeUnitAt(0) - 65;
+      final selected = localAnswers[index];
+      if (selected == null) {
+        localUnattempted++;
+      } else if (selected == correctIndex) {
+        localCorrect++;
+      } else {
+        localWrong++;
+      }
+    }
+    final localAttempted = localCorrect + localWrong;
+    final localAccuracy =
+        localAttempted == 0 ? 0.0 : (localCorrect / localAttempted) * 100;
+    final localMaxMarks = localTotal * 4;
 
     return Scaffold(
       appBar: AppBar(title: const Text('Result')),
@@ -101,7 +172,7 @@ class ResultScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      'Score: $localScore / $localTotal',
+                      'Score: $localScore / $localMaxMarks',
                       style: const TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.normal,
@@ -110,9 +181,17 @@ class ResultScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      'Accuracy: ${((localScore / localTotal) * 100).toStringAsFixed(1)}%',
+                      'Accuracy: ${localAccuracy.toStringAsFixed(1)}%',
                       style: const TextStyle(
                         fontSize: 16,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Correct: $localCorrect | Wrong: $localWrong | Unattempted: $localUnattempted',
+                      style: const TextStyle(
+                        fontSize: 14,
                         fontWeight: FontWeight.normal,
                       ),
                     ),
@@ -128,21 +207,35 @@ class ResultScreen extends StatelessWidget {
                   final q = localQuestions[index];
                   final correctIndex = q['correct_answer'].toString().codeUnitAt(0) - 65;
                   final selected = localAnswers[index];
+                  final isUnattempted = selected == null;
                   final isCorrect = selected == correctIndex;
 
                   return Card(
                     margin: const EdgeInsets.symmetric(vertical: 6),
-                    color: isCorrect ? Colors.green.shade50 : Colors.red.shade50,
+                    color: isUnattempted
+                        ? Colors.grey.shade200
+                        : isCorrect
+                            ? Colors.green.shade50
+                            : Colors.red.shade50,
                     child: ListTile(
                       title: Text(
                         'Q${index + 1}',
                         style: const TextStyle(fontWeight: FontWeight.normal),
                       ),
                       subtitle: Text(
-                        isCorrect ? 'Correct ✓' : 'Wrong ✗',
+                        '${isUnattempted
+                            ? 'Unattempted'
+                            : isCorrect
+                                ? 'Correct (+4)'
+                                : 'Wrong (-1)'}\n'
+                        'Your answer: ${selected == null ? 'Not Attempted' : String.fromCharCode(65 + selected)}',
                         style: TextStyle(
                           fontWeight: FontWeight.normal,
-                          color: isCorrect ? Colors.green : Colors.red,
+                          color: isUnattempted
+                              ? Colors.black54
+                              : isCorrect
+                                  ? Colors.green
+                                  : Colors.red,
                         ),
                       ),
                       trailing: Text(

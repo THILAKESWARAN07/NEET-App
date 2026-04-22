@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/utils/latex_renderer.dart';
 import '../providers/quiz_provider.dart';
 import 'quiz_screen.dart';
 
@@ -171,11 +172,7 @@ class _WrongQuestionsScreenState extends ConsumerState<WrongQuestionsScreen> {
                         value: isSelected,
                         onChanged: (value) =>
                             _toggleSelection(item.question.id, value ?? false),
-                        title: Text(
-                          item.question.questionText,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                        title: safeMath(item.question.questionText),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
