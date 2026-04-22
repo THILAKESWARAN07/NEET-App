@@ -519,89 +519,131 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
     return '${h.toString().padLeft(2, '0')}:${m.toString().padLeft(2, '0')}:${s.toString().padLeft(2, '0')}';
   }
 
-  String _formatAttemptedAt(String raw) {
+  String _formatIsoDateTime(String raw) {
     final parsed = DateTime.tryParse(raw);
     if (parsed == null) {
       return 'Unknown time';
     }
-    final local = parsed.toLocal();
-    final day = local.day.toString().padLeft(2, '0');
-    final month = local.month.toString().padLeft(2, '0');
-    final year = local.year;
-    final hour = local.hour.toString().padLeft(2, '0');
-    final minute = local.minute.toString().padLeft(2, '0');
-    return '$day/$month/$year $hour:$minute';
+    final ist = parsed.toUtc().add(const Duration(hours: 5, minutes: 30));
+    final day = ist.day.toString().padLeft(2, '0');
+    final month = ist.month.toString().padLeft(2, '0');
+    final year = ist.year;
+    final hour = ist.hour.toString().padLeft(2, '0');
+    final minute = ist.minute.toString().padLeft(2, '0');
+    final second = ist.second.toString().padLeft(2, '0');
+    return '$day/$month/$year $hour:$minute:$second';
+  }
+
+  Widget _buildStatBox(String label, String value) {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: Colors.black12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+              color: Colors.black54,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            value,
+            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+          ),
+        ],
+      ),
+    );
   }
 
   void _showUserHistoryDialog(Map<String, dynamic> user) {
-    final scoreHistory = (user['score_history'] as List<dynamic>? ?? const [])
+    final scoreHistory = (user['mock_score_history'] as List<dynamic>? ?? const [])
         .map((e) => (e as num).toDouble())
         .toList();
-    final timeHistory = (user['time_history'] as List<dynamic>? ?? const [])
+    final timeHistory = (user['mock_time_history'] as List<dynamic>? ?? const [])
         .map((e) => (e as num).toInt())
         .toList();
-    final attemptedAtHistory =
-      (user['attempted_at_history'] as List<dynamic>? ?? const [])
+    final startHistory =
+      (user['mock_start_time_history'] as List<dynamic>? ?? const [])
         .map((e) => e.toString())
         .toList();
+    final endHistory =
+      (user['mock_end_time_history'] as List<dynamic>? ?? const [])
+        .map((e) => e.toString())
+        .toList();
+    final remainingHistory =
+      (user['mock_remaining_time_history'] as List<dynamic>? ?? const [])
+        .map((e) => (e as num).toInt())
+        .toList();
+
+    final latestMockScore = (user['mock_latest_score'] as num?)?.toDouble() ?? 0.0;
+    final latestMockTimeTaken = (user['mock_latest_time_taken'] as num?)?.toInt() ?? 0;
+    final latestMockStartTime = (user['mock_latest_start_time'] ?? '').toString();
+    final latestMockEndTime = (user['mock_latest_end_time'] ?? '').toString();
+    final latestMockRemainingTime =
+        (user['mock_latest_remaining_time'] as num?)?.toInt() ?? 0;
+
+    final baseTitle = (user['full_name'] ?? user['email'] ?? 'User').toString();
+
+    final mockCompletedTests = (user['mock_completed_tests'] as num?)?.toInt() ?? 0;
 
     showDialog<void>(
       context: context,
       builder: (ctx) {
         return AlertDialog(
           title: Text(
-            'History: ${(user['full_name'] ?? user['email'] ?? 'User').toString()}',
+            'Mock History: $baseTitle',
           ),
           content: SizedBox(
             width: 420,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Score History (latest first)',
-                  style: TextStyle(fontWeight: FontWeight.w700),
-                ),
-                const SizedBox(height: 6),
-                if (scoreHistory.isEmpty)
-                  const Text('No completed test scores yet.')
-                else
-                  Column(
-                    children: List.generate(scoreHistory.length, (index) {
-                      final when = index < attemptedAtHistory.length
-                          ? _formatAttemptedAt(attemptedAtHistory[index])
-                          : 'Unknown time';
-                      return ListTile(
-                        dense: true,
-                        contentPadding: EdgeInsets.zero,
-                        title: Text('Score: ${scoreHistory[index].toStringAsFixed(0)}'),
-                        subtitle: Text(when),
-                      );
-                    }),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Mock completed tests: $mockCompletedTests'),
+                  const SizedBox(height: 8),
+                  Text('Latest mock score: ${latestMockScore.toStringAsFixed(0)}'),
+                  Text('Latest mock time taken: ${_formatDuration(latestMockTimeTaken)}'),
+                  Text('Latest mock start (IST): ${latestMockStartTime.isEmpty ? 'Unknown time' : _formatIsoDateTime(latestMockStartTime)}'),
+                  Text('Latest mock end (IST): ${latestMockEndTime.isEmpty ? 'Unknown time' : _formatIsoDateTime(latestMockEndTime)}'),
+                  Text('Latest mock remaining: ${_formatDuration(latestMockRemainingTime)}'),
+                  const SizedBox(height: 14),
+                  const Text(
+                    'Mock Score History (latest first)',
+                    style: TextStyle(fontWeight: FontWeight.w700),
                   ),
-                const SizedBox(height: 14),
-                const Text(
-                  'Time History (latest first)',
-                  style: TextStyle(fontWeight: FontWeight.w700),
-                ),
-                const SizedBox(height: 6),
-                if (timeHistory.isEmpty)
-                  const Text('No completed test timings yet.')
-                else
-                  Column(
-                    children: List.generate(timeHistory.length, (index) {
-                      final when = index < attemptedAtHistory.length
-                          ? _formatAttemptedAt(attemptedAtHistory[index])
-                          : 'Unknown time';
-                      return ListTile(
-                        dense: true,
-                        contentPadding: EdgeInsets.zero,
-                        title: Text('Time: ${_formatDuration(timeHistory[index])}'),
-                        subtitle: Text(when),
-                      );
-                    }),
-                  ),
-              ],
+                  const SizedBox(height: 6),
+                  if (scoreHistory.isEmpty)
+                    const Text('No completed mock test scores yet.')
+                  else
+                    Column(
+                      children: List.generate(scoreHistory.length, (index) {
+                        final start = index < startHistory.length ? startHistory[index] : '';
+                        final end = index < endHistory.length ? endHistory[index] : '';
+                        final remaining = index < remainingHistory.length ? remainingHistory[index] : 0;
+                        return ListTile(
+                          dense: true,
+                          contentPadding: EdgeInsets.zero,
+                          title: Text('Score: ${scoreHistory[index].toStringAsFixed(0)} | Time: ${_formatDuration(timeHistory[index])}'),
+                          subtitle: Text(
+                            'Start: ${start.isEmpty ? 'Unknown time' : _formatIsoDateTime(start)}\n'
+                            'End: ${end.isEmpty ? 'Unknown time' : _formatIsoDateTime(end)}\n'
+                            'Remaining: ${_formatDuration(remaining)}',
+                          ),
+                          isThreeLine: true,
+                        );
+                      }),
+                    ),
+                ],
+              ),
             ),
           ),
           actions: [
@@ -810,19 +852,117 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
                           (user['latest_score'] as num?)?.toDouble() ?? 0.0;
                       final latestTimeTaken =
                           (user['latest_time_taken'] as num?)?.toInt() ?? 0;
+                      final latestMockScore =
+                          (user['mock_latest_score'] as num?)?.toDouble() ?? 0.0;
+                      final latestMockTimeTaken =
+                          (user['mock_latest_time_taken'] as num?)?.toInt() ?? 0;
+                      final latestMockRemaining =
+                          (user['mock_latest_remaining_time'] as num?)?.toInt() ?? 0;
+                      final latestMockStart =
+                          (user['mock_latest_start_time'] ?? '').toString();
+                      final latestMockEnd =
+                          (user['mock_latest_end_time'] ?? '').toString();
                       final completedTests =
                           (user['completed_tests'] as num?)?.toInt() ?? 0;
+                      final mockCompletedTests =
+                          (user['mock_completed_tests'] as num?)?.toInt() ?? 0;
                       return ListTile(
                         contentPadding: EdgeInsets.zero,
                         onTap: () => _showUserHistoryDialog(user),
                         title: Text((user['full_name'] ?? 'User').toString()),
-                        subtitle: Text(
-                          '${user['email'] ?? ''} • ${user['points'] ?? 0} points\n'
-                          'Latest score: ${latestScore.toStringAsFixed(0)} | '
-                          'Latest time: ${_formatDuration(latestTimeTaken)} | '
-                          'Completed tests: $completedTests | Tap row for history',
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 4),
+                            Text(
+                              '${user['email'] ?? ''} • ${user['points'] ?? 0} points',
+                              style: const TextStyle(fontWeight: FontWeight.w500),
+                            ),
+                            const SizedBox(height: 8),
+                            Wrap(
+                              spacing: 8,
+                              runSpacing: 8,
+                              children: [
+                                SizedBox(
+                                  width: 172,
+                                  child: _buildStatBox(
+                                    'Latest score',
+                                    latestScore.toStringAsFixed(0),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 172,
+                                  child: _buildStatBox(
+                                    'Latest time',
+                                    _formatDuration(latestTimeTaken),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 172,
+                                  child: _buildStatBox(
+                                    'Mock score',
+                                    latestMockScore.toStringAsFixed(0),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 172,
+                                  child: _buildStatBox(
+                                    'Mock time',
+                                    _formatDuration(latestMockTimeTaken),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 172,
+                                  child: _buildStatBox(
+                                    'Remaining',
+                                    _formatDuration(latestMockRemaining),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 172,
+                                  child: _buildStatBox(
+                                    'Started (IST)',
+                                    latestMockStart.isEmpty
+                                        ? 'Unknown'
+                                        : _formatIsoDateTime(latestMockStart),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 172,
+                                  child: _buildStatBox(
+                                    'Ended (IST)',
+                                    latestMockEnd.isEmpty
+                                        ? 'Unknown'
+                                        : _formatIsoDateTime(latestMockEnd),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 172,
+                                  child: _buildStatBox(
+                                    'Completed',
+                                    '$completedTests tests',
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 172,
+                                  child: _buildStatBox(
+                                    'Mock tests',
+                                    '$mockCompletedTests tests',
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            const Text(
+                              'Tap row for full history',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.black54,
+                              ),
+                            ),
+                          ],
                         ),
-                        isThreeLine: true,
+                        isThreeLine: false,
                         trailing: DropdownButton<String>(
                           value: role,
                           items: const [

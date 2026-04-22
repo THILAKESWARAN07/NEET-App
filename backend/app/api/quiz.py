@@ -25,6 +25,7 @@ from ..schemas.quiz import (
     DashboardAnalyticsResponse,
     GamificationProfileResponse,
     LeaderboardEntry,
+    JsonQuizResultSubmit,
     QuestionCreate,
     QuestionPublic,
     QuestionResponse,
@@ -715,6 +716,45 @@ def get_result(
         db.commit()
 
     return _compute_result(attempt, db)
+
+
+@router.post("/submit-json", response_model=QuizAttemptResponse)
+def submit_json_quiz(
+    payload: JsonQuizResultSubmit,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Submit results for a JSON-based quiz (local mock test).
+    Creates a QuizAttempt record to track the score in analytics.
+    """
+    end_time = datetime.now(timezone.utc)
+    
+    # Create a new QuizAttempt record for the JSON quiz
+    new_attempt = QuizAttempt(
+        user_id=current_user.id,
+        start_time=end_time - timedelta(seconds=payload.time_taken_seconds),
+        end_time=end_time,
+        status="completed",
+        duration_seconds=payload.duration_seconds,
+        time_taken=payload.time_taken_seconds,
+        score=payload.score,
+        test_type=payload.test_type,
+        subject=payload.subject,
+        cheat_logs=[],
+    )
+    
+    db.add(new_attempt)
+    db.flush()
+    
+    # Award gamification points
+    current_user.points += max(payload.score, 0)
+    _award_gamification(current_user, end_time)
+    
+    db.commit()
+    db.refresh(new_attempt)
+    
+    return new_attempt
 
 
 @router.get("/analytics/dashboard", response_model=DashboardAnalyticsResponse)

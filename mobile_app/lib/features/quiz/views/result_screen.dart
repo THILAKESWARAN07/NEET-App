@@ -49,13 +49,16 @@ class ResultScreen extends StatelessWidget {
                     children: [
                       Text('Score: ${result!.score}/720',
                           style: const TextStyle(
-                              fontSize: 24, fontWeight: FontWeight.bold)),
+                              fontSize: 24, fontWeight: FontWeight.normal, color: Colors.blue)),
                       const SizedBox(height: 8),
                       Text(
-                          'Accuracy: ${result!.accuracyPercent.toStringAsFixed(2)}%'),
+                          'Accuracy: ${result!.accuracyPercent.toStringAsFixed(2)}%',
+                          style: const TextStyle(fontWeight: FontWeight.normal)),
                       Text(
-                          'Correct: ${result!.correct} | Wrong: ${result!.wrong} | Unattempted: ${result!.unattempted}'),
-                      Text('Time taken: ${_formatTime(result!.timeTaken)}'),
+                          'Correct: ${result!.correct} | Wrong: ${result!.wrong} | Unattempted: ${result!.unattempted}',
+                          style: const TextStyle(fontWeight: FontWeight.normal)),
+                      Text('Time taken: ${_formatTime(result!.timeTaken)}',
+                          style: const TextStyle(fontWeight: FontWeight.normal)),
                     ],
                   ),
                 ),
@@ -91,9 +94,31 @@ class ResultScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            Text(
-              'Score: $localScore / $localTotal',
-              style: const TextStyle(fontSize: 22),
+            Card(
+              color: Colors.blue.shade50,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    Text(
+                      'Score: $localScore / $localTotal',
+                      style: const TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.blue,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      'Accuracy: ${((localScore / localTotal) * 100).toStringAsFixed(1)}%',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
             const SizedBox(height: 20),
             Expanded(
@@ -103,14 +128,27 @@ class ResultScreen extends StatelessWidget {
                   final q = localQuestions[index];
                   final correctIndex = q['correct_answer'].toString().codeUnitAt(0) - 65;
                   final selected = localAnswers[index];
+                  final isCorrect = selected == correctIndex;
 
                   return Card(
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                    color: isCorrect ? Colors.green.shade50 : Colors.red.shade50,
                     child: ListTile(
-                      title: Text('Q${index + 1}'),
-                      subtitle: Text(
-                        selected == correctIndex ? 'Correct' : 'Wrong',
+                      title: Text(
+                        'Q${index + 1}',
+                        style: const TextStyle(fontWeight: FontWeight.normal),
                       ),
-                      trailing: Text('Ans: ${q['correct_answer']}'),
+                      subtitle: Text(
+                        isCorrect ? 'Correct ✓' : 'Wrong ✗',
+                        style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                          color: isCorrect ? Colors.green : Colors.red,
+                        ),
+                      ),
+                      trailing: Text(
+                        'Ans: ${q['correct_answer']}',
+                        style: const TextStyle(fontWeight: FontWeight.normal),
+                      ),
                     ),
                   );
                 },
@@ -119,7 +157,7 @@ class ResultScreen extends StatelessWidget {
             const SizedBox(height: 12),
             ElevatedButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Back'),
+              child: const Text('Back to Dashboard'),
             ),
           ],
         ),

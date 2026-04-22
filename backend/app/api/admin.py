@@ -1,5 +1,6 @@
 import csv
 import io
+from datetime import datetime, timedelta, timezone
 from typing import List
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
@@ -22,6 +23,16 @@ from ..schemas.user import UserResponse, UserRoleUpdate
 from .deps import get_current_user, require_admin
 
 router = APIRouter()
+
+IST = timezone(timedelta(hours=5, minutes=30))
+
+
+def _to_ist_iso(value: datetime | None) -> str:
+    if value is None:
+        return ""
+    if value.tzinfo is None:
+        value = value.replace(tzinfo=timezone.utc)
+    return value.astimezone(IST).isoformat()
 
 
 @router.get("/users", response_model=List[UserResponse])
@@ -58,6 +69,7 @@ def list_users_paginated(
 
     user_ids = [item.id for item in items]
     attempts_by_user: dict[int, list[QuizAttempt]] = {}
+    mock_attempts_by_user: dict[int, list[QuizAttempt]] = {}
     if user_ids:
         attempts = (
             db.query(QuizAttempt)
@@ -71,10 +83,16 @@ def list_users_paginated(
         for attempt in attempts:
             attempts_by_user.setdefault(attempt.user_id, []).append(attempt)
 
+        mock_attempts = [attempt for attempt in attempts if attempt.test_type == "json_mock"]
+        for attempt in mock_attempts:
+            mock_attempts_by_user.setdefault(attempt.user_id, []).append(attempt)
+
     payload_items = []
     for item in items:
         user_attempts = attempts_by_user.get(item.id, [])
         latest_attempt = user_attempts[0] if user_attempts else None
+        mock_attempts = mock_attempts_by_user.get(item.id, [])
+        latest_mock_attempt = mock_attempts[0] if mock_attempts else None
         payload = UserResponse.model_validate(item).model_dump()
         score_history = [float(attempt.score) for attempt in user_attempts[:10]]
         time_history = [int(attempt.time_taken) for attempt in user_attempts[:10]]
@@ -86,6 +104,14 @@ def list_users_paginated(
             )
             for attempt in user_attempts[:10]
         ]
+        mock_score_history = [float(attempt.score) for attempt in mock_attempts[:10]]
+        mock_time_history = [int(attempt.time_taken) for attempt in mock_attempts[:10]]
+        mock_start_time_history = [_to_ist_iso(attempt.start_time) for attempt in mock_attempts[:10]]
+        mock_end_time_history = [_to_ist_iso(attempt.end_time) for attempt in mock_attempts[:10]]
+        mock_remaining_time_history = [
+            max(int(attempt.duration_seconds) - int(attempt.time_taken), 0)
+            for attempt in mock_attempts[:10]
+        ]
         payload.update(
             {
                 "latest_score": float(latest_attempt.score) if latest_attempt else 0.0,
@@ -94,6 +120,17 @@ def list_users_paginated(
                 "score_history": score_history,
                 "time_history": time_history,
                 "attempted_at_history": attempted_at_history,
+                "mock_latest_score": float(latest_mock_attempt.score) if latest_mock_attempt else 0.0,
+                "mock_latest_time_taken": int(latest_mock_attempt.time_taken) if latest_mock_attempt else 0,
+                "mock_latest_start_time": _to_ist_iso(latest_mock_attempt.start_time) if latest_mock_attempt else "",
+                "mock_latest_end_time": _to_ist_iso(latest_mock_attempt.end_time) if latest_mock_attempt else "",
+                "mock_latest_remaining_time": max(int(latest_mock_attempt.duration_seconds) - int(latest_mock_attempt.time_taken), 0) if latest_mock_attempt else 0,
+                "mock_completed_tests": len(mock_attempts),
+                "mock_score_history": mock_score_history,
+                "mock_time_history": mock_time_history,
+                "mock_start_time_history": mock_start_time_history,
+                "mock_end_time_history": mock_end_time_history,
+                "mock_remaining_time_history": mock_remaining_time_history,
             }
         )
         payload_items.append(payload)

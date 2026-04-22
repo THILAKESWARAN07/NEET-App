@@ -3,15 +3,17 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../storage/app_storage.dart';
 
+const String _defaultBackendBaseUrl = 'https://neet-backend-g2d8.onrender.com';
+const String backendBaseUrl = String.fromEnvironment(
+  'BACKEND_BASE_URL',
+  defaultValue: _defaultBackendBaseUrl,
+);
+const String apiBaseUrl = '$backendBaseUrl/api';
+
 final dioProvider = Provider<Dio>((ref) {
   final storage = ref.read(appStorageProvider);
 
-  final String baseUrl;
-  if (kIsWeb) {
-    baseUrl = 'https://neet-backend-g2d8.onrender.com/api';
-  } else {
-    baseUrl = 'https://neet-backend-g2d8.onrender.com/api';
-  }
+  const baseUrl = apiBaseUrl;
 
   final dio = Dio(
     BaseOptions(
@@ -28,7 +30,6 @@ final dioProvider = Provider<Dio>((ref) {
     InterceptorsWrapper(
       onRequest: (options, handler) async {
         final token = await storage.readToken();
-        print('REQUEST URL: ${options.baseUrl}${options.path}');
         if (kDebugMode) {
           debugPrint(
             '[API] ${options.method} ${options.path} | tokenPresent=${token != null && token.isNotEmpty}',

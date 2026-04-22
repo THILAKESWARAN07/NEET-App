@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../../../core/api/api_client.dart';
 
 Future<List> fetchQuestions() async {
   final response = await http.get(
-    Uri.parse('https://neet-backend-g2d8.onrender.com/questions'),
+    Uri.parse('$backendBaseUrl/questions'),
   );
 
   if (response.statusCode == 200) {

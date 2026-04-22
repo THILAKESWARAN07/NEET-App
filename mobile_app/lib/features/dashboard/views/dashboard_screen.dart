@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fl_chart/fl_chart.dart';
 import '../../analytics/views/analytics_screen.dart';
 import '../../admin/views/admin_screen.dart';
 import '../../announcements/views/announcements_screen.dart';
@@ -25,6 +26,7 @@ class DashboardScreen extends ConsumerStatefulWidget {
 class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   int _estimatedScore = 0;
   int _completedTests = 0;
+  List<Map<String, dynamic>> _trend = [];
 
   @override
   void initState() {
@@ -39,6 +41,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       final data = response.data as Map<String, dynamic>;
       final completed = (data['completed_tests'] as num?)?.toInt() ?? 0;
       final avgScoreRaw = (data['avg_score'] as num?)?.toDouble() ?? 0.0;
+      final trendRaw = (data['trend'] as List<dynamic>?)?.cast<Map<String, dynamic>>() ?? [];
 
       if (!mounted) {
         return;
@@ -46,6 +49,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
 
       setState(() {
         _completedTests = completed;
+        _trend = trendRaw;
         // Show 0 for new users with no completed tests.
         _estimatedScore =
             completed == 0 ? 0 : avgScoreRaw.round().clamp(0, 720).toInt();
@@ -57,6 +61,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       setState(() {
         _completedTests = 0;
         _estimatedScore = 0;
+        _trend = [];
       });
     }
   }
@@ -113,12 +118,18 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   title: 'Full Mock Test',
                   icon: Icons.timer,
                   color: Colors.redAccent,
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const RemoteQuestionPreviewScreen(),
-                    ),
-                  ),
+                  onTap: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const RemoteQuestionPreviewScreen(),
+                      ),
+                    );
+                    if (!context.mounted) {
+                      return;
+                    }
+                    await _loadPredictorScore();
+                  },
                 ),
                 _buildActionCard(
                   context,
@@ -139,6 +150,10 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                         ),
                       ),
                     );
+                    if (!context.mounted) {
+                      return;
+                    }
+                    await _loadPredictorScore();
                   },
                 ),
                 _buildActionCard(
@@ -268,7 +283,58 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 fontWeight: FontWeight.bold)),
         const SizedBox(height: 4),
         Text(subtitle, style: const TextStyle(color: Colors.white70)),
+        if (_trend.isNotEmpty) ...[
+          const SizedBox(height: 16),
+          const Text('Score Trend',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600)),
+          const SizedBox(height: 8),
+          _buildMiniTrendGraph(),
+        ],
       ],
+    );
+  }
+
+  Widget _buildMiniTrendGraph() {
+    final spots = <FlSpot>[];
+    for (var i = 0; i < _trend.length; i++) {
+      final score = (_trend[i]['score'] as num).toDouble();
+      spots.add(FlSpot(i.toDouble(), score));
+    }
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      padding: const EdgeInsets.all(8),
+      child: SizedBox(
+        height: 120,
+        child: LineChart(
+          LineChartData(
+            minY: 0,
+            maxY: 720,
+            gridData: const FlGridData(show: false),
+            titlesData: const FlTitlesData(show: false),
+            borderData: FlBorderData(show: false),
+            lineBarsData: [
+              LineChartBarData(
+                spots: spots,
+                isCurved: true,
+                barWidth: 2,
+                dotData: const FlDotData(show: false),
+                belowBarData: BarAreaData(
+                  show: true,
+                  color: Colors.white.withValues(alpha: 0.15),
+                ),
+                color: Colors.white,
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 

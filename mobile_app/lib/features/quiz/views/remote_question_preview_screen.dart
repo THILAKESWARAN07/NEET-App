@@ -17,6 +17,7 @@ class RemoteQuestionPreviewScreen extends StatefulWidget {
 
 class _RemoteQuestionPreviewScreenState
     extends State<RemoteQuestionPreviewScreen> {
+  static const int _mockTestDurationSeconds = 3 * 60 * 60;
   Timer? _timer;
   bool _loading = true;
   String? _errorMessage;
@@ -25,7 +26,7 @@ class _RemoteQuestionPreviewScreenState
   int _lastIndex = -1;
   int? _selectedOptionIndex;
   final Map<int, int> _selectedAnswers = {};
-  int _remainingSeconds = 180;
+  int _remainingSeconds = _mockTestDurationSeconds;
   bool _isSubmitted = false;
 
   @override
@@ -42,12 +43,18 @@ class _RemoteQuestionPreviewScreenState
   }
 
   Future<void> _loadQuestions({bool isRefresh = false}) async {
+    final preservedQuestionId = isRefresh && _questions.isNotEmpty
+        ? _questions[_currentIndex]['id']?.toString()
+        : null;
+    final preservedIndex = _currentIndex;
+    final preservedRemainingSeconds = _remainingSeconds;
+    final preservedSelectedAnswers = isRefresh
+        ? Map<int, int>.from(_selectedAnswers)
+        : <int, int>{};
+
     setState(() {
       _loading = true;
       _errorMessage = null;
-      if (isRefresh) {
-        _selectedOptionIndex = null;
-      }
     });
 
     try {
@@ -58,10 +65,33 @@ class _RemoteQuestionPreviewScreenState
 
       setState(() {
         _questions = questions;
-        _currentIndex = questions.isEmpty ? 0 : getRandomIndex(questions.length);
-        _selectedOptionIndex = null;
-        _selectedAnswers.clear();
-        _isSubmitted = false;
+        if (isRefresh) {
+          _selectedAnswers
+            ..clear()
+            ..addAll(preservedSelectedAnswers);
+
+          if (questions.isEmpty) {
+            _currentIndex = 0;
+            _selectedOptionIndex = null;
+          } else {
+            final restoredIndex = preservedQuestionId == null
+                ? preservedIndex
+                : questions.indexWhere(
+                    (question) => question['id']?.toString() == preservedQuestionId,
+                  );
+            _currentIndex = restoredIndex >= 0
+                ? restoredIndex
+                : preservedIndex.clamp(0, questions.length - 1);
+            _selectedOptionIndex = _selectedAnswers[_currentIndex];
+          }
+          _remainingSeconds = preservedRemainingSeconds;
+        } else {
+          _currentIndex = questions.isEmpty ? 0 : getRandomIndex(questions.length);
+          _selectedOptionIndex = null;
+          _selectedAnswers.clear();
+          _remainingSeconds = _mockTestDurationSeconds;
+          _isSubmitted = false;
+        }
         _loading = false;
       });
     } catch (error) {
@@ -106,27 +136,29 @@ class _RemoteQuestionPreviewScreenState
   }
 
   String formatTime(int seconds) {
+    final h = seconds ~/ 3600;
     final m = seconds ~/ 60;
     final s = seconds % 60;
-    return '${m.toString().padLeft(2, '0')}:${s.toString().padLeft(2, '0')}';
+    final normalizedMinutes = m % 60;
+    return '${h.toString().padLeft(2, '0')}:${normalizedMinutes.toString().padLeft(2, '0')}:${s.toString().padLeft(2, '0')}';
   }
 
   void _goNextQuestion() {
-    if (_questions.isEmpty) {
+    if (_questions.isEmpty || _currentIndex >= _questions.length - 1) {
       return;
     }
     setState(() {
-      _currentIndex = (_currentIndex + 1) % _questions.length;
+      _currentIndex = _currentIndex + 1;
       _selectedOptionIndex = _selectedAnswers[_currentIndex];
     });
   }
 
   void _goPreviousQuestion() {
-    if (_questions.isEmpty) {
+    if (_questions.isEmpty || _currentIndex <= 0) {
       return;
     }
     setState(() {
-      _currentIndex = (_currentIndex - 1 + _questions.length) % _questions.length;
+      _currentIndex = _currentIndex - 1;
       _selectedOptionIndex = _selectedAnswers[_currentIndex];
     });
   }
@@ -151,17 +183,22 @@ class _RemoteQuestionPreviewScreenState
       return;
     }
 
-    if (_selectedAnswers.length < _questions.length) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Answer all questions')),
-      );
-      return;
-    }
-
     _timer?.cancel();
-    _isSubmitted = true;
+    setState(() {
+      _isSubmitted = true;
+    });
 
     final score = calculateScore(_questions, _selectedAnswers);
+    final timeInSeconds = _mockTestDurationSeconds - _remainingSeconds;
+
+    // Save score to backend (non-blocking)
+    QuestionService.submitQuizScore(
+      score: score,
+      total: _questions.length,
+      timeInSeconds: timeInSeconds,
+      durationSeconds: _mockTestDurationSeconds,
+      testType: 'json_mock',
+    );
 
     Navigator.pushReplacement(
       context,
@@ -181,8 +218,20 @@ class _RemoteQuestionPreviewScreenState
       return;
     }
 
-    _isSubmitted = true;
+    setState(() {
+      _isSubmitted = true;
+    });
     final score = calculateScore(_questions, _selectedAnswers);
+    final timeInSeconds = _mockTestDurationSeconds - _remainingSeconds;
+
+    // Save score to backend (non-blocking)
+    QuestionService.submitQuizScore(
+      score: score,
+      total: _questions.length,
+      timeInSeconds: timeInSeconds,
+      durationSeconds: _mockTestDurationSeconds,
+      testType: 'json_mock',
+    );
 
     Navigator.pushReplacement(
       context,
@@ -197,14 +246,48 @@ class _RemoteQuestionPreviewScreenState
     );
   }
 
+  bool _looksLikeLatex(String text) {
+    final normalized = text.trim();
+    if (normalized.isEmpty) {
+      return false;
+    }
+
+    const latexSignals = <String>[
+      '\\frac',
+      '\\sqrt',
+      '\\left',
+      '\\right',
+      '\\alpha',
+      '\\beta',
+      '\\gamma',
+      '\\theta',
+      '\\pi',
+      '\\times',
+      '\\cdot',
+      '^',
+      '_',
+    ];
+
+    return latexSignals.any(normalized.contains);
+  }
+
   Widget safeMath(String text, {TextStyle? textStyle}) {
+    final normalized = text.trim();
+    if (normalized.isEmpty) {
+      return Text('', style: textStyle);
+    }
+
+    if (!_looksLikeLatex(normalized)) {
+      return Text(normalized, style: textStyle);
+    }
+
     try {
       return Math.tex(
-        text,
+        normalized,
         textStyle: textStyle,
       );
     } catch (_) {
-      return Text(text, style: textStyle);
+      return Text(normalized, style: textStyle);
     }
   }
 
@@ -218,9 +301,11 @@ class _RemoteQuestionPreviewScreenState
         ? currentQuestion['correct_answer'].toString().codeUnitAt(0) - 65
         : -1;
     final currentAnswered = currentSelectedAnswer != null;
+    final canGoPrevious = _currentIndex > 0;
+    final canGoNext = _currentIndex < _questions.length - 1;
 
-    return WillPopScope(
-      onWillPop: () async => false,
+    return PopScope(
+      canPop: false,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Quiz'),
@@ -280,24 +365,48 @@ class _RemoteQuestionPreviewScreenState
                           const SizedBox(height: 12),
                           safeMath(
                             currentQuestion['question_text'].toString(),
-                            textStyle: const TextStyle(fontSize: 18),
+                            textStyle: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.normal,
+                            ),
                           ),
                           const SizedBox(height: 12),
                           if (currentQuestion['image_url'] != null &&
                               currentQuestion['image_url'].toString().isNotEmpty)
-                            InteractiveViewer(
-                              child: Image.network(
-                                currentQuestion['image_url'].toString(),
-                                errorBuilder: (_, __, ___) => const Text(
-                                  'Image failed to load',
-                                ),
-                                loadingBuilder: (context, child, progress) {
-                                  if (progress == null) return child;
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                },
-                              ),
+                            LayoutBuilder(
+                              builder: (context, constraints) {
+                                return Center(
+                                  child: ConstrainedBox(
+                                    constraints: BoxConstraints(
+                                      maxWidth: constraints.maxWidth,
+                                      maxHeight: 320,
+                                    ),
+                                    child: InteractiveViewer(
+                                      boundaryMargin:
+                                          const EdgeInsets.all(24),
+                                      minScale: 0.8,
+                                      maxScale: 4,
+                                      child: Image.network(
+                                        currentQuestion['image_url']
+                                            .toString(),
+                                        width: constraints.maxWidth,
+                                        fit: BoxFit.contain,
+                                        alignment: Alignment.center,
+                                        errorBuilder: (_, __, ___) => const Text(
+                                          'Image failed to load',
+                                        ),
+                                        loadingBuilder:
+                                            (context, child, progress) {
+                                          if (progress == null) return child;
+                                          return const Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                           const SizedBox(height: 16),
                           ...List.generate(currentOptions.length, (index) {
@@ -319,8 +428,11 @@ class _RemoteQuestionPreviewScreenState
                               margin: const EdgeInsets.symmetric(vertical: 6),
                               color: backgroundColor,
                               child: ListTile(
-                                leading: Text(label),
-                                title: safeMath(currentOptions[index].toString()),
+                                leading: Text(label, style: const TextStyle(fontWeight: FontWeight.normal)),
+                                title: safeMath(
+                                  currentOptions[index].toString(),
+                                  textStyle: const TextStyle(fontWeight: FontWeight.normal),
+                                ),
                                 onTap: isAnswered
                                     ? null
                                     : () {
@@ -337,14 +449,14 @@ class _RemoteQuestionPreviewScreenState
                             children: [
                               Expanded(
                                 child: OutlinedButton(
-                                  onPressed: _goPreviousQuestion,
+                                  onPressed: canGoPrevious ? _goPreviousQuestion : null,
                                   child: const Text('Previous'),
                                 ),
                               ),
                               const SizedBox(width: 12),
                               Expanded(
                                 child: ElevatedButton(
-                                  onPressed: _goNextQuestion,
+                                  onPressed: canGoNext ? _goNextQuestion : null,
                                   child: const Text('Next'),
                                 ),
                               ),
@@ -353,10 +465,13 @@ class _RemoteQuestionPreviewScreenState
                           const SizedBox(height: 20),
                           const Text(
                             'Explanation:',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
                           ),
                           const SizedBox(height: 8),
-                          safeMath(currentQuestion['explanation'].toString()),
+                          safeMath(
+                            currentQuestion['explanation'].toString(),
+                            textStyle: const TextStyle(fontWeight: FontWeight.normal),
+                          ),
                         ],
                       ),
                     ),

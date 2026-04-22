@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/api/api_client.dart';
 
@@ -64,12 +65,16 @@ class ChatNotifier extends StateNotifier<List<ChatMessage>> {
         "subject": subject,
       });
 
-      print("RESPONSE: ${response.data}");
+      if (kDebugMode) {
+        debugPrint('AI chat response received');
+      }
       
       final reply = response.data['response'];
       state = [...state, ChatMessage(content: reply, isUser: false)];
     } catch (e) {
-      print("ERROR: $e");
+      if (kDebugMode) {
+        debugPrint('AI chat error: $e');
+      }
       state = [
         ...state,
         ChatMessage(

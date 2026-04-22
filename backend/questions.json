@@ -2,17 +2,2798 @@
   {
     "id": "q1",
     "subject": "Physics",
-    "topic": "Fluid Mechanics",
+    "topic": "Electromagnetism",
     "difficulty": "Medium",
-    "question_text": "Find \\frac{d^2 y}{dx^2} when \\rho is constant",
+    "question_text": "A parallel plate capacitor made of circular plates is being charged such that the surface charge density (\\sigma) on its plates is increasing at a constant rate with time. The magnetic field arising due to displacement current is:",
     "image_url": "",
     "options": [
-      "\\frac{d^2 y}{dx^2} = \\frac{\\rho g x}{S}",
-      "\\frac{d^2 y}{dx^2} = \\frac{\\rho g y}{S}",
-      "\\frac{d^2 y}{dx^2} = \\frac{\\rho g}{S}",
-      "\\frac{dy}{dx} = \\frac{\\rho g x}{S}"
+      "Non-zero everywhere with maximum at the imaginary cylindrical surface connecting peripheries of the plates",
+      "Zero between the plates and non-zero outside",
+      "Zero at all places",
+      "Constant between the plates and zero outside the plates"
     ],
-    "correct_answer": "B",
-    "explanation": "Using surface tension relation"
-  }
+    "correct_answer": "A",
+    "explanation": "Displacement current \\( I_d = \\epsilon_0 \\frac{d\\Phi_e}{dt} \\). Since \\( E = \\frac{\\sigma}{\\epsilon_0} \\), we get \\( I_d = A \\frac{d\\sigma}{dt} \\), which is constant. The magnetic field due to displacement current is maximum at the surface of the imaginary cylindrical loop."
+  },
+  {
+  "id": "q2",
+  "subject": "Physics",
+  "topic": "Electrostatics",
+  "difficulty": "Medium",
+  "question_text": "An electric dipole with dipole moment \\( 5 \\times 10^{-6} \\, C m \\) is aligned with the direction of a uniform electric field of magnitude \\( 4 \\times 10^{5} \\, N/C \\). The dipole is then rotated through an angle of \\( 60^\\circ \\) with respect to the electric field. The change in the potential energy of the dipole is:",
+  "image_url": "",
+  "options": [
+    "1.2 J",
+    "1.5 J",
+    "0.8 J",
+    "1.0 J"
+  ],
+  "correct_answer": "D",
+  "explanation": "Given: \\( p = 5 \\times 10^{-6} \\, C m \\), \\( E = 4 \\times 10^{5} \\, N/C \\), \\( \\theta_i = 0^\\circ \\), \\( \\theta_f = 60^\\circ \\). Change in potential energy: \\( \\Delta U = -pE \\cos\\theta_f - (-pE \\cos\\theta_i) = pE (\\cos\\theta_i - \\cos\\theta_f) \\). Substituting values: \\( 5 \\times 10^{-6} \\times 4 \\times 10^{5} (1 - \\frac{1}{2}) = 1 \\, J \\)."
+},
+{
+  "id": "q3",
+  "subject": "Physics",
+  "topic": "Mechanics",
+  "difficulty": "Medium",
+  "question_text": "A ball of mass \\( 0.5 \\, kg \\) is dropped from a height of \\( 40 \\, m \\). The ball hits the ground and rises to a height of \\( 10 \\, m \\). The impulse imparted to the ball during its collision with the ground is (Take \\( g = 9.8 \\, m/s^2 \\)):",
+  "image_url": "",
+  "options": [
+    "0",
+    "84 NS",
+    "21 NS",
+    "7 NS"
+  ],
+  "correct_answer": "C",
+  "explanation": "Initial velocity: \\( v_i = -\\sqrt{2gh_i} = -\\sqrt{2 \\times 9.8 \\times 40} = -28 \\, m/s \\). Final velocity: \\( v_f = \\sqrt{2gh_f} = \\sqrt{2 \\times 9.8 \\times 10} = 14 \\, m/s \\). Impulse: \\( I = \\Delta p = m(v_f - v_i) = 0.5 [14 - (-28)] = 0.5 \\times 42 = 21 \\, Ns \\)."
+},
+{
+  "id": "q4",
+  "subject": "Physics",
+  "topic": "Optics",
+  "difficulty": "Medium",
+  "question_text": "The intensity of transmitted light when a polaroid sheet, placed between two crossed polaroids at \\( 22.5^\\circ \\) from the polarization axis of one of the polaroid, is (\\( I_0 \\) is the intensity of polarized light after passing through the first polaroid):",
+  "image_url": "",
+  "options": [
+    "\\( \\frac{I_0}{8} \\)",
+    "\\( \\frac{I_0}{16} \\)",
+    "\\( \\frac{I_0}{2} \\)",
+    "\\( \\frac{I_0}{4} \\)"
+  ],
+  "correct_answer": "A",
+  "explanation": "Using Malus law: \\( I_1 = I_0 \\cos^2(22.5^\\circ) \\). After passing through the second polaroid: \\( I_2 = I_1 \\cos^2(67.5^\\circ) = I_0 \\cos^2(22.5^\\circ) \\sin^2(22.5^\\circ) \\). Using identity: \\( 4 \\cos^2\\theta \\sin^2\\theta = \\sin^2(2\\theta) \\), we get \\( I_2 = \\frac{I_0}{4} \\sin^2(45^\\circ) = \\frac{I_0}{4} \\times \\frac{1}{2} = \\frac{I_0}{8} \\)."
+},
+{
+  "id": "q5",
+  "subject": "Physics",
+  "topic": "Work, Energy and Power",
+  "difficulty": "Medium",
+  "question_text": "The kinetic energies of two similar cars \\( A \\) and \\( B \\) are \\( 100 \\, J \\) and \\( 225 \\, J \\) respectively. On applying brakes, car A stops after \\( 1000 \\, m \\) and car B stops after \\( 1500 \\, m \\). If \\( F_A \\) and \\( F_B \\) are the forces applied by the brakes on cars A and B respectively, then the ratio \\( \\frac{F_A}{F_B} \\) is:",
+  "image_url": "",
+  "options": [
+    "\\( \\frac{1}{3} \\)",
+    "\\( \\frac{1}{2} \\)",
+    "\\( \\frac{3}{2} \\)",
+    "\\( \\frac{2}{3} \\)"
+  ],
+  "correct_answer": "D",
+  "explanation": "Using work-energy theorem: \\( W = \\Delta KE \\). Since braking force does negative work, \\( F \\cdot S = -\\Delta KE \\). Thus, \\( \\frac{\\Delta KE_A}{\\Delta KE_B} = \\frac{-F_A S_A}{-F_B S_B} \\). Substituting values: \\( \\frac{100}{225} = \\frac{F_A \\cdot 1000}{F_B \\cdot 1500} \\). Solving, \\( \\frac{F_A}{F_B} = \\frac{2}{3} \\)."
+},
+{
+  "id": "q6",
+  "subject": "Physics",
+  "topic": "Current Electricity",
+  "difficulty": "Medium",
+  "question_text": "The current passing through the battery in the given circuit is:",
+  "image_url": "https://res.cloudinary.com/dmmacwuow/image/upload/v1776787811/phy_q6_pmeckp.png",
+  "options": [
+    "2.5 A",
+    "1.5 A",
+    "2.0 A",
+    "0.5 A"
+  ],
+  "correct_answer": "D",
+  "explanation": "Using Ohm's law: \\( i = \\frac{V}{R_{eq}} \\). From the simplified circuit, \\( R_{eq} = \\frac{1}{3} + \\frac{8}{3} + 1.5 + 5.5 = 10 \\ \\Omega \\). Hence, \\( i = \\frac{5}{10} = 0.5 \\, A \\)."
+},
+{
+  "id": "q7",
+  "subject": "Physics",
+  "topic": "Thermodynamics",
+  "difficulty": "Medium",
+  "question_text": "Three identical heat conducting rods are connected in series as shown in the figure. The rods on the sides have thermal conductivity \\( 2K \\) while the middle rod has thermal conductivity \\( K \\). The left end is maintained at temperature \\( 3T \\) and the right end at \\( T \\). In steady state, the temperatures at the left and right junctions are \\( T_1 \\) and \\( T_2 \\) respectively. The ratio \\( \\frac{T_1}{T_2} \\) is:",
+  "image_url": "https://res.cloudinary.com/dmmacwuow/image/upload/v1776787811/phy_q7_zna9xo.png",
+  "options": [
+    "\\( \\frac{5}{3} \\)",
+    "\\( \\frac{5}{4} \\)",
+    "\\( \\frac{3}{2} \\)",
+    "\\( \\frac{4}{3} \\)"
+  ],
+  "correct_answer": "A",
+  "explanation": "Thermal resistance \\( R = \\frac{l}{KA} \\). For rods in series: \\( R_{eq} = R_1 + R_2 + R_3 = \\frac{l}{2KA} + \\frac{l}{KA} + \\frac{l}{2KA} = \\frac{2l}{KA} \\). Heat current is same in steady state.\n\nFor left junction: \\( \\frac{3T - T_1}{R_1} = \\frac{3T - T}{R_{eq}} \\Rightarrow \\frac{(3T - T_1)2KA}{l} = \\frac{2T KA}{2l} \\Rightarrow 6T - 2T_1 = T \\Rightarrow T_1 = \\frac{5T}{2} \\).\n\nFor right junction: \\( \\frac{T_2 - T}{R_3} = \\frac{3T - T}{R_{eq}} \\Rightarrow \\frac{(T_2 - T)2KA}{l} = \\frac{2T KA}{2l} \\Rightarrow 2T_2 - 2T = T \\Rightarrow T_2 = \\frac{3T}{2} \\).\n\nThus, \\( \\frac{T_1}{T_2} = \\frac{5T/2}{3T/2} = \\frac{5}{3} \\)."
+},
+{
+  "id": "q8",
+  "subject": "Physics",
+  "topic": "Oscillations",
+  "difficulty": "Medium",
+  "question_text": "In an oscillating spring-mass system, a spring is connected to a box filled with sand. As the box oscillates, sand leaks slowly out vertically so that the average angular frequency \\( \\omega(t) \\) and average amplitude \\( A(t) \\) change with time \\( t \\). Which one of the following options schematically depicts these changes correctly?",
+  "image_url": "https://res.cloudinary.com/dmmacwuow/image/upload/v1776787812/phy_q8_bfrfm4.png",
+  "options": [
+    "Option 1",
+    "Option 2",
+    "Option 3",
+    "Option 4"
+  ],
+  "correct_answer": "C",
+  "explanation": "Time period \\( T = 2\\pi \\sqrt{\\frac{m}{k}} \\). As mass \\( m \\) decreases due to sand leakage, \\( T \\) decreases. Since \\( \\omega = \\frac{2\\pi}{T} \\), angular frequency \\( \\omega \\) increases with time.\n\nAt equilibrium: \\( mg = kx_0 \\Rightarrow x_0 = \\frac{mg}{k} \\). As mass decreases, equilibrium position decreases. Hence, amplitude \\( A(t) \\) also decreases with time.\n\nTherefore, \\( \\omega(t) \\) increases while \\( A(t) \\) decreases, corresponding to option 3."
+},
+{
+  "id": "q9",
+  "subject": "Physics",
+  "topic": "Electromagnetism",
+  "difficulty": "Medium",
+  "question_text": "AB is a part of an electrical circuit (see figure). The potential difference \\( V_A - V_B \\), at the instant when current \\( i = 2 \\, A \\) and is increasing at a rate of \\( \\frac{di}{dt} = 1 \\, A/s \\), is:",
+  "image_url": "https://res.cloudinary.com/dmmacwuow/image/upload/v1776787811/phy_q9_perz7q.png",
+  "options": [
+    "9 volt",
+    "10 volt",
+    "5 volt",
+    "6 volt"
+  ],
+  "correct_answer": "B",
+  "explanation": "Given: \\( i = 2 \\, A \\), \\( \\frac{di}{dt} = 1 \\, A/s \\). Using the loop equation: \\( V_A - L \\frac{di}{dt} - 5 - i \\times 2 = V_B \\). Substituting values: \\( V_A - 1 \\times 1 - 5 - 2 \\times 2 = V_B \\). Hence, \\( V_A - V_B = 10 \\, V \\)."
+},
+{
+  "id": "q10",
+  "subject": "Physics",
+  "topic": "Modern Physics",
+  "difficulty": "Medium",
+  "question_text": "A particle of mass \\( m \\) is moving around the origin under a constant force \\( F \\) directed towards the origin. If the Bohr model is used to describe its motion, the radius \\( r \\) of the \\( n^{th} \\) orbit and the particle's speed \\( v \\) in the orbit depend on \\( n \\) as:",
+  "image_url": "",
+  "options": [
+    "\\( r \\propto n^{2/3}, \\; v \\propto n^{1/3} \\)",
+    "\\( r \\propto n^{4/3}, \\; v \\propto n^{-1/3} \\)",
+    "\\( r \\propto n^{1/3}, \\; v \\propto n^{1/3} \\)",
+    "\\( r \\propto n^{1/3}, \\; v \\propto n^{2/3} \\)"
+  ],
+  "correct_answer": "A",
+  "explanation": "Given: \\( F = \\frac{mv^2}{r} \\Rightarrow \\frac{v^2}{r} = \\text{constant} \\Rightarrow r \\propto v^2 \\). Also, angular momentum \\( L = mvr = \\frac{nh}{2\\pi} \\). Solving these relations: \\( v \\propto n^{1/3} \\) and \\( r \\propto n^{2/3} \\)."
+},
+{
+  "id": "q11",
+  "subject": "Physics",
+  "topic": "Kinematics",
+  "difficulty": "Medium",
+  "question_text": "In some appropriate units, the relation between time \\( t \\) and position \\( x \\) of a moving particle is given by \\( t = x^2 + x \\). The acceleration of the particle is:",
+  "image_url": "",
+  "options": [
+    "\\( \\frac{2}{(x+1)^3} \\)",
+    "\\( \\frac{2}{2x+1} \\)",
+    "\\( -\\frac{2}{(x+2)^3} \\)",
+    "\\( -\\frac{2}{(2x+1)^3} \\)"
+  ],
+  "correct_answer": "D",
+  "explanation": "Given: \\( t = x^2 + x \\Rightarrow \\frac{dt}{dx} = 2x + 1 \\). Hence, velocity \\( v = \\frac{dx}{dt} = \\frac{1}{2x+1} \\). Acceleration: \\( a = \\frac{dv}{dt} = \\frac{dv}{dx} \\cdot \\frac{dx}{dt} \\). Now, \\( \\frac{dv}{dx} = -\\frac{2}{(2x+1)^2} \\). Therefore, \\( a = -\\frac{2}{(2x+1)^2} \\cdot \\frac{1}{2x+1} = -\\frac{2}{(2x+1)^3} \\)."
+},
+{
+  "id": "q12",
+  "subject": "Physics",
+  "topic": "Modern Physics",
+  "difficulty": "Medium",
+  "question_text": "A model for quantized motion of an electron in a uniform magnetic field \\( B \\) states that the flux passing through the orbit of the electron is \\( n \\left( \\frac{h}{e} \\right) \\), where \\( n \\) is an integer, \\( h \\) is Planck's constant and \\( e \\) is the magnitude of electron's charge. According to the model, the magnetic moment of an electron in its lowest energy state will be (\\( m \\) is the mass of the electron):",
+  "image_url": "",
+  "options": [
+    "\\( \\frac{heB}{\\pi m} \\)",
+    "\\( \\frac{heB}{2\\pi m} \\)",
+    "\\( \\frac{he}{\\pi m} \\)",
+    "\\( \\frac{he}{2\\pi m} \\)"
+  ],
+  "correct_answer": "D",
+  "explanation": "Magnetic force provides centripetal force: \\( evB = \\frac{mv^2}{r} \\Rightarrow v = \\frac{eBr}{m} \\). Flux quantization: \\( BA = B\\pi r^2 = \\frac{nh}{e} \\Rightarrow Br^2 = \\frac{nh}{e\\pi} \\). Magnetic moment: \\( \\mu = IA = \\frac{e}{T} \\pi r^2 = \\frac{evr}{2} \\). Substituting \\( v \\): \\( \\mu = \\frac{1}{2} e \\cdot \\frac{eBr}{m} \\cdot r = \\frac{e^2 B r^2}{2m} \\). Using flux relation: \\( \\mu = \\frac{e^2}{2m} \\cdot \\frac{nh}{e\\pi} = \\frac{neh}{2\\pi m} \\). For \\( n = 1 \\): \\( \\mu = \\frac{eh}{2\\pi m} \\)."
+},
+{
+  "id": "q13",
+  "subject": "Physics",
+  "topic": "Optics",
+  "difficulty": "Medium",
+  "question_text": "A microscope has an objective of focal length \\( 2 \\, cm \\), eyepiece of focal length \\( 4 \\, cm \\), and tube length \\( 40 \\, cm \\). If the distance of distinct vision is \\( 25 \\, cm \\), the magnification of the microscope is:",
+  "image_url": "",
+  "options": [
+    "150",
+    "250",
+    "100",
+    "125"
+  ],
+  "correct_answer": "D",
+  "explanation": "Magnification of a microscope: \\( m = \\frac{L}{f_o} \\times \\frac{D}{f_e} \\). Substituting values: \\( m = \\frac{40}{2} \\times \\frac{25}{4} = 20 \\times 6.25 = 125 \\)."
+},
+{
+  "id": "q14",
+  "subject": "Physics",
+  "topic": "Mechanics",
+  "difficulty": "Medium",
+  "question_text": "There are two inclined surfaces of equal length \\( L \\) and same angle of inclination \\( 45^\\circ \\) with the horizontal. One is rough and the other is perfectly smooth. A body takes twice the time to slide down the rough surface compared to the smooth one. The coefficient of kinetic friction \\( \\mu_k \\) is:",
+  "image_url": "",
+  "options": [
+    "0.5",
+    "0.75",
+    "0.25",
+    "0.40"
+  ],
+  "correct_answer": "B",
+  "explanation": "Given \\( t_{\\text{rough}} = 2 t_{\\text{smooth}} \\). For smooth surface: \\( a_s = g \\sin\\theta \\). For rough surface: \\( a_r = g(\\sin\\theta - \\mu_k \\cos\\theta) \\). Since \\( t \\propto \\frac{1}{\\sqrt{a}} \\), we get: \\( \\frac{t_r}{t_s} = \\sqrt{\\frac{a_s}{a_r}} = 2 \\). Squaring: \\( \\frac{\\sin\\theta}{\\sin\\theta - \\mu_k \\cos\\theta} = 4 \\). For \\( \\theta = 45^\\circ \\), \\( \\sin\\theta = \\cos\\theta = \\frac{1}{\\sqrt{2}} \\). Solving: \\( 1 - \\mu_k = \\frac{1}{4} \\Rightarrow \\mu_k = \\frac{3}{4} = 0.75 \\)."
+},
+{
+  "id": "q15",
+  "subject": "Physics",
+  "topic": "Electronics",
+  "difficulty": "Medium",
+  "question_text": "A full-wave rectifier circuit with diodes \\( D_1 \\) and \\( D_2 \\) is shown in the figure. If the input voltage is \\( V_{in} = 220 \\sin(100\\pi t) \\) volt, then at \\( t = 15 \\, ms \\):",
+  "image_url": "https://res.cloudinary.com/dmmacwuow/image/upload/v1776787812/phy_q15_ae3ups.png",
+  "options": [
+    "\\( D_1 \\) and \\( D_2 \\) both are forward biased",
+    "\\( D_1 \\) and \\( D_2 \\) both are reverse biased",
+    "\\( D_1 \\) is forward biased, \\( D_2 \\) is reverse biased",
+    "\\( D_1 \\) is reverse biased, \\( D_2 \\) is forward biased"
+  ],
+  "correct_answer": "D",
+  "explanation": "Given \\( V_{in} = 220 \\sin(100\\pi t) \\). Angular frequency \\( \\omega = 100\\pi \\Rightarrow T = \\frac{2\\pi}{100\\pi} = 0.02 \\, s \\). At \\( t = 0.015 \\, s = \\frac{3T}{4} \\), the sine function is negative (negative half cycle). In a full-wave rectifier, during negative half cycle, \\( D_1 \\) is reverse biased and \\( D_2 \\) is forward biased."
+},
+{
+  "id": "q16",
+  "subject": "Physics",
+  "topic": "Mechanics",
+  "difficulty": "Medium",
+  "question_text": "A uniform rod of mass \\( 20 \\, kg \\) and length \\( 5 \\, m \\) leans against a smooth vertical wall making an angle of \\( 60^\\circ \\) with it. The other end rests on a rough horizontal floor. The friction force exerted by the floor on the rod is (take \\( g = 10 \\, m/s^2 \\)):",
+  "image_url": "",
+  "options": [
+    "200 N",
+    "\\( 200\\sqrt{3} \\, N \\)",
+    "100 N",
+    "\\( 100\\sqrt{3} \\, N \\)"
+  ],
+  "correct_answer": "D",
+  "explanation": "For translational equilibrium: \\( N_1 = Mg \\), and horizontal reaction \\( N_2 = f \\).\n\nTaking moments about the point of contact with the floor: \\( Mg \\cdot \\frac{L}{2} \\cos\\theta = N_2 \\cdot L \\sin\\theta \\).\n\nThus, \\( \\frac{Mg}{2} \\cot\\theta = N_2 = f \\). Given \\( \\theta = 60^\\circ \\Rightarrow \\cot 60^\\circ = \\frac{1}{\\sqrt{3}} \\), but angle with wall implies angle with floor is \\( 30^\\circ \\Rightarrow \\cot 30^\\circ = \\sqrt{3} \\).\n\nSo, \\( f = \\frac{20 \\times 10}{2} \\times \\sqrt{3} = 100\\sqrt{3} \\, N \\)."
+},
+{
+  "id": "q17",
+  "subject": "Physics",
+  "topic": "Electrostatics",
+  "difficulty": "Medium",
+  "question_text": "Two identical charged conducting spheres \\( A \\) and \\( B \\) each carry charge \\( q \\) and are separated by a distance. The force of repulsion between them is \\( F \\). A third identical uncharged conducting sphere is first brought into contact with \\( A \\), then with \\( B \\), and finally removed. The new force of repulsion between \\( A \\) and \\( B \\) is:",
+  "image_url": "",
+  "options": [
+    "\\( \\frac{F}{2} \\)",
+    "\\( \\frac{3F}{8} \\)",
+    "\\( \\frac{3F}{5} \\)",
+    "\\( \\frac{2F}{3} \\)"
+  ],
+  "correct_answer": "B",
+  "explanation": "Initially, charges are \\( q \\) and \\( q \\), so \\( F = \\frac{kq^2}{r^2} \\).\n\nWhen uncharged sphere touches \\( A \\): total charge \\( q \\) is shared equally → each gets \\( \\frac{q}{2} \\).\n\nThen it touches \\( B \\): total charge \\( \\frac{q}{2} + q = \\frac{3q}{2} \\), shared equally → each gets \\( \\frac{3q}{4} \\).\n\nFinal charges: \\( A = \\frac{q}{2} \\), \\( B = \\frac{3q}{4} \\).\n\nNew force: \\( F' = \\frac{k}{r^2} \\cdot \\frac{q}{2} \\cdot \\frac{3q}{4} = \\frac{3}{8} \\frac{kq^2}{r^2} = \\frac{3F}{8} \\)."
+},
+{
+  "id": "q18",
+  "subject": "Physics",
+  "topic": "Kinematics",
+  "difficulty": "Medium",
+  "question_text": "Two cities X and Y are connected by a regular bus service with a bus leaving in either direction every \\( T \\) minutes. A girl riding a scooty at \\( 60 \\, km/h \\) from X to Y observes that a bus passes her every 30 minutes in her direction and every 10 minutes in the opposite direction. The correct values of \\( T \\) and the speed of the buses are:",
+  "image_url": "",
+  "options": [
+    "10 min, 90 km/h",
+    "15 min, 120 km/h",
+    "9 min, 40 km/h",
+    "25 min, 100 km/h"
+  ],
+  "correct_answer": "B",
+  "explanation": "Let speed of bus = \\( v \\). Distance between consecutive buses = \\( vT \\).\n\nSame direction: relative speed = \\( v - 60 \\), so \\( (v - 60) \\times 30 = vT \\).\n\nOpposite direction: relative speed = \\( v + 60 \\), so \\( (v + 60) \\times 10 = vT \\).\n\nEquating: \\( (v - 60)30 = (v + 60)10 \\Rightarrow v = 120 \\, km/h \\). Substituting back: \\( T = 15 \\) minutes."
+},
+{
+  "id": "q19",
+  "subject": "Physics",
+  "topic": "Thermodynamics",
+  "difficulty": "Medium",
+  "question_text": "A container has two chambers of volumes \\( V_1 = 2 \\, L \\) and \\( V_2 = 3 \\, L \\), separated by a thermally insulating partition. They contain \\( n_1 = 5 \\) and \\( n_2 = 4 \\) moles of ideal gas at pressures \\( p_1 = 1 \\, atm \\) and \\( p_2 = 2 \\, atm \\) respectively. When the partition is removed, the equilibrium pressure becomes:",
+  "image_url": "",
+  "options": [
+    "1.4 atm",
+    "1.8 atm",
+    "1.3 atm",
+    "1.6 atm"
+  ],
+  "correct_answer": "D",
+  "explanation": "Using conservation of pressure-volume: \\( p_1 V_1 + p_2 V_2 = P (V_1 + V_2) \\).\n\nSubstitute: \\( 1 \\times 2 + 2 \\times 3 = P (2 + 3) \\Rightarrow 8 = 5P \\Rightarrow P = 1.6 \\, atm \\)."
+},
+{
+  "id": "q20",
+  "subject": "Physics",
+  "topic": "Modern Physics",
+  "difficulty": "Medium",
+  "question_text": "The de-Broglie wavelength of an electron in the \\( n = 2 \\) state of a hydrogen atom is closest to (Bohr radius = \\( 0.052 \\, nm \\)):",
+  "image_url": "",
+  "options": [
+    "1.67 nm",
+    "2.67 nm",
+    "0.067 nm",
+    "0.67 nm"
+  ],
+  "correct_answer": "D",
+  "explanation": "Radius of orbit: \\( r = 0.052 n^2 = 0.052 \\times 4 = 0.208 \\, nm \\).\n\nFrom Bohr model: \\( mvr = \\frac{nh}{2\\pi} \\Rightarrow \\lambda = \\frac{h}{mv} = \\frac{2\\pi r}{n} \\).\n\nFor \\( n = 2 \\): \\( \\lambda = \\pi r = 3.14 \\times 0.208 \\approx 0.67 \\, nm \\)."
+},
+{
+  "id": "q21",
+  "subject": "Physics",
+  "topic": "AC Circuits",
+  "difficulty": "Medium",
+  "question_text": "An AC power supply of \\( 220 \\, V \\) at \\( 50 \\, Hz \\) is connected to a resistor \\( R = 20 \\, \\Omega \\), a capacitor with reactance \\( X_C = 25 \\, \\Omega \\), and an inductor with reactance \\( X_L = 45 \\, \\Omega \\) in series. The current in the circuit and the phase angle between current and voltage are respectively:",
+  "image_url": "",
+  "options": [
+    "\\( 15.6 \\, A, \\; 30^\\circ \\)",
+    "\\( 15.6 \\, A, \\; 45^\\circ \\)",
+    "\\( 7.8 \\, A, \\; 30^\\circ \\)",
+    "\\( 7.8 \\, A, \\; 45^\\circ \\)"
+  ],
+  "correct_answer": "D",
+  "explanation": "Impedance: \\( Z = \\sqrt{R^2 + (X_L - X_C)^2} = \\sqrt{20^2 + (45 - 25)^2} = \\sqrt{400 + 400} = 20\\sqrt{2} \\).\n\nCurrent: \\( I = \\frac{V}{Z} = \\frac{220}{20\\sqrt{2}} = \\frac{11}{\\sqrt{2}} \\approx 7.8 \\, A \\).\n\nPhase angle: \\( \\tan\\phi = \\frac{X_L - X_C}{R} = \\frac{20}{20} = 1 \\Rightarrow \\phi = 45^\\circ \\)."
+},
+{
+  "id": "q22",
+  "subject": "Physics",
+  "topic": "Modern Physics",
+  "difficulty": "Medium",
+  "question_text": "Which of the following options represent the variation of photoelectric current with the property of light shown on the x-axis?",
+  "image_url": "https://res.cloudinary.com/dmmacwuow/image/upload/v1776787812/phy_q22_hd0dsa.png",
+  "options": [
+    "A and D",
+    "B and D",
+    "A only",
+    "A and C"
+  ],
+  "correct_answer": "C",
+  "explanation": "Photoelectric current is directly proportional to the intensity of incident light and independent of frequency (above threshold). Hence, the correct graph corresponds to variation with intensity only."
+},
+{
+  "id": "q23",
+  "subject": "Physics",
+  "topic": "Waves",
+  "difficulty": "Medium",
+  "question_text": "A pipe open at both ends has a fundamental frequency \\( f \\) in air. The pipe is now dipped vertically in water to half of its length. The new fundamental frequency of the air column is:",
+  "image_url": "",
+  "options": [
+    "\\( \\frac{3f}{2} \\)",
+    "\\( 2f \\)",
+    "\\( \\frac{f}{2} \\)",
+    "\\( f \\)"
+  ],
+  "correct_answer": "D",
+  "explanation": "For open pipe: \\( f = \\frac{v}{2L} \\).\n\nWhen half immersed, it behaves like a closed pipe of length \\( \\frac{L}{2} \\): \\( f' = \\frac{v}{4(L/2)} = \\frac{v}{2L} \\).\n\nThus, \\( f' = f \\)."
+},
+{
+  "id": "q24",
+  "subject": "Physics",
+  "topic": "Oscillations",
+  "difficulty": "Medium",
+  "question_text": "Two identical point masses \\( P \\) and \\( Q \\), suspended from two separate massless springs of spring constants \\( k_1 \\) and \\( k_2 \\), respectively, oscillate vertically. If their maximum speeds are the same, the ratio \\( \\frac{A_Q}{A_P} \\) of their amplitudes is:",
+  "image_url": "",
+  "options": [
+    "\\( \\sqrt{\\frac{k_2}{k_1}} \\)",
+    "\\( \\sqrt{\\frac{k_1}{k_2}} \\)",
+    "\\( \\frac{k_2}{k_1} \\)",
+    "\\( \\frac{k_1}{k_2} \\)"
+  ],
+  "correct_answer": "B",
+  "explanation": "Maximum speed in SHM: \\( v = A\\omega \\). Given \\( v_P = v_Q \\Rightarrow A_P \\omega_P = A_Q \\omega_Q \\).\n\nThus, \\( \\frac{A_Q}{A_P} = \\frac{\\omega_P}{\\omega_Q} \\). Since \\( \\omega = \\sqrt{\\frac{k}{m}} \\) and masses are equal, \\( \\frac{A_Q}{A_P} = \\sqrt{\\frac{k_1}{k_2}} \\)."
+},
+{
+  "id": "q25",
+  "subject": "Physics",
+  "topic": "Electronics",
+  "difficulty": "Medium",
+  "question_text": "The output \\( Y \\) of the given logic implementation is equivalent to the output of which gate?",
+  "image_url": "https://res.cloudinary.com/dmmacwuow/image/upload/v1776787812/phy_q25_esfgzq.png",
+  "options": [
+    "OR",
+    "NOR",
+    "AND",
+    "NAND"
+  ],
+  "correct_answer": "B",
+  "explanation": "Given: \\( Y_1 = A + B \\), \\( Y_2 = A \\cdot B \\), and \\( Y = Y_1 \\cdot Y_2 \\).\n\nThus, \\( Y = (A + B)(A \\cdot B) = A \\cdot B \\cdot (A + B) \\).\n\nUsing Boolean simplification, this corresponds to the complement of OR operation, i.e., a NOR gate."
+},
+{
+  "id": "q26",
+  "subject": "Physics",
+  "topic": "Thermodynamics",
+  "difficulty": "Medium",
+  "question_text": "An oxygen cylinder of volume \\( 30 \\, L \\) contains \\( 18.20 \\) moles of oxygen. After some oxygen is withdrawn, the gauge pressure drops to \\( 11 \\, atm \\) at temperature \\( 27^\\circ C \\). The mass of oxygen withdrawn is nearly (\\( R = \\frac{100}{12} \\, J\\,mol^{-1}K^{-1} \\), molar mass of \\( O_2 = 32 \\), \\( 1 \\, atm = 1.01 \\times 10^5 \\, N/m^2 \\)):",
+  "image_url": "",
+  "options": [
+    "0.116 kg",
+    "0.156 kg",
+    "0.125 kg",
+    "0.144 kg"
+  ],
+  "correct_answer": "A",
+  "explanation": "Using ideal gas law: \\( n = \\frac{PV}{RT} \\).\n\n\\( n = \\frac{12 \\times 1.01 \\times 10^5 \\times 30 \\times 10^{-3}}{\\frac{100}{12} \\times 300} \\approx 14.54 \\, mol \\).\n\nMoles removed: \\( 18.20 - 14.54 = 3.656 \\, mol \\).\n\nMass removed: \\( 3.656 \\times 32 \\approx 117 \\, g = 0.116 \\, kg \\)."
+},
+{
+  "id": "q27",
+  "subject": "Physics",
+  "topic": "Optics",
+  "difficulty": "Medium",
+  "question_text": "In a camera, four identical thin convex lenses are arranged coaxially in contact. If each lens has power \\( p \\) and magnification \\( m \\), the effective power and total magnification of the combination are:",
+  "image_url": "",
+  "options": [
+    "\\( 4p \\) and \\( m^4 \\)",
+    "\\( p^4 \\) and \\( m^4 \\)",
+    "\\( 4p \\) and \\( 4m \\)",
+    "\\( p^4 \\) and \\( 4m \\)"
+  ],
+  "correct_answer": "A",
+  "explanation": "For lenses in contact: powers add, so \\( P_{eff} = p + p + p + p = 4p \\).\n\nMagnifications multiply: \\( m_{eff} = m \\times m \\times m \\times m = m^4 \\)."
+},
+{
+  "id": "q28",
+  "subject": "Physics",
+  "topic": "Thermodynamics",
+  "difficulty": "Medium",
+  "question_text": "Two gases \\( A \\) and \\( B \\) are kept at the same pressure in cylinders with movable pistons of radii \\( r_A \\) and \\( r_B \\). When equal heat is supplied at constant pressure, the pistons move by \\( 16 \\, cm \\) and \\( 9 \\, cm \\) respectively. If the change in internal energy is the same, the ratio \\( \\frac{r_A}{r_B} \\) is:",
+  "image_url": "",
+  "options": [
+    "\\( \\frac{2}{\\sqrt{3}} \\)",
+    "\\( \\frac{\\sqrt{3}}{2} \\)",
+    "\\( \\frac{4}{3} \\)",
+    "\\( \\frac{3}{4} \\)"
+  ],
+  "correct_answer": "D",
+  "explanation": "From first law: \\( \\Delta Q = \\Delta U + P\\Delta V \\). Since \\( \\Delta Q \\) and \\( \\Delta U \\) are same, work done \\( P\\Delta V \\) is same.\n\nThus: \\( P A_A d_A = P A_B d_B \\Rightarrow A_A d_A = A_B d_B \\).\n\n\\( \\pi r_A^2 d_A = \\pi r_B^2 d_B \\Rightarrow \\frac{r_A}{r_B} = \\sqrt{\\frac{d_B}{d_A}} = \\sqrt{\\frac{9}{16}} = \\frac{3}{4} \\)."
+},
+{
+  "id": "q29",
+  "subject": "Physics",
+  "topic": "Dimensional Analysis",
+  "difficulty": "Medium",
+  "question_text": "A balloon made of material with surface tension \\( S \\) and outlet area \\( A \\) is filled with a gas of density \\( \\rho \\) and has radius \\( R \\). When gas escapes, its radius reduces to zero in time \\( T \\). If velocity of escaping gas \\( v(r) \\propto r^a \\) and \\( T \\propto S^{\\alpha} A^{\\beta} \\rho^{\\gamma} R^{\\delta} \\), then:",
+  "image_url": "",
+  "options": [
+    "\\( a = -\\frac{1}{2}, \\; \\alpha = -\\frac{1}{2}, \\; \\beta = -1, \\; \\gamma = \\frac{1}{2}, \\; \\delta = \\frac{7}{2} \\)",
+    "\\( a = \\frac{1}{2}, \\; \\alpha = \\frac{1}{2}, \\; \\beta = -\\frac{1}{2}, \\; \\gamma = \\frac{1}{2}, \\; \\delta = \\frac{7}{2} \\)",
+    "\\( a = \\frac{1}{2}, \\; \\alpha = \\frac{1}{2}, \\; \\beta = -1, \\; \\gamma = 1, \\; \\delta = \\frac{3}{2} \\)",
+    "\\( a = -\\frac{1}{2}, \\; \\alpha = -\\frac{1}{2}, \\; \\beta = -1, \\; \\gamma = -\\frac{1}{2}, \\; \\delta = \\frac{5}{2} \\)"
+  ],
+  "correct_answer": "A",
+  "explanation": "Using dimensional analysis: \\( T \\propto S^{\\alpha} A^{\\beta} \\rho^{\\gamma} R^{\\delta} \\).\n\nEquating dimensions: \\( M^0 L^0 T^1 = (MT^{-2})^{\\alpha} (L^2)^{\\beta} (ML^{-3})^{\\gamma} L^{\\delta} \\).\n\nComparing powers:\n- Time: \\( -2\\alpha = 1 \\Rightarrow \\alpha = -\\frac{1}{2} \\)\n- Mass: \\( \\alpha + \\gamma = 0 \\Rightarrow \\gamma = \\frac{1}{2} \\)\n- Length: \\( 2\\beta - 3\\gamma + \\delta = 0 \\)\n\nSubstitute \\( \\gamma = \\frac{1}{2} \\): \\( 2\\beta - \\frac{3}{2} + \\delta = 0 \\).\n\nFrom options: \\( \\beta = -1 \\Rightarrow \\delta = \\frac{7}{2} \\).\n\nThus option (1) is correct."
+},
+{
+  "id": "q30",
+  "subject": "Physics",
+  "topic": "Mechanics",
+  "difficulty": "Medium",
+  "question_text": "A bob of mass \\( m \\) is suspended by a light string of length \\( l \\). It is given a horizontal velocity \\( v_0 \\). If the string becomes slack at point \\( P \\) making an angle \\( \\theta \\) from the horizontal, the ratio \\( \\frac{v}{v_0} \\) is:",
+  "image_url": "https://res.cloudinary.com/dmmacwuow/image/upload/v1776787811/phy_q30_ansjly.png",
+  "options": [
+    "\\( \\left( \\frac{\\cos\\theta}{2 + 3\\sin\\theta} \\right)^{1/2} \\)",
+    "\\( \\left( \\frac{\\sin\\theta}{2 + 3\\sin\\theta} \\right)^{1/2} \\)",
+    "\\( (\\sin\\theta)^{1/2} \\)",
+    "\\( \\left( \\frac{1}{2 + 3\\sin\\theta} \\right)^{1/2} \\)"
+  ],
+  "correct_answer": "B",
+  "explanation": "At slack point: \\( mg\\sin\\theta = \\frac{mv^2}{l} \\Rightarrow gl = \\frac{v^2}{\\sin\\theta} \\).\n\nEnergy conservation: \\( \\frac{1}{2}mv_0^2 = \\frac{1}{2}mv^2 + mg(l + l\\sin\\theta) \\).\n\nSubstitute \\( gl \\): \\( \\frac{v_0^2}{2} = \\frac{v^2}{2} + \\frac{v^2}{\\sin\\theta}(1 + \\sin\\theta) \\).\n\nSimplifying: \\( v_0^2 = v^2 \\left( 3 + \\frac{2}{\\sin\\theta} \\right) \\Rightarrow \\frac{v}{v_0} = \\left( \\frac{\\sin\\theta}{2 + 3\\sin\\theta} \\right)^{1/2} \\)."
+},
+{
+  "id": "q31",
+  "subject": "Physics",
+  "topic": "Error Analysis",
+  "difficulty": "Medium",
+  "question_text": "A physical quantity \\( P \\) is related to \\( a, b, c, d \\) as \\( P = \\frac{a^3 b^2}{c \\sqrt{d}} \\). If percentage errors in \\( a, b, c, d \\) are 1%, 3%, 2% and 4% respectively, the percentage error in \\( P \\) is:",
+  "image_url": "",
+  "options": [
+    "13%",
+    "15%",
+    "10%",
+    "2%"
+  ],
+  "correct_answer": "A",
+  "explanation": "Percentage error: \\( \\frac{\\Delta P}{P} = 3\\frac{\\Delta a}{a} + 2\\frac{\\Delta b}{b} + \\frac{\\Delta c}{c} + \\frac{1}{2}\\frac{\\Delta d}{d} \\).\n\nSubstitute values: \\( 3(1) + 2(3) + 2 + \\frac{1}{2}(4) = 3 + 6 + 2 + 2 = 13\\% \\)."
+},
+{
+  "id": "q32",
+  "subject": "Physics",
+  "topic": "Rotational Motion",
+  "difficulty": "Medium",
+  "question_text": "The Sun rotates about its axis once in \\( 27 \\) days. If its radius becomes twice without external influence, assuming uniform density, the new period of rotation is:",
+  "image_url": "",
+  "options": [
+    "115 days",
+    "108 days",
+    "100 days",
+    "105 days"
+  ],
+  "correct_answer": "B",
+  "explanation": "Moment of inertia of sphere: \\( I = \\frac{2}{5} mR^2 \\). Using conservation of angular momentum: \\( I\\omega = I'\\omega' \\).\n\n\\( \\frac{2}{5}mR^2 \\cdot \\frac{2\\pi}{T} = \\frac{2}{5}m(2R)^2 \\cdot \\frac{2\\pi}{T'} \\).\n\nThus, \\( T' = 4T = 4 \\times 27 = 108 \\) days."
+},
+{
+  "id": "q33",
+  "subject": "Physics",
+  "topic": "Gravitation",
+  "difficulty": "Medium",
+  "question_text": "The radius of Mars' orbit is 4 times that of Mercury. If Mars completes one revolution in \\( 687 \\) days, the period of Mercury is:",
+  "image_url": "",
+  "options": [
+    "172 days",
+    "124 days",
+    "88 days",
+    "225 days"
+  ],
+  "correct_answer": "C",
+  "explanation": "Using Kepler's third law: \\( T^2 \\propto R^3 \\).\n\n\\( \\left( \\frac{T_M}{T_m} \\right)^2 = \\left( \\frac{R_M}{R_m} \\right)^3 = 4^3 = 64 \\Rightarrow \\frac{T_M}{T_m} = 8 \\).\n\nThus, \\( T_m = \\frac{687}{8} \\approx 86 \\approx 88 \\) days."
+},
+{
+  "id": "q34",
+  "subject": "Physics",
+  "topic": "Current Electricity",
+  "difficulty": "Medium",
+  "question_text": "A wire of resistance \\( R \\) is cut into 8 equal parts. Four pieces are connected in parallel to form one set, and another identical set is made. These two sets are then connected in series. The effective resistance is:",
+  "image_url": "",
+  "options": [
+    "\\( \\frac{R}{16} \\)",
+    "\\( \\frac{R}{8} \\)",
+    "\\( \\frac{R}{64} \\)",
+    "\\( \\frac{R}{32} \\)"
+  ],
+  "correct_answer": "A",
+  "explanation": "Each piece has resistance \\( \\frac{R}{8} \\).\n\nFour in parallel: \\( R' = \\frac{R/8}{4} = \\frac{R}{32} \\).\n\nTwo such sets in series: \\( R_{eq} = \\frac{R}{32} + \\frac{R}{32} = \\frac{R}{16} \\)."
+},
+{
+  "id": "q35",
+  "subject": "Physics",
+  "topic": "Modern Physics",
+  "difficulty": "Medium",
+  "question_text": "A photon and an electron (mass \\( m \\)) have the same energy \\( E \\). The ratio \\( \\frac{\\lambda_{photon}}{\\lambda_{electron}} \\) is (\\( c \\) is speed of light):",
+  "image_url": "",
+  "options": [
+    "\\( \\frac{c\\sqrt{2m}}{E} \\)",
+    "\\( \\frac{1}{c} \\sqrt{\\frac{E}{2m}} \\)",
+    "\\( \\sqrt{\\frac{E}{2m}} \\)",
+    "\\( c\\sqrt{2mE} \\)"
+  ],
+  "correct_answer": "A",
+  "explanation": "For photon: \\( E = \\frac{hc}{\\lambda_p} \\Rightarrow \\lambda_p = \\frac{hc}{E} \\).\n\nFor electron: \\( E = \\frac{p^2}{2m} = \\frac{h^2}{2m\\lambda_e^2} \\Rightarrow \\lambda_e = \\frac{h}{\\sqrt{2mE}} \\).\n\nThus, \\( \\frac{\\lambda_p}{\\lambda_e} = \\frac{hc/E}{h/\\sqrt{2mE}} = \\frac{c\\sqrt{2m}}{E} \\)."
+},
+{
+  "id": "q36",
+  "subject": "Physics",
+  "topic": "Rotational Motion",
+  "difficulty": "Medium",
+  "question_text": "A sphere of radius \\( R \\) is removed from a larger solid sphere of radius \\( 2R \\). The ratio of the moment of inertia of the smaller sphere to that of the remaining part about the Y-axis is:",
+  "image_url": "https://res.cloudinary.com/dmmacwuow/image/upload/v1776787811/phy_q36_htpmwq.png",
+  "options": [
+    "\\( \\frac{7}{57} \\)",
+    "\\( \\frac{7}{64} \\)",
+    "\\( \\frac{7}{8} \\)",
+    "\\( \\frac{7}{40} \\)"
+  ],
+  "correct_answer": "A",
+  "explanation": "Moment of inertia of full sphere: \\( I_{\\text{whole}} = \\frac{2}{5}M(2R)^2 = \\frac{8}{5}MR^2 \\).\n\nUsing density relation: \\( M' = \\frac{M}{8} \\).\n\nUsing parallel axis theorem: \\( I' = \\frac{2}{5}M'R^2 + M'R^2 = \\frac{7}{40}MR^2 \\).\n\nRemaining part: \\( I_{\\text{rem}} = I_{\\text{whole}} - I' = \\left( \\frac{8}{5} - \\frac{7}{40} \\right)MR^2 = \\frac{57}{40}MR^2 \\).\n\nRatio: \\( \\frac{I'}{I_{\\text{rem}}} = \\frac{7}{57} \\)."
+},
+{
+  "id": "q37",
+  "subject": "Physics",
+  "topic": "Electromagnetism",
+  "difficulty": "Medium",
+  "question_text": "An electron (mass \\( 9 \\times 10^{-31} \\, kg \\), charge \\( 1.6 \\times 10^{-19} \\, C \\)) moves with speed \\( \\frac{c}{100} \\) in a magnetic field \\( B = 9 \\times 10^{-4} \\, T \\) perpendicular to its motion. To ensure no deflection, an electric field \\( \\vec{E} \\) must be applied. Then:",
+  "image_url": "",
+  "options": [
+    "\\( \\vec{E} \\parallel \\vec{B}, \\; E = 27 \\times 10^2 \\, V/m \\)",
+    "\\( \\vec{E} \\parallel \\vec{B}, \\; E = 27 \\times 10^4 \\, V/m \\)",
+    "\\( \\vec{E} \\perp \\vec{B}, \\; E = 27 \\times 10^4 \\, V/m \\)",
+    "\\( \\vec{E} \\perp \\vec{B}, \\; E = 27 \\times 10^2 \\, V/m \\)"
+  ],
+  "correct_answer": "D",
+  "explanation": "For no deflection: \\( eE = evB \\Rightarrow E = vB \\).\n\n\\( v = \\frac{c}{100} = \\frac{3 \\times 10^8}{100} \\).\n\nThus: \\( E = \\frac{3 \\times 10^8}{100} \\times 9 \\times 10^{-4} = 27 \\times 10^2 \\, V/m \\).\n\nDirection: \\( \\vec{E} = \\vec{v} \\times \\vec{B} \\Rightarrow \\vec{E} \\perp \\vec{B} \\)."
+},
+{
+  "id": "q38",
+  "subject": "Physics",
+  "topic": "Electromagnetic Waves",
+  "difficulty": "Medium",
+  "question_text": "The electric field of a plane electromagnetic wave is given by \\( E_z = 60 \\cos(5x + 1.5 \\times 10^9 t) \\, V/m \\). The corresponding magnetic field is:",
+  "image_url": "",
+  "options": [
+    "\\( B_z = 60 \\cos(5x + 1.5 \\times 10^9 t) \\, T \\)",
+    "\\( B_y = 60 \\sin(5x + 1.5 \\times 10^9 t) \\, T \\)",
+    "\\( B_y = 2 \\times 10^{-7} \\cos(5x + 1.5 \\times 10^9 t) \\, T \\)",
+    "\\( B_x = 2 \\times 10^{-7} \\cos(5x + 1.5 \\times 10^9 t) \\, T \\)"
+  ],
+  "correct_answer": "C",
+  "explanation": "In EM wave: \\( B_0 = \\frac{E_0}{c} \\).\n\n\\( B_0 = \\frac{60}{3 \\times 10^8} = 2 \\times 10^{-7} \\, T \\).\n\nE and B are in phase and perpendicular; hence direction is along y-axis.\n\nThus: \\( B_y = 2 \\times 10^{-7} \\cos(5x + 1.5 \\times 10^9 t) \\)."
+},
+{
+  "id": "q39",
+  "subject": "Physics",
+  "topic": "Gravitation",
+  "difficulty": "Medium",
+  "question_text": "A body weighs \\( 48 \\, N \\) on the surface of the Earth. The gravitational force experienced by the body at a height equal to one-third the Earth's radius above the surface is:",
+  "image_url": "",
+  "options": [
+    "32 N",
+    "36 N",
+    "16 N",
+    "27 N"
+  ],
+  "correct_answer": "D",
+  "explanation": "Weight varies as \\( \\frac{1}{(R+h)^2} \\). Thus: \\( \\frac{W_h}{W} = \\frac{R^2}{(R+h)^2} \\).\n\nGiven \\( h = \\frac{R}{3} \\): \\( \\frac{W_h}{W} = \\frac{R^2}{(\\frac{4R}{3})^2} = \\frac{9}{16} \\).\n\nHence: \\( W_h = \\frac{9}{16} \\times 48 = 27 \\, N \\)."
+},
+{
+  "id": "q40",
+  "subject": "Physics",
+  "topic": "Optics",
+  "difficulty": "Medium",
+  "question_text": "An unpolarized light beam in air is incident on a medium of refractive index \\( 1.73 \\) at Brewster's angle. Then:",
+  "image_url": "https://res.cloudinary.com/dmmacwuow/image/upload/v1776787812/phy_q40_rbrphv.png",
+  "options": [
+    "Both reflected and transmitted light are perfectly polarized with angles about \\( 60^\\circ \\) and \\( 30^\\circ \\)",
+    "Transmitted light is completely polarized with angle of refraction about \\( 30^\\circ \\)",
+    "Reflected light is completely polarized and the angle of reflection is about \\( 60^\\circ \\)",
+    "Reflected light is partially polarized and angle of reflection is about \\( 30^\\circ \\)"
+  ],
+  "correct_answer": "C",
+  "explanation": "Using Brewster's law: \\( \\mu = \\tan\\theta_p \\Rightarrow 1.73 = \\tan\\theta_p \\Rightarrow \\theta_p = 60^\\circ \\).\n\nAt Brewster angle, reflected light is completely polarized, while transmitted light is partially polarized."
+},
+{
+  "id": "q41",
+  "subject": "Physics",
+  "topic": "Current Electricity",
+  "difficulty": "Medium",
+  "question_text": "A constant voltage of \\( 50 \\, V \\) is applied across points \\( A \\) and \\( B \\) of a circuit. The current through branch \\( CD \\) is:",
+  "image_url": "https://res.cloudinary.com/dmmacwuow/image/upload/v1776787812/phy_q41_bpbpdd.png",
+  "options": [
+    "2.5 A",
+    "3.0 A",
+    "1.5 A",
+    "2.0 A"
+  ],
+  "correct_answer": "D",
+  "explanation": "Equivalent resistance: \\( R_{AB} = \\frac{3 \\times 1}{3+1} + \\frac{2 \\times 4}{2+4} = \\frac{3}{4} + \\frac{8}{6} = \\frac{25}{12} \\ \\Omega \\).\n\nTotal current: \\( I = \\frac{50}{25/12} = 24 \\, A \\).\n\nCurrents split: \\( I_{1\\Omega} = 18A, I_{3\\Omega} = 6A \\), \\( I_{2\\Omega} = 16A, I_{4\\Omega} = 8A \\).\n\nUsing junction rule: \\( I_{CD} = 18 - 16 = 2 \\, A \\)."
+},
+{
+  "id": "q42",
+  "subject": "Physics",
+  "topic": "Electrostatics",
+  "difficulty": "Medium",
+  "question_text": "A parallel plate capacitor of plate separation \\( d \\) contains dielectric slabs of thickness \\( \\frac{3d}{8} \\) and \\( \\frac{d}{2} \\) with dielectric constants \\( K_1 \\) and \\( K_2 \\) respectively. The capacitance becomes twice the original. If \\( K_1 = 1.25 K_2 \\), then the value of \\( K_1 \\) is:",
+  "image_url": "",
+  "options": [
+    "1.60",
+    "1.33",
+    "2.66",
+    "2.33"
+  ],
+  "correct_answer": "C",
+  "explanation": "For series dielectric: \\( C = \\frac{\\varepsilon_0 A}{\\frac{t_1}{K_1} + \\frac{t_2}{K_2} + t_3} \\).\n\nGiven: \\( C = 2C_0 = \\frac{2\\varepsilon_0 A}{d} \\).\n\nSubstitute values: \\( \\frac{3d}{8K_1} + \\frac{d}{2K_2} + \\frac{d}{8} \\).\n\nUsing \\( K_1 = 1.25 K_2 \\), solving gives: \\( K_1 = \\frac{8}{3} \\approx 2.66 \\)."
+},
+{
+  "id": "q43",
+  "subject": "Physics",
+  "topic": "Measurements",
+  "difficulty": "Medium",
+  "question_text": "The diameter of a spherical object is measured using a Vernier calipers. 10 VSD = 9 MSD and 1 MSD = 0.1 cm. The zero of V.S. is at \\( x = 0.1 \\, cm \\) when jaws are closed. If main scale reading \\( M = 5 \\, cm \\) and 8th Vernier division coincides, the corrected diameter is:",
+  "image_url": "",
+  "options": [
+    "4.98 cm",
+    "5.00 cm",
+    "5.18 cm",
+    "5.08 cm"
+  ],
+  "correct_answer": "A",
+  "explanation": "Least count: \\( LC = 1\\,MSD - 1\\,VSD = \\frac{1}{10}MSD = 0.01 \\, cm \\).\n\nVernier reading: \\( 8 \\times 0.01 = 0.08 \\, cm \\).\n\nObserved reading: \\( 5 + 0.08 = 5.08 \\, cm \\).\n\nZero error: \\( +0.1 \\, cm \\Rightarrow \\) subtract it.\n\nFinal reading: \\( 5.08 - 0.1 = 4.98 \\, cm \\)."
+},
+{
+  "id": "q44",
+  "subject": "Physics",
+  "topic": "Magnetism",
+  "difficulty": "Medium",
+  "question_text": "A current of \\( 2 \\, A \\) flows through two circular coils of radii in the ratio \\( 1:2 \\). The ratio of their magnetic moments is:",
+  "image_url": "",
+  "options": [
+    "2:1",
+    "4:1",
+    "1:4",
+    "1:2"
+  ],
+  "correct_answer": "C",
+  "explanation": "Magnetic moment: \\( M = IA \\), and \\( A = \\pi r^2 \\).\n\nThus: \\( \\frac{M_1}{M_2} = \\frac{r_1^2}{r_2^2} = \\left( \\frac{1}{2} \\right)^2 = \\frac{1}{4} \\)."
+},
+{
+  "id": "q45",
+  "subject": "Physics",
+  "topic": "Fluid Mechanics",
+  "difficulty": "Medium",
+  "question_text": "Consider a liquid surface near a wall making a small angle \\( \\theta_0 \\) with the horizontal. If \\( y(x) \\) is the height of the surface and \\( \\theta(x) = \\frac{dy}{dx} \\), then the governing equation is:",
+  "image_url": "https://res.cloudinary.com/dmmacwuow/image/upload/v1776787813/phy_q45_wu8i7n.png",
+  "options": [
+    "\\( \\frac{d^2 y}{dx^2} = \\sqrt{\\frac{\\rho g}{S}} \\)",
+    "\\( \\frac{dy}{dx} = \\sqrt{\\frac{\\rho g}{S}} x \\)",
+    "\\( \\frac{d^2 y}{dx^2} = \\frac{\\rho g}{S} x \\)",
+    "\\( \\frac{d^2 y}{dx^2} = \\frac{\\rho g}{S} y \\)"
+  ],
+  "correct_answer": "D",
+  "explanation": "Curvature: \\( \\frac{1}{R} = \\frac{d^2y}{dx^2} \\) (small slope assumption).\n\nPressure difference: \\( \\Delta P = S \\times \\text{curvature} \\).\n\nHydrostatic pressure: \\( \\rho g y \\).\n\nThus: \\( \\rho g y = S \\frac{d^2 y}{dx^2} \\Rightarrow \\frac{d^2 y}{dx^2} = \\frac{\\rho g}{S} y \\)."
+},
+{
+  "id": "q46",
+  "subject": "Chemistry",
+  "topic": "Organic Chemistry",
+  "difficulty": "Medium",
+  "question_text": "Identify the suitable reagent for the following conversion (reduction of an ester to an aldehyde):",
+  "image_url": "https://res.cloudinary.com/dmmacwuow/image/upload/v1776817463/chem_q46_yxljjw.png",
+  "options": [
+    "\\( (i) \\; NaBH_4, \\; (ii) \\; H^+/H_2O \\)",
+    "\\( H_2/Pd{-}BaSO_4 \\)",
+    "\\( (i) \\; LiAlH_4, \\; (ii) \\; H^+/H_2O \\)",
+    "\\( (i) \\; AlH(iBu)_2 \\; (DIBAL{-}H), \\; (ii) \\; H_2O \\)"
+  ],
+  "correct_answer": "D",
+  "explanation": "DIBAL-H \\( (AlH(iBu)_2) \\) selectively reduces esters to aldehydes at low temperature. Other reagents like \\( LiAlH_4 \\) reduce esters completely to alcohols."
+},
+{
+  "id": "q47",
+  "subject": "Chemistry",
+  "topic": "Organic Chemistry",
+  "difficulty": "Medium",
+  "question_text": "The correct order of decreasing acidity of the following aliphatic acids is:",
+  "image_url": "",
+  "options": [
+    "\\( HCOOH > CH_3COOH > (CH_3)_2CHCOOH > (CH_3)_3CCOOH \\)",
+    "\\( HCOOH > (CH_3)_3CCOOH > (CH_3)_2CHCOOH > CH_3COOH \\)",
+    "\\( (CH_3)_3CCOOH > (CH_3)_2CHCOOH > CH_3COOH > HCOOH \\)",
+    "\\( CH_3COOH > (CH_3)_2CHCOOH > (CH_3)_3CCOOH > HCOOH \\)"
+  ],
+  "correct_answer": "A",
+  "explanation": "Electron donating alkyl groups decrease acidity by destabilizing the carboxylate ion. Hence, fewer alkyl groups → stronger acid. Order: \\( HCOOH > CH_3COOH > (CH_3)_2CHCOOH > (CH_3)_3CCOOH \\)."
+},
+{
+  "id": "q48",
+  "subject": "Chemistry",
+  "topic": "Organic Chemistry",
+  "difficulty": "Medium",
+  "question_text": "Which one of the following reactions does NOT belong to Lassaigne's test?",
+  "image_url": "",
+  "options": [
+    "\\( Na + X \\xrightarrow{\\Delta} NaX \\)",
+    "\\( 2CuO + C \\xrightarrow{\\Delta} 2Cu + CO_2 \\)",
+    "\\( Na + C + N \\xrightarrow{\\Delta} NaCN \\)",
+    "\\( 2Na + S \\xrightarrow{\\Delta} Na_2S \\)"
+  ],
+  "correct_answer": "B",
+  "explanation": "Lassaigne's test detects N, S, halogens, and P by converting them into ionic compounds: \\( NaCN, Na_2S, NaX \\). The CuO reaction is not part of this test."
+},
+{
+  "id": "q49",
+  "subject": "Chemistry",
+  "topic": "Chemical Kinetics",
+  "difficulty": "Medium",
+  "question_text": "If the rate constant of a reaction is \\( 0.03 \\, s^{-1} \\), how much time is required for concentration to decrease from \\( 7.2 \\, mol\\,L^{-1} \\) to \\( 0.9 \\, mol\\,L^{-1} \\)? (Given: \\( \\log 2 = 0.301 \\))",
+  "image_url": "",
+  "options": [
+    "210 s",
+    "21.0 s",
+    "69.3 s",
+    "23.1 s"
+  ],
+  "correct_answer": "C",
+  "explanation": "First-order reaction: \\( t = \\frac{2.303}{k} \\log\\frac{a}{a-x} \\).\n\n\\( t = \\frac{2.303}{0.03} \\log\\frac{7.2}{0.9} = \\frac{2.303}{0.03} \\log 8 \\).\n\n\\( \\log 8 = 3\\log 2 = 3 \\times 0.301 = 0.903 \\).\n\nThus: \\( t = \\frac{2.303}{0.03} \\times 0.903 = 69.3 \\, s \\)."
+},
+{
+  "id": "q50",
+  "subject": "Chemistry",
+  "topic": "Chemical Bonding",
+  "difficulty": "Medium",
+  "question_text": "Given the statements:\nStatement I: A diatomic molecule with bond order zero is stable.\nStatement II: As bond order increases, bond length increases.\nChoose the correct option:",
+  "image_url": "",
+  "options": [
+    "Statement I is true, Statement II is false",
+    "Statement I is false, Statement II is true",
+    "Both are true",
+    "Both are false"
+  ],
+  "correct_answer": "D",
+  "explanation": "Bond order zero means unstable molecule → Statement I is false. As bond order increases, bond length decreases → Statement II is false."
+},
+{
+  "id": "q51",
+  "subject": "Chemistry",
+  "topic": "Coordination Compounds",
+  "difficulty": "Medium",
+  "question_text": "Out of the following complex compounds, which compound(s) will have minimum conductance in solution?",
+  "image_url": "",
+  "options": [
+    "\\( [Co(NH_3)_6]Cl_3 \\)",
+    "\\( [Co(NH_3)_5Cl]Cl \\)",
+    "\\( [Co(NH_3)_3Cl_3] \\)",
+    "\\( [Co(NH_3)_4Cl_2] \\)"
+  ],
+  "correct_answer": "C,D",
+  "explanation": "Conductance depends on number of ions formed.\n\n(1) \\( [Co(NH_3)_6]Cl_3 \\rightarrow [Co(NH_3)_6]^{3+} + 3Cl^- \\) → 4 ions\n(2) \\( [Co(NH_3)_5Cl]Cl \\rightarrow [Co(NH_3)_5Cl]^+ + Cl^- \\) → 2 ions\n(3) \\( [Co(NH_3)_3Cl_3] \\) → no ionization\n(4) \\( [Co(NH_3)_4Cl_2] \\) → no ionization\n\nThus, (3) and (4) give minimum conductance."
+},
+{
+  "id": "q52",
+  "subject": "Chemistry",
+  "topic": "Solutions",
+  "difficulty": "Medium",
+  "question_text": "Which of the following aqueous solutions will exhibit the highest boiling point?",
+  "image_url": "",
+  "options": [
+    "\\( 0.01 \\, M \\, Na_2SO_4 \\)",
+    "\\( 0.015 \\, M \\, C_6H_{12}O_6 \\)",
+    "\\( 0.01 \\, M \\, \\text{Urea} \\)",
+    "\\( 0.01 \\, M \\, KNO_3 \\)"
+  ],
+  "correct_answer": "A",
+  "explanation": "Boiling point elevation: \\( \\Delta T_b = iK_b m \\Rightarrow \\Delta T_b \\propto i \\times m \\).\n\n(1) \\( Na_2SO_4: i = 3 \\Rightarrow 3 \\times 0.01 = 0.03 \\)\n(2) Glucose: \\( i = 1 \\Rightarrow 0.015 \\)\n(3) Urea: \\( i = 1 \\Rightarrow 0.01 \\)\n(4) \\( KNO_3: i = 2 \\Rightarrow 0.02 \\)\n\nHighest \\( i \\times m \\) → highest boiling point → option (1)."
+},
+{
+  "id": "q53",
+  "subject": "Chemistry",
+  "topic": "Organic Chemistry",
+  "difficulty": "Medium",
+  "question_text": "Given the following statements:\nAssertion (A): (Img 1) undergoes \\( S_N2 \\) reaction faster than (Img 2).\nReason (R): Iodine is a better leaving group because of its large size.\nChoose the correct option:",
+  "image_url": "",
+  "options": [
+    "A is true but R is false",
+    "A is false but R is true",
+    "Both A and R are true and R is the correct explanation of A",
+    "Both A and R are true but R is not the correct explanation of A"
+  ],
+  "correct_answer": "C",
+  "explanation": "In \\( S_N2 \\) reactions, better leaving groups increase reaction rate. Iodine, due to its large size, stabilizes the negative charge effectively, making \\( I^- \\) a very good leaving group. Hence, both Assertion and Reason are true, and the Reason correctly explains the Assertion."
+},
+{
+  "id": "q54",
+  "subject": "Chemistry",
+  "topic": "Redox Reactions",
+  "difficulty": "Medium",
+  "question_text": "Consider the following compounds: \\( KO_2, \\; H_2O_2 \\) and \\( H_2SO_4 \\). The oxidation states of the underlined elements in them are respectively:",
+  "image_url": "",
+  "options": [
+    "\\( +1, -2, +4 \\)",
+    "\\( +4, -4, +6 \\)",
+    "\\( +1, -1, +6 \\)",
+    "\\( +2, -2, +6 \\)"
+  ],
+  "correct_answer": "C",
+  "explanation": "In \\( KO_2 \\), potassium (alkali metal) has oxidation state \\( +1 \\).\n\nIn \\( H_2O_2 \\) (peroxide), oxygen has oxidation state \\( -1 \\).\n\nIn \\( H_2SO_4 \\), sulfur has oxidation state \\( +6 \\).\n\nThus, correct set is \\( +1, -1, +6 \\)."
+},
+{
+  "id": "q55",
+  "subject": "Chemistry",
+  "topic": "Coordination Chemistry",
+  "difficulty": "Medium",
+  "question_text": "Match List-I with List-II:\n\nList-I:\nA. Haber process\nB. Wacker oxidation\nC. Wilkinson catalyst\nD. Ziegler catalyst\n\nList-II:\nI. Fe catalyst\nII. PdCl_2\nIII. \\( [(PPh_3)_3RhCl] \\)\nIV. \\( TiCl_4 \\) with \\( Al(CH_3)_3 \\)\n\nChoose the correct match:",
+  "image_url": "",
+  "options": [
+    "A-I, B-II, C-III, D-IV",
+    "A-I, B-IV, C-III, D-II",
+    "A-I, B-II, C-IV, D-III",
+    "A-II, B-III, C-I, D-IV"
+  ],
+  "correct_answer": "A",
+  "explanation": "Haber process uses Fe catalyst. Wacker oxidation uses \\( PdCl_2 \\). Wilkinson catalyst is \\( [(PPh_3)_3RhCl] \\). Ziegler catalyst involves \\( TiCl_4 \\) with \\( Al(CH_3)_3 \\). Hence, A-I, B-II, C-III, D-IV."
+},
+{
+  "id": "q56",
+  "subject": "Chemistry",
+  "topic": "p-Block Elements",
+  "difficulty": "Medium",
+  "question_text": "Given the statements:\nStatement I: Like nitrogen forming ammonia, arsenic can form arsine.\nStatement II: Antimony cannot form antimony pentoxide.\nChoose the correct option:",
+  "image_url": "",
+  "options": [
+    "Statement I is correct but Statement II is incorrect",
+    "Statement I is incorrect but Statement II is correct",
+    "Both Statement I and Statement II are correct",
+    "Both Statement I and Statement II are incorrect"
+  ],
+  "correct_answer": "A",
+  "explanation": "Group 15 elements form hydrides of type \\( EH_3 \\). Nitrogen forms \\( NH_3 \\), arsenic forms \\( AsH_3 \\) → Statement I is correct.\n\nGroup 15 elements also form oxides \\( E_2O_3 \\) and \\( E_2O_5 \\). Antimony forms \\( Sb_2O_5 \\), so Statement II is incorrect."
+},
+{
+  "id": "q57",
+  "subject": "Chemistry",
+  "topic": "Coordination Chemistry",
+  "difficulty": "Medium",
+  "question_text": "Given the statements:\nStatement I: Ferromagnetism is an extreme form of paramagnetism.\nStatement II: The number of unpaired electrons in \\( Cr^{2+} \\) (Z = 24) is the same as in \\( Nd^{3+} \\) (Z = 60).\nChoose the correct option:",
+  "image_url": "",
+  "options": [
+    "Statement I is true but Statement II is false",
+    "Statement I is false but Statement II is true",
+    "Both Statement I and Statement II are true",
+    "Both Statement I and Statement II are false"
+  ],
+  "correct_answer": "A",
+  "explanation": "Ferromagnetism is indeed an extreme form of paramagnetism → Statement I is true.\n\n\\( Cr^{2+}: [Ar]3d^4 \\) → 4 unpaired electrons.\n\\( Nd^{3+}: [Xe]4f^3 \\) → 3 unpaired electrons.\n\nHence, Statement II is false."
+},
+{
+  "id": "q58",
+  "subject": "Chemistry",
+  "topic": "Organic Chemistry",
+  "difficulty": "Medium",
+  "question_text": "Which one of the following reactions does NOT give benzene as the product?",
+  "image_url": "https://res.cloudinary.com/dmmacwuow/image/upload/v1776817464/chem_q58_mfsrgx.png",
+  "options": [
+    "Option 1",
+    "Option 2",
+    "Option 3",
+    "Option 4"
+  ],
+  "correct_answer": "B",
+  "explanation": "Among the given reactions, only option (2) does not lead to the formation of benzene, while others involve reactions like decarboxylation or reduction that produce benzene."
+},
+{
+  "id": "q59",
+  "subject": "Chemistry",
+  "topic": "Chemical Bonding",
+  "difficulty": "Medium",
+  "question_text": "Match List-I with List-II:\n\nList-I:\nA. \\( XeO_3 \\)\nB. \\( XeF_2 \\)\nC. \\( XeOF_4 \\)\nD. \\( XeF_6 \\)\n\nList-II:\nI. \\( sp^3d \\); linear\nII. \\( sp^3 \\); pyramidal\nIII. \\( sp^3d^3 \\); distorted octahedral\nIV. \\( sp^3d^2 \\); square pyramidal\n\nChoose the correct match:",
+  "image_url": "",
+  "options": [
+    "A-IV, B-II, C-III, D-I",
+    "A-IV, B-II, C-I, D-III",
+    "A-II, B-I, C-IV, D-III",
+    "A-II, B-I, C-III, D-IV"
+  ],
+  "correct_answer": "C",
+  "explanation": "\\( XeO_3 \\) has \\( sp^3 \\) hybridization with pyramidal shape.\n\\( XeF_2 \\) has \\( sp^3d \\) hybridization with linear shape.\n\\( XeOF_4 \\) has \\( sp^3d^2 \\) hybridization with square pyramidal shape.\n\\( XeF_6 \\) has \\( sp^3d^3 \\) hybridization with distorted octahedral shape.\n\nThus, A-II, B-I, C-IV, D-III."
+},
+{
+  "id": "q60",
+  "subject": "Chemistry",
+  "topic": "Organic Chemistry",
+  "difficulty": "Medium",
+  "question_text": "How many products (including stereoisomers) are expected from monochlorination of the given compound \\( (CH_3)_2CH{-}CH_2{-}CH_3 \\)?",
+  "image_url": "https://res.cloudinary.com/dmmacwuow/image/upload/v1776817464/chem_q60_vfke5k.png",
+  "options": [
+    "5",
+    "6",
+    "2",
+    "3"
+  ],
+  "correct_answer": "C",
+  "explanation": "Monochlorination can occur at different positions:\n\n1. Terminal \\( CH_3 \\) → 1 product\n2. Secondary carbon \\( CH \\) → forms chiral center → 2 stereoisomers\n3. Primary \\( CH_2 \\) group → 1 product\n4. Another position giving chiral center → 2 stereoisomers\n\nTotal possible structural + stereoisomers = 6, but due to symmetry equivalence, distinct products reduce to 2."
+},
+{
+  "id": "q61",
+  "subject": "Chemistry",
+  "topic": "Periodic Table",
+  "difficulty": "Medium",
+  "question_text": "Which of the following statements are true?\n\nA. Unlike Ga that has a very high melting point, Cs has a very low melting point.\nB. On Pauling scale, electronegativity values of N and Cl are not the same.\nC. \\( Ar, K^+, Cl^-, Ca^{2+}, S^{2-} \\) are isoelectronic species.\nD. Correct order of first ionization enthalpy: \\( Si > Al > Mg > Na \\).\nE. Atomic radius of Cs is greater than Li and Rb.\n\nChoose the correct option:",
+  "image_url": "",
+  "options": [
+    "C and D only",
+    "A, C, and E only",
+    "A, B, and E only",
+    "C and E only"
+  ],
+  "correct_answer": "D",
+  "explanation": "A is false: Both Ga and Cs have low melting points.\nB is false: N and Cl have similar electronegativity (~3.0).\nC is true: All have 18 electrons → isoelectronic.\nD is false: Correct order is \\( Si > Mg > Al > Na \\).\nE is true: Atomic radius increases down the group → Cs > Rb > Li.\n\nThus, correct statements are C and E."
+},
+{
+  "id": "q62",
+  "subject": "Chemistry",
+  "topic": "Thermochemistry",
+  "difficulty": "Medium",
+  "question_text": "The standard heat of formation (in kcal/mol) of \\( Ba^{2+} \\) is given:\n\n\\( \\Delta H_f(SO_4^{2-}) = -216 \\, kcal/mol \\)\n\\( \\Delta H_{cryst}(BaSO_4) = -4.5 \\, kcal/mol \\)\n\\( \\Delta H_f(BaSO_4) = -349 \\, kcal/mol \\)\n\nFind \\( \\Delta H_f(Ba^{2+}) \\):",
+  "image_url": "",
+  "options": [
+    "+133.0",
+    "+220.5",
+    "-128.5",
+    "-133.0"
+  ],
+  "correct_answer": "C",
+  "explanation": "Using Hess's law:\n\n\\( \\Delta H_f(Ba^{2+}) = \\Delta H_f(BaSO_4) - \\Delta H_f(SO_4^{2-}) - \\Delta H_{cryst} \\)\n\n\\( = -349 - (-216) - (-4.5) \\)\n\n\\( = -349 + 216 + 4.5 = -128.5 \\, kcal/mol \\)."
+},
+{
+  "id": "q63",
+  "subject": "Chemistry",
+  "topic": "Solutions",
+  "difficulty": "Medium",
+  "question_text": "Match List-I with List-II:\n\nList-I (Example):\nA. Humidity\nB. Alloys\nC. Amalgams\nD. Smoke\n\nList-II (Type of Solution):\nI. Solid in solid\nII. Liquid in gas\nIII. Solid in gas\nIV. Liquid in solid\n\nChoose the correct match:",
+  "image_url": "",
+  "options": [
+    "A-III, B-I, C-IV, D-II",
+    "A-III, B-II, C-I, D-IV",
+    "A-II, B-IV, C-I, D-III",
+    "A-II, B-I, C-IV, D-III"
+  ],
+  "correct_answer": "D",
+  "explanation": "Humidity → liquid in gas.\nAlloys → solid in solid.\nAmalgams → liquid in solid.\nSmoke → solid in gas.\n\nThus, A-II, B-I, C-IV, D-III."
+},
+{
+  "id": "q64",
+  "subject": "Chemistry",
+  "topic": "Thermochemistry",
+  "difficulty": "Medium",
+  "question_text": "For the reaction \\( C(s) + 2H_2(g) \\rightarrow CH_4(g) \\), \\( \\Delta H = -74.8 \\, kJ\\,mol^{-1} \\). Which diagram correctly represents this reaction?",
+  "image_url": "https://res.cloudinary.com/dmmacwuow/image/upload/v1776817464/chem_q64_eone2u.png",
+  "options": [
+    "Option 1",
+    "Option 2",
+    "Option 3",
+    "Option 4"
+  ],
+  "correct_answer": "C",
+  "explanation": "Since \\( \\Delta H < 0 \\), the reaction is exothermic. Products have lower energy than reactants, so the correct diagram shows energy decreasing from reactants to products."
+},
+{
+  "id": "q65",
+  "subject": "Chemistry",
+  "topic": "Biomolecules",
+  "difficulty": "Medium",
+  "question_text": "Sugar 'X' has the following properties:\nA. Found in honey\nB. Keto sugar\nC. Exists in \\( \\alpha \\) and \\( \\beta \\) anomeric forms\nD. Is laevorotatory\n\nIdentify 'X':",
+  "image_url": "",
+  "options": [
+    "Maltose",
+    "Sucrose",
+    "D-Glucose",
+    "D-Fructose"
+  ],
+  "correct_answer": "D",
+  "explanation": "D-Fructose is a keto sugar, present in honey, shows optical activity (laevorotatory), and exists in \\( \\alpha \\) and \\( \\beta \\) forms."
+},
+{
+  "id": "q66",
+  "subject": "Chemistry",
+  "topic": "Isomerism",
+  "difficulty": "Medium",
+  "question_text": "Total number of possible isomers (both structural as well as stereoisomers) of cyclic ethers with molecular formula \\( C_4H_8O \\) is:",
+  "image_url": "",
+  "options": [
+    "10",
+    "11",
+    "6",
+    "8"
+  ],
+  "correct_answer": "A",
+  "explanation": "For cyclic ethers, oxygen must be part of the ring. Possible ring structures include three-membered, four-membered, and five-membered rings with different substitutions.\n\nSome structures contain chiral centers giving enantiomeric pairs, while some give meso forms.\n\nCounting all structural and stereoisomers:\n\\( 2 + 1 + 1 + 1 + 2 + 1 + 2 = 10 \\).\n\nHence, total isomers = 10."
+},
+{
+  "id": "q67",
+  "subject": "Chemistry",
+  "topic": "Chemical Equilibrium",
+  "difficulty": "Medium",
+  "question_text": "For the reaction \\( A(g) \\rightleftharpoons 2B(g) \\), the backward rate constant is 2500 times the forward rate constant at 1000 K. Given \\( R = 0.0831 \\, L\\,atm\\,mol^{-1}\\,K^{-1} \\), the value of \\( K_p \\) is:",
+  "image_url": "",
+  "options": [
+    "0.033",
+    "0.021",
+    "83.1",
+    "\\( 2.077 \\times 10^5 \\)"
+  ],
+  "correct_answer": "A",
+  "explanation": "Equilibrium constant: \\( K_c = \\frac{k_f}{k_b} = \\frac{1}{2500} \\).\n\n\\( K_p = K_c (RT)^{\\Delta n} \\), where \\( \\Delta n = 2 - 1 = 1 \\).\n\n\\( K_p = \\frac{1}{2500} \\times 0.0831 \\times 1000 = 0.033 \\)."
+},
+{
+  "id": "q68",
+  "subject": "Physics",
+  "topic": "Atomic Physics",
+  "difficulty": "Medium",
+  "question_text": "The ratio of wavelengths absorbed by a hydrogen atom for transitions \\( n=2 \\to 3 \\) and \\( n=4 \\to 6 \\) is:",
+  "image_url": "",
+  "options": [
+    "\\( \\frac{1}{9} \\)",
+    "\\( \\frac{1}{4} \\)",
+    "\\( \\frac{1}{36} \\)",
+    "\\( \\frac{1}{16} \\)"
+  ],
+  "correct_answer": "B",
+  "explanation": "Using energy difference: \\( \\Delta E = \\frac{hc}{\\lambda} = E_f - E_i \\), with \\( E_n = -\\frac{R_H}{n^2} \\).\n\nFor \\( 2 \\to 3 \\): \\( \\Delta E \\propto \\left( \\frac{1}{4} - \\frac{1}{9} \\right) = \\frac{5}{36} \\).\n\nFor \\( 4 \\to 6 \\): \\( \\Delta E \\propto \\left( \\frac{1}{16} - \\frac{1}{36} \\right) = \\frac{20}{576} \\).\n\nTaking ratio \\( \\frac{\\lambda_{2\\to3}}{\\lambda_{4\\to6}} = \\frac{1}{4} \\)."
+},
+{
+  "id": "q69",
+  "subject": "Chemistry",
+  "topic": "Electrochemistry",
+  "difficulty": "Medium",
+  "question_text": "If molar conductivity \\( \\Lambda_m \\) of a \\( 0.050 \\, mol\\,L^{-1} \\) solution of a monobasic weak acid is \\( 90 \\, S\\,cm^2\\,mol^{-1} \\), its degree of dissociation is (Given: \\( \\Lambda_+^\\circ = 349.6 \\), \\( \\Lambda_-^\\circ = 50.4 \\)):",
+  "image_url": "",
+  "options": [
+    "0.225",
+    "0.215",
+    "0.115",
+    "0.125"
+  ],
+  "correct_answer": "A",
+  "explanation": "Limiting molar conductivity: \\( \\Lambda_m^\\circ = \\Lambda_+^\\circ + \\Lambda_-^\\circ = 349.6 + 50.4 = 400 \\).\n\nDegree of dissociation: \\( \\alpha = \\frac{\\Lambda_m}{\\Lambda_m^\\circ} = \\frac{90}{400} = 0.225 \\)."
+},
+{
+  "id": "q70",
+  "subject": "Chemistry",
+  "topic": "Solutions",
+  "difficulty": "Medium",
+  "question_text": "5 moles of liquid X and 10 moles of liquid Y form a solution with vapour pressure 70 torr. Vapour pressures of pure X and Y are 63 torr and 78 torr respectively. Which statement is correct?",
+  "image_url": "",
+  "options": [
+    "The solution is ideal",
+    "The solution has volume greater than sum of components",
+    "The solution shows positive deviation",
+    "The solution shows negative deviation"
+  ],
+  "correct_answer": "D",
+  "explanation": "Ideal vapour pressure: \\( P = X_X P_X^\\circ + X_Y P_Y^\\circ \\).\n\n\\( = \\frac{5}{15} \\times 63 + \\frac{10}{15} \\times 78 = 21 + 52 = 73 \\, torr \\).\n\nObserved = 70 torr < 73 torr → negative deviation."
+},
+{
+  "id": "q71",
+  "subject": "Chemistry",
+  "topic": "Mole Concept",
+  "difficulty": "Medium",
+  "question_text": "Among the following, choose the ones having equal number of atoms:\n\nA. \\( 212 \\, g \\) of \\( Na_2CO_3 \\) (molar mass = 106 g/mol)\nB. \\( 248 \\, g \\) of \\( Na_2O \\) (molar mass = 62 g/mol)\nC. \\( 240 \\, g \\) of \\( NaOH \\) (molar mass = 40 g/mol)\nD. \\( 12 \\, g \\) of \\( H_2 \\) (molar mass = 2 g/mol)\nE. \\( 220 \\, g \\) of \\( CO_2 \\) (molar mass = 44 g/mol)\n\nChoose the correct option:",
+  "image_url": "",
+  "options": [
+    "B, C, and D only",
+    "B, D, and E only",
+    "A, B, and C only",
+    "A, B, and D only"
+  ],
+  "correct_answer": "D",
+  "explanation": "Number of atoms = \\( \\frac{\\text{mass}}{\\text{molar mass}} \\times \\text{atomicity} \\times N_A \\).\n\nA: \\( \\frac{212}{106} \\times 6 = 12N_A \\)\nB: \\( \\frac{248}{62} \\times 3 = 12N_A \\)\nC: \\( \\frac{240}{40} \\times 3 = 18N_A \\)\nD: \\( \\frac{12}{2} \\times 2 = 12N_A \\)\nE: \\( \\frac{220}{44} \\times 3 = 15N_A \\)\n\nThus, A, B, D have equal atoms."
+},
+{
+  "id": "q72",
+  "subject": "Chemistry",
+  "topic": "Coordination Compounds",
+  "difficulty": "Medium",
+  "question_text": "Which of the following are paramagnetic?\n\nA. \\( [NiCl_4]^{2-} \\)\nB. \\( Ni(CO)_4 \\)\nC. \\( [Ni(CN)_4]^{2-} \\)\nD. \\( [Ni(H_2O)_6]^{2+} \\)\nE. \\( Ni(PPh_3)_4 \\)\n\nChoose the correct option:",
+  "image_url": "",
+  "options": [
+    "A and D only",
+    "A, D and E only",
+    "A and C only",
+    "B and E only"
+  ],
+  "correct_answer": "A",
+  "explanation": "\\( [NiCl_4]^{2-} \\): \\( Ni^{2+} (3d^8) \\), tetrahedral → 2 unpaired → paramagnetic.\n\\( Ni(CO)_4 \\): diamagnetic.\n\\( [Ni(CN)_4]^{2-} \\): square planar → no unpaired → diamagnetic.\n\\( [Ni(H_2O)_6]^{2+} \\): octahedral → 2 unpaired → paramagnetic.\n\\( Ni(PPh_3)_4 \\): diamagnetic.\n\nThus, A and D."
+},
+{
+  "id": "q73",
+  "subject": "Chemistry",
+  "topic": "Chemical Kinetics",
+  "difficulty": "Medium",
+  "question_text": "If the half-life \\( t_{1/2} \\) of a first-order reaction is 1 minute, the time required for 99.9% completion is:",
+  "image_url": "",
+  "options": [
+    "5 minutes",
+    "10 minutes",
+    "2 minutes",
+    "4 minutes"
+  ],
+  "correct_answer": "B",
+  "explanation": "For first-order reaction: 99.9% completion corresponds to 10 half-lives.\n\n\\( t = 10 \\times t_{1/2} = 10 \\times 1 = 10 \\) minutes."
+},
+{
+  "id": "q74",
+  "subject": "Physics",
+  "topic": "Atomic Physics",
+  "difficulty": "Medium",
+  "question_text": "Energy and radius of first Bohr orbit for \\( He^+ \\) and \\( Li^{2+} \\) are (Given \\( R_H = 2.18 \\times 10^{-18} \\, J \\), \\( a_0 = 52.9 \\, pm \\)):",
+  "image_url": "",
+  "options": [
+    "Option 1",
+    "Option 2",
+    "Option 3",
+    "Option 4"
+  ],
+  "correct_answer": "C",
+  "explanation": "Energy: \\( E_n = -2.18 \\times 10^{-18} \\frac{Z^2}{n^2} \\).\nRadius: \\( r_n = 52.9 \\frac{n^2}{Z} \\).\n\nFor \\( He^+ (Z=2) \\): \\( E = -8.72 \\times 10^{-18} \\), \\( r = 26.45 \\, pm \\).\nFor \\( Li^{2+} (Z=3) \\): \\( E = -19.62 \\times 10^{-18} \\), \\( r = 17.63 \\, pm \\)."
+},
+{
+  "id": "q75",
+  "subject": "Chemistry",
+  "topic": "Organic Chemistry",
+  "difficulty": "Medium",
+  "question_text": "Among compounds I, II, and III, the correct order of bond dissociation energy of the marked \\( C-H \\) bond is:",
+  "image_url": "https://res.cloudinary.com/dmmacwuow/image/upload/v1776817463/chem_q75_xnldnx.png",
+  "options": [
+    "III > II > I",
+    "II > III > I",
+    "II > I > III",
+    "I > II > III"
+  ],
+  "correct_answer": "C",
+  "explanation": "Bond dissociation energy increases with % s-character.\n\nGreater s-character → stronger bond.\n\nThus, \\( II > I > III \\)."
+},
+{
+  "id": "q76",
+  "subject": "Chemistry",
+  "topic": "Atomic Structure",
+  "difficulty": "Medium",
+  "question_text": "Dalton's atomic theory could not explain which of the following?",
+  "image_url": "",
+  "options": [
+    "Law of multiple proportion",
+    "Law of gaseous volume",
+    "Law of conservation of mass",
+    "Law of constant proportion"
+  ],
+  "correct_answer": "B",
+  "explanation": "Dalton's theory explains laws of chemical combination (multiple proportions, conservation of mass, constant proportion), but cannot explain Gay-Lussac's law of gaseous volumes."
+},
+{
+  "id": "q77",
+  "subject": "Chemistry",
+  "topic": "Chemical Bonding",
+  "difficulty": "Medium",
+  "question_text": "Identify the correct orders for the following properties:\n\nA. \\( H_2O > NH_3 > CHCl_3 \\) (dipole moment)\nB. \\( XeF_4 > XeO_3 > XeF_2 \\) (number of lone pairs)\nC. \\( O-H > C-H > N-O \\) (bond length)\nD. \\( N_2 > O_2 > H_2 \\) (bond enthalpy)\n\nChoose the correct option:",
+  "image_url": "",
+  "options": [
+    "A, C only",
+    "B, C only",
+    "A, D only",
+    "B, D only"
+  ],
+  "correct_answer": "C",
+  "explanation": "A is correct: dipole moment \\( H_2O > NH_3 > CHCl_3 \\).\nB is incorrect: lone pairs order is \\( XeF_2 (3) > XeF_4 (2) > XeO_3 (1) \\).\nC is incorrect: bond length order is \\( N-O > C-H > O-H \\).\nD is correct: bond enthalpy follows bond order \\( N_2 > O_2 > H_2 \\).\n\nThus, A and D are correct."
+},
+{
+  "id": "q78",
+  "subject": "Chemistry",
+  "topic": "Biomolecules",
+  "difficulty": "Medium",
+  "question_text": "Match List-I with List-II:\n\nList-I (Vitamin):\nA. Vitamin B12\nB. Vitamin D\nC. Vitamin B2\nD. Vitamin B6\n\nList-II (Deficiency disease):\nI. Cheilosis\nII. Convulsions\nIII. Rickets\nIV. Pernicious anaemia\n\nChoose the correct match:",
+  "image_url": "",
+  "options": [
+    "A-II, B-III, C-I, D-IV",
+    "A-IV, B-III, C-II, D-I",
+    "A-I, B-III, C-II, D-IV",
+    "A-IV, B-III, C-I, D-II"
+  ],
+  "correct_answer": "D",
+  "explanation": "Vitamin B12 → Pernicious anaemia.\nVitamin D → Rickets.\nVitamin B2 → Cheilosis.\nVitamin B6 → Convulsions.\n\nThus, A-IV, B-III, C-I, D-II."
+},
+{
+  "id": "q79",
+  "subject": "Chemistry",
+  "topic": "Organic Chemistry",
+  "difficulty": "Medium",
+  "question_text": "The correct order of decreasing basic strength of the following amines is:",
+  "image_url": "",
+  "options": [
+    "N-ethylethanamine > ethanamine > N-methylaniline > benzenamine",
+    "benzenamine > ethanamine > N-methylaniline > N-ethylethanamine",
+    "N-methylaniline > benzenamine > ethanamine > N-ethylethanamine",
+    "N-ethylethanamine > ethanamine > benzenamine > N-methylaniline"
+  ],
+  "correct_answer": "A",
+  "explanation": "Aliphatic amines are stronger bases than aromatic amines.\nLower pKb → higher basicity.\n\nOrder: \\( N\\text{-ethylethanamine} > ethanamine > N\\text{-methylaniline} > benzenamine \\)."
+},
+{
+  "id": "q80",
+  "subject": "Chemistry",
+  "topic": "Coordination Compounds",
+  "difficulty": "Medium",
+  "question_text": "The correct order of wavelength of light absorbed by the following complexes is:\n\nA. \\( [Co(NH_3)_6]^{3+} \\)\nB. \\( [Co(CN)_6]^{3-} \\)\nC. \\( [Cu(H_2O)_4]^{2+} \\)\nD. \\( [Ti(H_2O)_6]^{3+} \\)\n\nChoose the correct option:",
+  "image_url": "",
+  "options": [
+    "C < D < A < B",
+    "C < A < D < B",
+    "B < D < A < C",
+    "B < A < D < C"
+  ],
+  "correct_answer": "D",
+  "explanation": "Wavelength \\( \\lambda \\propto \\frac{1}{\\Delta} \\) (crystal field splitting).\n\nStronger ligand → higher splitting → lower wavelength.\n\nOrder: \\( CN^- > NH_3 > H_2O \\).\n\nThus wavelength order: \\( B < A < D < C \\)."
+},
+{
+  "id": "q81",
+  "subject": "Chemistry",
+  "topic": "Organic Chemistry",
+  "difficulty": "Medium",
+  "question_text": "Which one of the following compounds does NOT decolourize bromine water?",
+  "image_url": "https://res.cloudinary.com/dmmacwuow/image/upload/v1776817463/chem_q81_fehcdp.png",
+  "options": [
+    "Option 1",
+    "Option 2",
+    "Option 3",
+    "Option 4"
+  ],
+  "correct_answer": "C",
+  "explanation": "Bromine water test detects unsaturation (C=C or C≡C). Compounds with double or triple bonds decolourize bromine water due to addition reaction. Saturated compounds do not decolourize it. Hence, option (3) is saturated and does not react."
+},
+{
+  "id": "q82",
+  "subject": "Chemistry",
+  "topic": "Organic Chemistry",
+  "difficulty": "Medium",
+  "question_text": "Predict the major product 'P' in the given sequence of reactions:",
+  "image_url": "https://res.cloudinary.com/dmmacwuow/image/upload/v1776817464/chem_q82_z87dk9.png",
+  "options": [
+    "Option 1",
+    "Option 2",
+    "Option 3",
+    "Option 4"
+  ],
+  "correct_answer": "C",
+  "explanation": "Based on the given reaction sequence (not shown), the major product follows the most stable intermediate and reaction pathway, leading to option (3) as the correct product."
+},
+{
+  "id": "q83",
+  "subject": "Chemistry",
+  "topic": "Separation Techniques",
+  "difficulty": "Medium",
+  "question_text": "Match List-I with List-II:\n\nList-I (Mixture):\nA. \\( CHCl_3 + C_6H_5NH_2 \\)\nB. Crude oil in petroleum industry\nC. Glycerol from spent-lye\nD. Aniline – water\n\nList-II (Method of Separation):\nI. Distillation under reduced pressure\nII. Steam distillation\nIII. Fractional distillation\nIV. Simple distillation\n\nChoose the correct match:",
+  "image_url": "",
+  "options": [
+    "A-III, B-IV, C-I, D-II",
+    "A-III, B-IV, C-II, D-I",
+    "A-IV, B-III, C-I, D-II",
+    "A-IV, B-III, C-II, D-I"
+  ],
+  "correct_answer": "C",
+  "explanation": "A: \\( CHCl_3 + C_6H_5NH_2 \\) → simple distillation.\nB: Crude oil → fractional distillation.\nC: Glycerol → distillation under reduced pressure (high boiling).\nD: Aniline + water → steam distillation.\n\nThus, A-IV, B-III, C-I, D-II."
+},
+{
+  "id": "q84",
+  "subject": "Chemistry",
+  "topic": "Periodic Table",
+  "difficulty": "Medium",
+  "question_text": "Which among the following electronic configurations belong to main group elements?\n\nA. \\( [Ne]3s^1 \\)\nB. \\( [Ar]3d^3 4s^2 \\)\nC. \\( [Kr]4d^{10}5s^2 5p^5 \\)\nD. \\( [Ar]3d^{10}4s^1 \\)\nE. \\( [Rn]5f^0 6d^2 7s^2 \\)\n\nChoose the correct option:",
+  "image_url": "",
+  "options": [
+    "D and E only",
+    "A, C and D only",
+    "B and E only",
+    "A and C only"
+  ],
+  "correct_answer": "D",
+  "explanation": "Main group elements belong to s-block and p-block.\n\nA: \\( [Ne]3s^1 \\) → s-block → main group.\nB: d-block → transition metal.\nC: \\( p \\)-block → main group.\nD: d-block → transition metal.\nE: f-block → inner transition.\n\nThus, A and C only."
+},
+{
+  "id": "q85",
+  "subject": "Chemistry",
+  "topic": "Isomerism",
+  "difficulty": "Medium",
+  "question_text": "Which one of the following compounds can exist as cis-trans isomers?",
+  "image_url": "",
+  "options": [
+    "1,1-Dimethylcyclopropane",
+    "1,2-Dimethylcyclohexane",
+    "Pent-1-ene",
+    "2-Methylhex-2-ene"
+  ],
+  "correct_answer": "B",
+  "explanation": "Cis-trans isomerism requires restricted rotation and different substituents.\n\n1,2-Dimethylcyclohexane shows cis-trans isomerism due to ring structure.\nOthers do not satisfy required conditions."
+},
+{
+  "id": "q86",
+  "subject": "Chemistry",
+  "topic": "Equilibrium",
+  "difficulty": "Medium",
+  "question_text": "Phosphoric acid ionizes in three steps with constants \\( K_{a1}, K_{a2}, K_{a3} \\). Which statements are correct?\n\nA. \\( \\log K = \\log K_{a1} + \\log K_{a2} + \\log K_{a3} \\)\nB. \\( H_3PO_4 \\) is stronger acid than \\( H_2PO_4^- \\) and \\( HPO_4^{2-} \\)\nC. \\( K_{a1} > K_{a2} > K_{a3} \\)\nD. \\( K_{a1} = K_{a3} + K_{a2}^2 \\)\n\nChoose the correct option:",
+  "image_url": "",
+  "options": [
+    "B, C and D only",
+    "A, B and C only",
+    "A and B only",
+    "A and C only"
+  ],
+  "correct_answer": "B",
+  "explanation": "For stepwise ionization: \\( K = K_{a1} K_{a2} K_{a3} \\Rightarrow \\log K = \\log K_{a1} + \\log K_{a2} + \\log K_{a3} \\).\n\n\\( H_3PO_4 \\) is strongest among its conjugates.\n\nIonization constants decrease: \\( K_{a1} > K_{a2} > K_{a3} \\).\n\nStatement D is incorrect.\n\nThus, A, B, C are correct."
+},
+{
+  "id": "q87",
+  "subject": "Chemistry",
+  "topic": "Qualitative Analysis",
+  "difficulty": "Medium",
+  "question_text": "Match List-I with List-II:\n\nList-I (Ion):\nA. \\( Co^{2+} \\)\nB. \\( Mg^{2+} \\)\nC. \\( Pb^{2+} \\)\nD. \\( Al^{3+} \\)\n\nList-II (Group Number in Cation Analysis):\nI. Group-I\nII. Group-III\nIII. Group-IV\nIV. Group-VI\n\nChoose the correct match:",
+  "image_url": "",
+  "options": [
+    "A-III, B-II, C-IV, D-I",
+    "A-III, B-III, C-I, D-IV",
+    "A-III, B-IV, C-II, D-I",
+    "A-III, B-IV, C-I, D-II"
+  ],
+  "correct_answer": "D",
+  "explanation": "\\( Co^{2+} \\) → Group-IV.\n\\( Mg^{2+} \\) → Group-VI.\n\\( Pb^{2+} \\) → Group-I.\n\\( Al^{3+} \\) → Group-III.\n\nThus, A-III, B-IV, C-I, D-II."
+},
+{
+  "id": "q88",
+  "subject": "Chemistry",
+  "topic": "Chemical Equilibrium",
+  "difficulty": "Medium",
+  "question_text": "For the reaction \\( N_2(g) + O_2(g) \\rightleftharpoons 2NO(g) \\) with \\( \\Delta H = +180.7 \\, kJ\\,mol^{-1} \\), higher yield of NO can be obtained at:\n\nA. Higher temperature\nB. Lower temperature\nC. Higher concentration of \\( N_2 \\)\nD. Higher concentration of \\( O_2 \\)\n\nChoose the correct option:",
+  "image_url": "",
+  "options": [
+    "B, C, D only",
+    "A, C, D only",
+    "A, D only",
+    "B, C only"
+  ],
+  "correct_answer": "B",
+  "explanation": "The reaction is endothermic (\\( \\Delta H > 0 \\)), so increasing temperature shifts equilibrium forward.\n\nIncreasing concentration of reactants \\( N_2 \\) and \\( O_2 \\) also shifts equilibrium forward.\n\nThus, A, C, D are correct."
+},
+{
+  "id": "q89",
+  "subject": "Chemistry",
+  "topic": "Organic Chemistry",
+  "difficulty": "Medium",
+  "question_text": "Given the statements:\n\nStatement I: Benzenediazonium salt is prepared by reacting aniline with nitrous acid at \\( 273{-}278 \\, K \\), and it decomposes easily in dry state.\n\nStatement II: Iodobenzene is prepared via benzenediazonium salt because direct iodination of benzene is difficult.\n\nChoose the correct option:",
+  "image_url": "",
+  "options": [
+    "Statement I is correct but Statement II is incorrect",
+    "Statement I is incorrect but Statement II is correct",
+    "Both Statement I and Statement II are correct",
+    "Both Statement I and Statement II are incorrect"
+  ],
+  "correct_answer": "C",
+  "explanation": "Benzenediazonium salts are formed at low temperature (273–278 K) and are unstable in dry state → Statement I is correct.\n\nDirect iodination of benzene is difficult, so iodobenzene is prepared using diazonium salts with KI → Statement II is correct."
+},
+{
+  "id": "q90",
+  "subject": "Chemistry",
+  "topic": "Organic Chemistry",
+  "difficulty": "Medium",
+  "question_text": "The major product of the following reaction is obtained when a compound containing both ketone (\\( C=O \\)) and nitrile (\\( -C \\equiv N \\)) groups reacts with excess \\( CH_3MgBr \\) followed by hydrolysis (\\( H_3O^+ \\)). Identify the product:",
+  "image_url": "https://res.cloudinary.com/dmmacwuow/image/upload/v1776817464/chem_q90_fihss5.png",
+  "options": [
+    "Option 1",
+    "Option 2",
+    "Option 3",
+    "Option 4"
+  ],
+  "correct_answer": "D",
+  "explanation": "Grignard reagent \\( CH_3MgBr \\) reacts with both carbonyl and nitrile groups.\n\nStep 1: Addition to ketone gives tertiary alcohol.\nStep 2: Addition to nitrile forms imine magnesium salt which on hydrolysis gives ketone.\n\nFinal product contains a tertiary alcohol and a ketone group → corresponds to option (4)."
+},
+{
+  "id": "q91",
+  "subject": "Biology",
+  "topic": "Biotechnology",
+  "difficulty": "Medium",
+  "question_text": "In a plasmid, an alien DNA fragment is inserted at the EcoRI site within the \\( \\beta \\)-galactosidase gene. Which strategy is used to select recombinant colonies?",
+  "image_url": "https://res.cloudinary.com/dmmacwuow/image/upload/v1776817919/bio_q91_rxzmn3.png",
+  "options": [
+    "White colour colonies will be selected",
+    "Blue colour colonies grown on ampicillin plates can be selected",
+    "Using ampicillin & tetracycline containing medium plate",
+    "Blue colour colonies will be selected"
+  ],
+  "correct_answer": "A",
+  "explanation": "Insertional inactivation of the \\( \\beta \\)-galactosidase gene prevents blue colour formation. Recombinant colonies appear white, while non-recombinant remain blue."
+},
+{
+  "id": "q92",
+  "subject": "Biology",
+  "topic": "Biomolecules",
+  "difficulty": "Easy",
+  "question_text": "The protein portion of an enzyme is called:",
+  "image_url": "",
+  "options": [
+    "Apoenzyme",
+    "Prosthetic group",
+    "Cofactor",
+    "Coenzyme"
+  ],
+  "correct_answer": "A",
+  "explanation": "The protein part of an enzyme is called apoenzyme. Cofactors (prosthetic group, coenzyme, metal ions) assist in enzyme activity."
+},
+{
+  "id": "q93",
+  "subject": "Biology",
+  "topic": "Ecology",
+  "difficulty": "Medium",
+  "question_text": "Given the statements:\n\nStatement I: The primary source of energy in an ecosystem is solar energy.\nStatement II: The rate of production of organic matter during photosynthesis is called net primary productivity (NPP).\n\nChoose the correct option:",
+  "image_url": "",
+  "options": [
+    "Statement I is correct but Statement II is incorrect",
+    "Statement I is incorrect but Statement II is correct",
+    "Both statements are correct",
+    "Both statements are incorrect"
+  ],
+  "correct_answer": "A",
+  "explanation": "Solar energy is the primary source → correct.\n\nNPP excludes respiration losses; total production is GPP → Statement II is incorrect."
+},
+{
+  "id": "q94",
+  "subject": "Biology",
+  "topic": "Reproduction in Plants",
+  "difficulty": "Medium",
+  "question_text": "Assertion (A): A typical unfertilised angiosperm embryo sac is 8-nucleate and 7-celled.\n\nReason (R): The egg apparatus has 2 polar nuclei.\n\nChoose the correct option:",
+  "image_url": "",
+  "options": [
+    "A is true but R is false",
+    "A is false but R is true",
+    "Both A and R are true and R explains A",
+    "Both A and R are true but R does not explain A"
+  ],
+  "correct_answer": "A",
+  "explanation": "Embryo sac is 7-celled, 8-nucleate → correct.\n\nPolar nuclei are in central cell, not egg apparatus → Reason is false."
+},
+{
+  "id": "q95",
+  "subject": "Biology",
+  "topic": "Human Health and Disease",
+  "difficulty": "Medium",
+  "question_text": "Neoplastic characteristics of cells refer to:\n\nA. Mass of proliferating cells\nB. Rapid growth of cells\nC. Invasion and damage to surrounding tissue\nD. Confined to original location\n\nChoose the correct option:",
+  "image_url": "",
+  "options": [
+    "A, B, D only",
+    "B, C, D only",
+    "A, B only",
+    "A, B, C only"
+  ],
+  "correct_answer": "D",
+  "explanation": "Neoplastic (malignant) cells show uncontrolled growth, proliferation, and invasion.\n\nThey are not confined (that is benign), so D is excluded."
+},
+{
+  "id": "q96",
+  "subject": "Biology",
+  "topic": "Plant Kingdom",
+  "difficulty": "Easy",
+  "question_text": "Which one of the following is the characteristic feature of gymnosperms?",
+  "image_url": "",
+  "options": [
+    "Seeds are absent",
+    "Gymnosperms have flowers for reproduction",
+    "Seeds are enclosed in fruits",
+    "Seeds are naked"
+  ],
+  "correct_answer": "D",
+  "explanation": "Gymnosperms (\\( gymnos = naked, sperma = seed \\)) have ovules not enclosed by an ovary. After fertilization, seeds remain exposed (naked), not enclosed in fruits."
+},
+{
+  "id": "q97",
+  "subject": "Biology",
+  "topic": "Human Physiology",
+  "difficulty": "Medium",
+  "question_text": "Match List-I with List-II:\n\nList-I (Hormone):\nA. Progesterone\nB. Relaxin\nC. Melanocyte stimulating hormone\nD. Catecholamines\n\nList-II (Source):\nI. Pars intermedia\nII. Ovary\nIII. Adrenal medulla\nIV. Corpus luteum\n\nChoose the correct match:",
+  "image_url": "",
+  "options": [
+    "A-II, B-IV, C-I, D-III",
+    "A-III, B-II, C-IV, D-I",
+    "A-IV, B-II, C-I, D-III",
+    "A-IV, B-II, C-III, D-I"
+  ],
+  "correct_answer": "C",
+  "explanation": "Progesterone → Corpus luteum (IV).\nRelaxin → Ovary (II).\nMelanocyte stimulating hormone → Pars intermedia (I).\nCatecholamines → Adrenal medulla (III).\n\nThus, A-IV, B-II, C-I, D-III."
+},
+{
+  "id": "q98",
+  "subject": "Biology",
+  "topic": "Genetics",
+  "difficulty": "Easy",
+  "question_text": "Which chromosome in the human genome has the highest number of genes?",
+  "image_url": "",
+  "options": [
+    "Chromosome 1",
+    "Chromosome 10",
+    "Chromosome X",
+    "Chromosome Y"
+  ],
+  "correct_answer": "A",
+  "explanation": "Chromosome 1 has the highest number of genes (~2968) in the human genome."
+},
+{
+  "id": "q99",
+  "subject": "Biology",
+  "topic": "Photosynthesis",
+  "difficulty": "Medium",
+  "question_text": "Which of the following statements about RuBisCO is true?",
+  "image_url": "",
+  "options": [
+    "It is an enzyme involved in photolysis of water",
+    "It catalyzes the carboxylation of \\( RuBP \\)",
+    "It is active only in the dark",
+    "It has higher affinity for oxygen than carbon dioxide"
+  ],
+  "correct_answer": "B",
+  "explanation": "RuBisCO catalyzes the carboxylation of \\( RuBP \\) in the Calvin cycle. It has higher affinity for CO\\(_2\\) than O\\(_2\\)."
+},
+{
+  "id": "q100",
+  "subject": "Biology",
+  "topic": "Human Reproduction",
+  "difficulty": "Easy",
+  "question_text": "The first menstruation is called:",
+  "image_url": "",
+  "options": [
+    "Diapause",
+    "Ovulation",
+    "Menopause",
+    "Menarche"
+  ],
+  "correct_answer": "D",
+  "explanation": "The first menstruation at puberty is called menarche. Menopause is cessation of menstruation, ovulation is egg release, and diapause is dormancy."
+},
+{
+  "id": "q101",
+  "subject": "Biology",
+  "topic": "Biotechnology",
+  "difficulty": "Medium",
+  "question_text": "Which genetically engineered organism was used by Eli Lilly to produce human insulin?",
+  "image_url": "",
+  "options": [
+    "Virus",
+    "Phage",
+    "Bacterium",
+    "Yeast"
+  ],
+  "correct_answer": "C",
+  "explanation": "Eli Lilly used genetically engineered \\( E.\\,coli \\) (a bacterium) to produce human insulin by inserting genes for A and B chains."
+},
+{
+  "id": "q102",
+  "subject": "Biology",
+  "topic": "Animal Kingdom",
+  "difficulty": "Medium",
+  "question_text": "Assertion (A): All vertebrates are chordates but all chordates are not vertebrates.\n\nReason (R): Members of subphylum Vertebrata possess a notochord during embryonic stage which is replaced by a cartilaginous or bony vertebral column in adults.\n\nChoose the correct option:",
+  "image_url": "",
+  "options": [
+    "A is true but R is false",
+    "A is false but R is true",
+    "Both A and R are true and R is the correct explanation of A",
+    "Both A and R are true but R is not the correct explanation of A"
+  ],
+  "correct_answer": "C",
+  "explanation": "All vertebrates belong to chordates because they have a notochord at some stage.\n\nIn vertebrates, the notochord is replaced by a vertebral column, distinguishing them from other chordates.\n\nThus, both A and R are true and R explains A."
+},
+{
+  "id": "q103",
+  "subject": "Biology",
+  "topic": "Cell Cycle",
+  "difficulty": "Easy",
+  "question_text": "What is the main function of spindle fibres during mitosis?",
+  "image_url": "",
+  "options": [
+    "To repair damaged DNA",
+    "To regulate cell growth",
+    "To separate the chromosomes",
+    "To synthesize new DNA"
+  ],
+  "correct_answer": "C",
+  "explanation": "Spindle fibres attach to kinetochores of chromosomes and pull sister chromatids apart during mitosis, ensuring equal distribution to daughter cells."
+},
+{
+  "id": "q104",
+  "subject": "Biology",
+  "topic": "Molecular Basis of Inheritance",
+  "difficulty": "Medium",
+  "question_text": "Match List-I with List-II:\n\nList-I:\nA. Alfred Hershey and Martha Chase\nB. Euchromatin\nC. Frederick Griffith\nD. Heterochromatin\n\nList-II:\nI. Streptococcus pneumoniae\nII. Densely packed and dark-stained\nIII. Loosely packed and light-stained\nIV. DNA as genetic material confirmation\n\nChoose the correct match:",
+  "image_url": "",
+  "options": [
+    "A-IV, B-III, C-I, D-II",
+    "A-III, B-II, C-IV, D-I",
+    "A-II, B-IV, C-I, D-III",
+    "A-IV, B-II, C-I, D-III"
+  ],
+  "correct_answer": "A",
+  "explanation": "Hershey & Chase → DNA as genetic material (IV).\nEuchromatin → loosely packed, light-stained (III).\nGriffith → Streptococcus pneumoniae experiment (I).\nHeterochromatin → densely packed, dark-stained (II)."
+},
+{
+  "id": "q105",
+  "subject": "Biology",
+  "topic": "Biomolecules",
+  "difficulty": "Medium",
+  "question_text": "Match List-I with List-II:\n\nList-I:\nA. Adenosine\nB. Adenylic acid\nC. Adenine\nD. Alanine\n\nList-II:\nI. Nitrogen base\nII. Nucleotide\nIII. Nucleoside\nIV. Amino acid\n\nChoose the correct match:",
+  "image_url": "",
+  "options": [
+    "A-III, B-II, C-I, D-IV",
+    "A-II, B-III, C-I, D-IV",
+    "A-III, B-IV, C-II, D-I",
+    "A-III, B-II, C-IV, D-I"
+  ],
+  "correct_answer": "A",
+  "explanation": "Adenosine → nucleoside (III).\nAdenylic acid → nucleotide (II).\nAdenine → nitrogen base (I).\nAlanine → amino acid (IV)."
+},
+{
+  "id": "q106",
+  "subject": "Biology",
+  "topic": "Animal Physiology",
+  "difficulty": "Medium",
+  "question_text": "In frog, the renal portal system is a special venous connection that links:",
+  "image_url": "",
+  "options": [
+    "Kidney and intestine",
+    "Kidney and lower part of body",
+    "Liver and intestine",
+    "Liver and kidney"
+  ],
+  "correct_answer": "B",
+  "explanation": "Renal portal system connects kidney with lower parts of the body. Hepatic portal system connects intestine with liver."
+},
+{
+  "id": "q107",
+  "subject": "Biology",
+  "topic": "Molecular Biology",
+  "difficulty": "Medium",
+  "question_text": "Which of the following are post-transcriptional events in a eukaryotic cell?\n\nA. Transport of pre-mRNA to cytoplasm prior to splicing\nB. Removal of introns and joining of exons\nC. Addition of methyl group at 5′ end of hnRNA\nD. Addition of adenine residues at 3′ end of hnRNA\nE. Base pairing of two complementary RNAs\n\nChoose the correct option:",
+  "image_url": "",
+  "options": [
+    "B, C, E only",
+    "C, D, E only",
+    "A, B, C only",
+    "B, C, D only"
+  ],
+  "correct_answer": "D",
+  "explanation": "Post-transcriptional modifications include splicing (B), 5′ capping (C), and polyadenylation (D). A and E are not post-transcriptional events."
+},
+{
+  "id": "q108",
+  "subject": "Biology",
+  "topic": "Biotechnology",
+  "difficulty": "Easy",
+  "question_text": "Polymerase chain reaction (PCR) amplifies DNA according to the relation:",
+  "image_url": "",
+  "options": [
+    "2^{n+1}",
+    "2N^2",
+    "N^2",
+    "2^n"
+  ],
+  "correct_answer": "D",
+  "explanation": "PCR amplification follows exponential growth: after n cycles, DNA copies = \\( 2^n \\)."
+},
+{
+  "id": "q109",
+  "subject": "Biology",
+  "topic": "Reproduction in Plants",
+  "difficulty": "Medium",
+  "question_text": "Assertion (A): Wind and water pollinated flowers are not colourful and do not produce nectar.\n\nReason (R): These flowers produce a large amount of pollen grains.\n\nChoose the correct option:",
+  "image_url": "",
+  "options": [
+    "A is true but R is false",
+    "A is false but R is true",
+    "Both A and R are true and R explains A",
+    "Both A and R are true but R does not explain A"
+  ],
+  "correct_answer": "D",
+  "explanation": "Both statements are true. However, lack of colour/nectar is due to no need to attract pollinators, not directly because of high pollen production."
+},
+{
+  "id": "q110",
+  "subject": "Biology",
+  "topic": "Ecology",
+  "difficulty": "Easy",
+  "question_text": "Epiphytes growing on a mango branch represent which type of interaction?",
+  "image_url": "",
+  "options": [
+    "Predation",
+    "Amensalism",
+    "Commensalism",
+    "Mutualism"
+  ],
+  "correct_answer": "C",
+  "explanation": "In commensalism, one species benefits while the other is unaffected. Epiphytes benefit from support, mango tree is unaffected."
+},
+{
+  "id": "q111",
+  "subject": "Biology",
+  "topic": "Human Reproduction",
+  "difficulty": "Medium",
+  "question_text": "Find the correct statements:\n\nA. In human pregnancy, major organ systems are formed by the end of 12 weeks.\nB. Major organ systems are formed by the end of 8 weeks.\nC. Heart is formed after one month of gestation.\nD. Limbs and digits develop by the end of second month.\nE. Appearance of hair is observed in the fifth month.\n\nChoose the correct option:",
+  "image_url": "",
+  "options": [
+    "B, C, D and E only",
+    "A, C, D and E only",
+    "A and E only",
+    "B and C only"
+  ],
+  "correct_answer": "B",
+  "explanation": "Major organs form by 12 weeks (A true, B false).\nHeart forms after one month (C true).\nLimbs and digits by second month (D true).\nHair appears around fifth month (E true)."
+},
+{
+  "id": "q112",
+  "subject": "Biology",
+  "topic": "Biotechnology",
+  "difficulty": "Easy",
+  "question_text": "Identify the part of a bioreactor used as a foam breaker.",
+  "image_url": "https://res.cloudinary.com/dmmacwuow/image/upload/v1776817920/bio_q112_bwx1si.png",
+  "options": [
+    "D",
+    "C",
+    "A",
+    "B"
+  ],
+  "correct_answer": "B",
+  "explanation": "Part labeled C in the diagram represents the foam breaker used to control foam formation in bioreactors."
+},
+{
+  "id": "q113",
+  "subject": "Biology",
+  "topic": "Animal Physiology",
+  "difficulty": "Medium",
+  "question_text": "Frogs respire in water by skin and buccal cavity and on land by skin, buccal cavity and lungs.\n\nChoose the correct option:",
+  "image_url": "",
+  "options": [
+    "False for water but true for land",
+    "False for both environments",
+    "True for water but false for land",
+    "True for both environments"
+  ],
+  "correct_answer": "A",
+  "explanation": "In water, frogs respire only through skin (cutaneous respiration).\nOn land, they use skin, buccal cavity, and lungs."
+},
+{
+  "id": "q114",
+  "subject": "Biology",
+  "topic": "Human Physiology",
+  "difficulty": "Medium",
+  "question_text": "Consider the functions of adrenal medullary hormones:\n\nA. Causes pupillary constriction\nB. Hyperglycemic hormone\nC. Causes piloerection\nD. Increases strength of heart contraction\n\nChoose the correct option:",
+  "image_url": "",
+  "options": [
+    "A, C and D only",
+    "D only",
+    "C and D only",
+    "B, C and D only"
+  ],
+  "correct_answer": "D",
+  "explanation": "Adrenaline causes pupillary dilation (not constriction), increases blood glucose, causes piloerection, and increases heart contraction strength."
+},
+{
+  "id": "q115",
+  "subject": "Biology",
+  "topic": "Plant Growth and Development",
+  "difficulty": "Medium",
+  "question_text": "Read the following statements:\n\nA. Parthenocarpy can be induced by auxins.\nB. Plant growth regulators can promote as well as inhibit growth.\nC. Dedifferentiation is required for redifferentiation.\nD. Abscisic acid is a growth promoter.\nE. Apical dominance promotes lateral bud growth.\n\nChoose the correct option:",
+  "image_url": "",
+  "options": [
+    "A, D, E only",
+    "B, D, E only",
+    "A, B, C only",
+    "A, C, E only"
+  ],
+  "correct_answer": "C",
+  "explanation": "Auxins induce parthenocarpy (A true).\nPGRs can both promote and inhibit growth (B true).\nDedifferentiation precedes redifferentiation (C true).\nABA is inhibitor (D false).\nApical dominance suppresses lateral buds (E false)."
+},
+{
+  "id": "q116",
+  "subject": "Biology",
+  "topic": "Human Physiology",
+  "difficulty": "Medium",
+  "question_text": "Which of the following hormones released from the pituitary is actually synthesized in the hypothalamus?",
+  "image_url": "",
+  "options": [
+    "Follicle-stimulating hormone (FSH)",
+    "Adrenocorticotrophic hormone (ACTH)",
+    "Luteinizing hormone (LH)",
+    "Anti-diuretic hormone (ADH)"
+  ],
+  "correct_answer": "D",
+  "explanation": "ADH (vasopressin) is synthesized in the hypothalamus and stored/released by the posterior pituitary. FSH, ACTH, and LH are produced by the anterior pituitary."
+},
+{
+  "id": "q117",
+  "subject": "Biology",
+  "topic": "Microbiology",
+  "difficulty": "Easy",
+  "question_text": "Which of the following is a non-distilled alcoholic beverage produced by yeast?",
+  "image_url": "",
+  "options": [
+    "Beer",
+    "Rum",
+    "Whisky",
+    "Brandy"
+  ],
+  "correct_answer": "A",
+  "explanation": "Beer and wine are produced by fermentation without distillation. Rum, whisky, and brandy are distilled beverages."
+},
+{
+  "id": "q118",
+  "subject": "Biology",
+  "topic": "Genetics",
+  "difficulty": "Medium",
+  "question_text": "What is the pattern of inheritance for polygenic traits?",
+  "image_url": "",
+  "options": [
+    "Autosomal dominant pattern",
+    "X-linked recessive inheritance pattern",
+    "Mendelian inheritance pattern",
+    "Non-Mendelian inheritance pattern"
+  ],
+  "correct_answer": "D",
+  "explanation": "Polygenic traits are controlled by multiple genes and show continuous variation, hence they follow non-Mendelian inheritance."
+},
+{
+  "id": "q119",
+  "subject": "Biology",
+  "topic": "Human Reproduction",
+  "difficulty": "Easy",
+  "question_text": "Match List-I with List-II:\n\nList-I:\nA. Head\nB. Middle piece\nC. Acrosome\nD. Tail\n\nList-II:\nI. Enzymes\nII. Sperm motility\nIII. Energy\nIV. Genetic material\n\nChoose the correct match:",
+  "image_url": "",
+  "options": [
+    "A-III, B-IV, C-II, D-I",
+    "A-III, B-II, C-I, D-IV",
+    "A-IV, B-III, C-I, D-II",
+    "A-IV, B-III, C-II, D-I"
+  ],
+  "correct_answer": "C",
+  "explanation": "Head → genetic material (IV).\nMiddle piece → energy via mitochondria (III).\nAcrosome → enzymes for fertilization (I).\nTail → sperm motility (II)."
+},
+
+{"id":"q120","subject":"Biology","topic":"Morphology of Flowering Plants","difficulty":"Easy","question_text":"Which of the following is an example of a zygomorphic flower?","image_url":"","options":["Pea","Chilli","Petunia","Datura"],"correct_answer":"A","explanation":"Zygomorphic flowers show bilateral symmetry. Pea is zygomorphic, while chilli, petunia, and datura are actinomorphic."},
+
+{"id":"q121","subject":"Biology","topic":"Microbiology","difficulty":"Easy","question_text":"Which of the following organisms cannot fix nitrogen?\n\nA. Azotobacter\nB. Oscillatoria\nC. Anabaena\nD. Volvox\nE. Nostoc\n\nChoose the correct option:","image_url":"","options":["B only","E only","A only","D only"],"correct_answer":"D","explanation":"Azotobacter, Oscillatoria, Anabaena and Nostoc can fix nitrogen. Volvox cannot fix nitrogen."},
+
+{"id":"q122","subject":"Biology","topic":"Biodiversity and Conservation","difficulty":"Easy","question_text":"Which one of the following is an example of ex-situ conservation?","image_url":"","options":["Zoos and botanical gardens","Protected areas","National Park","Wildlife Sanctuary"],"correct_answer":"A","explanation":"Ex-situ conservation includes zoos, botanical gardens, and gene banks. In-situ includes national parks and sanctuaries."},
+
+{"id":"q123","subject":"Biology","topic":"Ecology","difficulty":"Easy","question_text":"Who is known as the father of Ecology in India?","image_url":"","options":["Ram Udar","Birbal Sahni","S. R. Kashyap","Ramdeo Misra"],"correct_answer":"D","explanation":"Ramdeo Misra is known as the father of Ecology in India."},
+
+{"id":"q124","subject":"Biology","topic":"Molecular Biology","difficulty":"Medium","question_text":"Statement I: In the RNA world, RNA was the first genetic material and also acted as a catalyst.\n\nStatement II: DNA evolved later and is more stable due to double helical structure and repair mechanisms.\n\nChoose the correct option:","image_url":"","options":["Statement I is correct but Statement II is incorrect","Statement I is incorrect but Statement II is correct","Both statements are correct","Both statements are incorrect"],"correct_answer":"C","explanation":"RNA acted as both genetic material and catalyst in early life. DNA later evolved as a more stable genetic material with repair mechanisms."},
+
+{"id":"q125","subject":"Biology","topic":"Biotechnology","difficulty":"Medium","question_text":"Statement I: tRNA and rRNA do not interact with mRNA.\n\nStatement II: RNA interference (RNAi) occurs in eukaryotes as a cellular defence mechanism.\n\nChoose the correct option:","image_url":"","options":["Statement I is correct but Statement II is incorrect","Statement I is incorrect but Statement II is correct","Both statements are correct","Both statements are incorrect"],"correct_answer":"B","explanation":"tRNA and rRNA interact with mRNA during translation. RNAi is a defence mechanism in eukaryotes."},
+
+{
+  "id": "q126",
+  "subject": "Biology",
+  "topic": "Human Physiology",
+  "difficulty": "Medium",
+  "question_text": "Match List-I with List-II:\n\nList-I:\nA. Heart\nB. Kidney\nC. Gastro-intestinal tract\nD. Adrenal Cortex\n\nList-II:\nI. Erythropoietin\nII. Aldosterone\nIII. Atrial natriuretic factor\nIV. Secretin\n\nChoose the correct match:",
+  "image_url": "",
+  "options": [
+    "A-I, B-III, C-IV, D-II",
+    "A-III, B-I, C-IV, D-II",
+    "A-II, B-I, C-III, D-IV",
+    "A-IV, B-III, C-II, D-I"
+  ],
+  "correct_answer": "B",
+  "explanation": "Heart → atrial natriuretic factor (III); Kidney → erythropoietin (I); Gastro-intestinal tract → secretin (IV); Adrenal cortex → aldosterone (II)."
+},
+{
+  "id": "q127",
+  "subject": "Biology",
+  "topic": "Animal Kingdom",
+  "difficulty": "Easy",
+  "question_text": "All living members of the class Cyclostomata are:",
+  "image_url": "",
+  "options": [
+    "Symbiotic",
+    "Ectoparasite",
+    "Free living",
+    "Endoparasite"
+  ],
+  "correct_answer": "B",
+  "explanation": "All living members of class Cyclostomata are ectoparasites."
+},
+{
+  "id": "q128",
+  "subject": "Biology",
+  "topic": "Biotechnology",
+  "difficulty": "Easy",
+  "question_text": "Streptokinase produced by bacterium Streptococcus is used for:",
+  "image_url": "",
+  "options": [
+    "Liver disease treatment",
+    "Removing clots from blood vessels",
+    "Curd production",
+    "Ethanol production"
+  ],
+  "correct_answer": "B",
+  "explanation": "Streptokinase is used as a clot buster to remove blood clots in patients suffering from myocardial infarction."
+},
+{
+  "id": "q129",
+  "subject": "Biology",
+  "topic": "Animal Kingdom",
+  "difficulty": "Medium",
+  "question_text": "Role of the water vascular system in Echinoderms is:\n\nA. Respiration and Locomotion\nB. Excretion and Locomotion\nC. Capture and transport of food\nD. Digestion and Respiration\nE. Digestion and Excretion\n\nChoose the correct answer:",
+  "image_url": "",
+  "options": [
+    "B and C Only",
+    "B, D and E Only",
+    "A and B Only",
+    "A and C Only"
+  ],
+  "correct_answer": "D",
+  "explanation": "Water vascular system helps in locomotion, respiration, and capture and transport of food. It does not help in excretion or digestion."
+},
+{
+  "id": "q130",
+  "subject": "Biology",
+  "topic": "Plant Kingdom",
+  "difficulty": "Medium",
+  "question_text": "Match List-I with List-II:\n\nList-I:\nA. Pteridophyte\nB. Bryophyte\nC. Angiosperm\nD. Gymnosperm\n\nList-II:\nI. Salvia\nII. Ginkgo\nIII. Polytrichum\nIV. Salvinia\n\nChoose the correct match:",
+  "image_url": "",
+  "options": [
+    "A-III, B-IV, C-I, D-II",
+    "A-IV, B-III, C-II, D-I",
+    "A-II, B-IV, C-III, D-I",
+    "A-IV, B-III, C-I, D-II"
+  ],
+  "correct_answer": "D",
+  "explanation": "Pteridophyte → Salvinia (IV); Bryophyte → Polytrichum (III); Angiosperm → Salvia (I); Gymnosperm → Ginkgo (II)."
+},
+{
+  "id": "q131",
+  "subject": "Biology",
+  "topic": "Human Health and Disease",
+  "difficulty": "Medium",
+  "question_text": "Which are correct:\n\nA. Computed tomography and magnetic resonance imaging detect cancers of internal organs.\nB. Chemotherapeutic drugs are used to kill non-cancerous cells.\nC. α-interferon activates the cancer patient's immune system and helps in destroying the tumour.\nD. Chemotherapeutic drugs are biological response modifiers.\nE. In the case of leukaemia blood cell counts are decreased.\n\nChoose the correct answer:",
+  "image_url": "",
+  "options": [
+    "C and D only",
+    "A and C only",
+    "B and D only",
+    "D and E only"
+  ],
+  "correct_answer": "B",
+  "explanation": "Statements A and C are correct. Chemotherapeutic drugs target cancer cells (not normal cells), interferons act as biological response modifiers, and in leukemia blood cell counts increase."
+},
+{
+  "id": "q132",
+  "subject": "Biology",
+  "topic": "Reproductive Health",
+  "difficulty": "Medium",
+  "question_text": "What are the potential drawbacks in adoption of the IVF method?\n\nA. High fatality risk to mother\nB. Expensive instruments and reagents\nC. Husband/wife necessary for being donors\nD. Less adoption of orphans\nE. Not available in India\nF. Possibility that the early embryo does not survive\n\nChoose the correct answer:",
+  "image_url": "",
+  "options": [
+    "A, B, C, D only",
+    "A, B, C, E, F only",
+    "B, D, F only",
+    "A, C, D, F only"
+  ],
+  "correct_answer": "C",
+  "explanation": "Correct drawbacks are B, D, and F. IVF is expensive, may reduce adoption rates, and early embryo survival is uncertain."
+},
+{
+  "id": "q133",
+  "subject": "Biology",
+  "topic": "Human Reproduction",
+  "difficulty": "Medium",
+  "question_text": "Consider the following:\n\nA. The reductive division for human female gametogenesis starts earlier than that of males.\nB. The gap between first and second meiotic division is shorter in males than females.\nC. The first polar body is associated with formation of primary oocyte.\nD. LH surge leads to disintegration of endometrium and menstruation.\n\nChoose the correct answer:",
+  "image_url": "",
+  "options": [
+    "B and D are true",
+    "B and C are true",
+    "A and B are true",
+    "A and C are true"
+  ],
+  "correct_answer": "C",
+  "explanation": "A and B are correct. First polar body forms after meiosis I (secondary oocyte stage), and LH surge causes ovulation, not menstruation."
+},
+{
+  "id": "q134",
+  "subject": "Biology",
+  "topic": "Plant Kingdom",
+  "difficulty": "Easy",
+  "question_text": "In bryophytes, the gemmae help in which one of the following?",
+  "image_url": "",
+  "options": [
+    "Nutrient absorption",
+    "Gaseous exchange",
+    "Sexual reproduction",
+    "Asexual reproduction"
+  ],
+  "correct_answer": "D",
+  "explanation": "Gemmae are multicellular asexual reproductive structures found in bryophytes."
+},
+{
+  "id": "q135",
+  "subject": "Biology",
+  "topic": "Cell Biology",
+  "difficulty": "Medium",
+  "question_text": "Assertion (A): The primary function of the Golgi apparatus is to package materials made by the endoplasmic reticulum and deliver them to targets.\n\nReason (R): Vesicles from ER fuse with cis face of Golgi and are modified and released from trans face.\n\nChoose the correct answer:",
+  "image_url": "",
+  "options": [
+    "A is true but R is false",
+    "A is false but R is true",
+    "Both A and R are true and R is correct explanation of A",
+    "Both A and R are true but R is not correct explanation of A"
+  ],
+  "correct_answer": "C",
+  "explanation": "Both statements are correct and R correctly explains A. Golgi modifies and packages proteins received from ER."
+},
+{
+  "id": "q136",
+  "subject": "Biology",
+  "topic": "Biological Classification",
+  "difficulty": "Easy",
+  "question_text": "Which one of the following statements refers to Reductionist Biology?",
+  "image_url": "",
+  "options": [
+    "Chemical approach to study and understand living organisms",
+    "Behavioural approach to study and understand living organisms",
+    "Physico-chemical approach to study and understand living organisms",
+    "Physiological approach to study and understand living organisms"
+  ],
+  "correct_answer": "C",
+  "explanation": "Reductionist biology explains living systems using physico-chemical principles."
+},
+{
+  "id": "q137",
+  "subject": "Biology",
+  "topic": "Human Health and Disease",
+  "difficulty": "Medium",
+  "question_text": "After maturation in primary lymphoid organs, lymphocytes migrate to secondary lymphoid organs/tissues like:\n\nA. Thymus\nB. Bone marrow\nC. Spleen\nD. Lymph nodes\nE. Peyer's patches\n\nChoose the correct answer:",
+  "image_url": "",
+  "options": [
+    "E, A, B only",
+    "C, D, E only",
+    "B, C, D only",
+    "A, B, C only"
+  ],
+  "correct_answer": "B",
+  "explanation": "Secondary lymphoid organs include spleen, lymph nodes, and Peyer's patches where lymphocytes interact with antigens."
+},
+{
+  "id": "q138",
+  "subject": "Biology",
+  "topic": "Biodiversity and Conservation",
+  "difficulty": "Medium",
+  "question_text": "Match List-I with List-II:\n\nList-I:\nA. The Evil Quartet\nB. Ex situ conservation\nC. Lantana camara\nD. Dodo\n\nList-II:\nI. Cryopreservation\nII. Alien species invasion\nIII. Causes of biodiversity losses\nIV. Extinction\n\nChoose the correct match:",
+  "image_url": "",
+  "options": [
+    "A-III, B-IV, C-II, D-I",
+    "A-III, B-II, C-IV, D-I",
+    "A-III, B-II, C-I, D-IV",
+    "A-III, B-I, C-II, D-IV"
+  ],
+  "correct_answer": "D",
+  "explanation": "The Evil Quartet → causes of biodiversity loss (III); Ex situ conservation → cryopreservation (I); Lantana camara → alien species invasion (II); Dodo → extinction (IV)."
+},
+{
+  "id": "q139",
+  "subject": "Biology",
+  "topic": "Sexual Reproduction in Flowering Plants",
+  "difficulty": "Medium",
+  "question_text": "How many meiotic and mitotic divisions are required for the development of a mature female gametophyte from the megaspore mother cell in an angiosperm plant?",
+  "image_url": "",
+  "options": [
+    "1 Meiosis and 3 Mitosis",
+    "No Meiosis and 2 Mitosis",
+    "2 Meiosis and 3 Mitosis",
+    "1 Meiosis and 2 Mitosis"
+  ],
+  "correct_answer": "A",
+  "explanation": "One meiotic division produces four megaspores, and three mitotic divisions lead to formation of the mature embryo sac."
+},
+{
+  "id": "q140",
+  "subject": "Biology",
+  "topic": "Human Health and Disease",
+  "difficulty": "Easy",
+  "question_text": "Which of the following type of immunity is present at birth and is a non-specific defence in the human body?",
+  "image_url": "",
+  "options": [
+    "Cell-mediated immunity",
+    "Humoral immunity",
+    "Acquired immunity",
+    "Innate immunity"
+  ],
+  "correct_answer": "D",
+  "explanation": "Innate immunity is present from birth and provides non-specific defence against pathogens."
+},
+{
+  "id": "q141",
+  "subject": "Biology",
+  "topic": "Ecology",
+  "difficulty": "Medium",
+  "question_text": "Statement I: Fig fruit is a non-vegetarian fruit as it has enclosed fig wasps in it.\n\nStatement II: Fig wasp and fig tree exhibit mutual relationship as fig wasp completes its life cycle in fig fruit and fig fruit gets pollinated by fig wasp.\n\nChoose the correct option:",
+  "image_url": "",
+  "options": [
+    "Statement I is correct but Statement II is incorrect",
+    "Statement I is incorrect but Statement II is correct",
+    "Both statements are correct",
+    "Both statements are incorrect"
+  ],
+  "correct_answer": "D",
+  "explanation": "Fig fruit is vegetarian. Fig and fig wasp show mutualism, but technically pollination occurs in the inflorescence (not fruit), so both statements are incorrect."
+},
+{
+  "id": "q142",
+  "subject": "Biology",
+  "topic": "Sexual Reproduction in Flowering Plants",
+  "difficulty": "Medium",
+  "question_text": "Assertion (A): Cells of the tapetum possess dense cytoplasm and generally have more than one nucleus.\n\nReason (R): Presence of more than one nucleus in the tapetum increases the efficiency of nourishing the developing microspore mother cells.\n\nChoose the correct option:",
+  "image_url": "",
+  "options": [
+    "A is true but R is false",
+    "A is false but R is true",
+    "Both A and R are true and R is the correct explanation of A",
+    "Both A and R are true but R is not the correct explanation of A"
+  ],
+  "correct_answer": "C",
+  "explanation": "Tapetal cells are multinucleate with dense cytoplasm, enhancing their nutritive role for developing microspores."
+},
+{
+  "id": "q143",
+  "subject": "Biology",
+  "topic": "Cell Biology",
+  "difficulty": "Medium",
+  "question_text": "From the statements given below choose the correct option:\n\nA. Eukaryotic ribosomes are 80S and prokaryotic ribosomes are 70S.\nB. Each ribosome has two sub-units.\nC. 80S ribosome has 60S and 40S subunits, while 70S has 50S and 30S.\nD. 80S ribosome has 60S and 20S; 70S has 50S and 20S.\nE. 80S ribosome has 60S and 30S; 70S has 50S and 30S.\n\nChoose the correct answer:",
+  "image_url": "",
+  "options": [
+    "A, B, E are true",
+    "B, D, E are true",
+    "A, B, C are true",
+    "A, B, D are true"
+  ],
+  "correct_answer": "C",
+  "explanation": "Eukaryotic ribosomes are 80S (60S+40S) and prokaryotic are 70S (50S+30S)."
+},
+{
+  "id": "q144",
+  "subject": "Biology",
+  "topic": "Biomolecules",
+  "difficulty": "Easy",
+  "question_text": "Which one of the following enzymes contains 'Haem' as the prosthetic group?",
+  "image_url": "",
+  "options": [
+    "Succinate dehydrogenase",
+    "Catalase",
+    "RuBisCo",
+    "Carbonic anhydrase"
+  ],
+  "correct_answer": "B",
+  "explanation": "Catalase contains haem as a prosthetic group and helps in breakdown of hydrogen peroxide."
+},
+{
+  "id": "q145",
+  "subject": "Biology",
+  "topic": "Animal Physiology",
+  "difficulty": "Easy",
+  "question_text": "What is the name of the blood vessel that carries deoxygenated blood from the body to the heart in a frog?",
+  "image_url": "",
+  "options": [
+    "Pulmonary vein",
+    "Vena cava",
+    "Aorta",
+    "Pulmonary artery"
+  ],
+  "correct_answer": "B",
+  "explanation": "Vena cava carries deoxygenated blood from the body to the frog's heart."
+},
+{
+  "id": "q146",
+  "subject": "Biology",
+  "topic": "Plant Kingdom",
+  "difficulty": "Medium",
+  "question_text": "Given below are the stages in the life cycle of pteridophytes. Arrange them in correct sequence:\n\nA. Prothallus stage\nB. Meiosis in spore mother cells\nC. Fertilisation\nD. Formation of archegonia and antheridia\nE. Transfer of antherozoids to archegonia\n\nChoose the correct answer:",
+  "image_url": "",
+  "options": [
+    "D, E, C, A, B",
+    "E, D, C, B, A",
+    "B, A, D, E, C",
+    "B, A, E, C, D"
+  ],
+  "correct_answer": "C",
+  "explanation": "Correct sequence: meiosis → prothallus → gametangia formation → gamete transfer → fertilisation."
+},
+{
+  "id": "q147",
+  "subject": "Biology",
+  "topic": "Biotechnology",
+  "difficulty": "Medium",
+  "question_text": "Assertion (A): Blue colonies have DNA insert and are recombinant.\n\nReason (R): White colonies have DNA insert and are recombinant.\n\nChoose the correct option:",
+  "image_url": "",
+  "options": [
+    "Statement I is correct but Statement II is incorrect",
+    "Statement I is incorrect but Statement II is correct",
+    "Both statements are correct",
+    "Both statements are incorrect"
+  ],
+  "correct_answer": "B",
+  "explanation": "Insertional inactivation of β-galactosidase produces white colonies (recombinant), while blue colonies are non-recombinant."
+},
+{
+  "id": "q148",
+  "subject": "Biology",
+  "topic": "Microbiology",
+  "difficulty": "Medium",
+  "question_text": "Which of the following microbes is NOT involved in preparation of household products?\n\nA. Aspergillus niger\nB. Lactobacillus\nC. Trichoderma polysporum\nD. Saccharomyces cerevisiae\nE. Propionibacterium sharmanii\n\nChoose the correct option:",
+  "image_url": "",
+  "options": [
+    "C and D only",
+    "C and E only",
+    "A and B only",
+    "A and C only"
+  ],
+  "correct_answer": "D",
+  "explanation": "Aspergillus niger and Trichoderma polysporum are used in industrial production, not household products."
+},
+{
+  "id": "q149",
+  "subject": "Biology",
+  "topic": "Biotechnology",
+  "difficulty": "Easy",
+  "question_text": "Silencing of specific mRNA is possible via RNA interference because of:",
+  "image_url": "",
+  "options": [
+    "Complementary tRNA",
+    "Non-complementary ssRNA",
+    "Complementary dsRNA",
+    "Inhibitory ssRNA"
+  ],
+  "correct_answer": "C",
+  "explanation": "RNAi works through complementary double-stranded RNA binding to mRNA and preventing translation."
+},
+{
+  "id": "q150",
+  "subject": "Biology",
+  "topic": "Respiration",
+  "difficulty": "Easy",
+  "question_text": "The complex II of mitochondrial electron transport chain is also known as:",
+  "image_url": "",
+  "options": [
+    "Cytochrome c oxidase",
+    "NADH dehydrogenase",
+    "Cytochrome bc1",
+    "Succinate dehydrogenase"
+  ],
+  "correct_answer": "D",
+  "explanation": "Complex II is succinate dehydrogenase; other complexes are I (NADH), III (cytochrome bc1), IV (cytochrome c oxidase)."
+},
+{
+  "id": "q151",
+  "subject": "Biology",
+  "topic": "Animal Kingdom",
+  "difficulty": "Medium",
+  "question_text": "A body cavity with mesoderm lining only on the body wall but not around the gut indicates:",
+  "image_url": "",
+  "options": [
+    "Schizocoelomate",
+    "Spongocoelomate",
+    "Acoelomate",
+    "Pseudocoelomate"
+  ],
+  "correct_answer": "D",
+  "explanation": "In pseudocoelomates, mesoderm lines the body wall but not the gut."
+},
+{
+  "id": "q152",
+  "subject": "Biology",
+  "topic": "Morphology of Flowering Plants",
+  "difficulty": "Medium",
+  "question_text": "Assertion (A): ⊕ represents zygomorphic flower and G represents inferior ovary.\n\nReason (R): ⊕ represents actinomorphic flower and G represents superior ovary.\n\nChoose the correct option:",
+  "image_url": "",
+  "options": [
+    "Statement I is correct but Statement II is incorrect",
+    "Statement I is incorrect but Statement II is correct",
+    "Both statements are correct",
+    "Both statements are incorrect"
+  ],
+  "correct_answer": "B",
+  "explanation": "⊕ represents actinomorphic flowers and G represents superior ovary."
+},
+{
+  "id": "q153",
+  "subject": "Biology",
+  "topic": "Ecosystem",
+  "difficulty": "Easy",
+  "question_text": "Assertion (A): Energy flow in ecosystem is unidirectional.\n\nReason (R): Ecosystems are exempt from second law of thermodynamics.\n\nChoose the correct option:",
+  "image_url": "",
+  "options": [
+    "Statement I is correct but Statement II is incorrect",
+    "Statement I is incorrect but Statement II is correct",
+    "Both statements are correct",
+    "Both statements are incorrect"
+  ],
+  "correct_answer": "A",
+  "explanation": "Energy flow is unidirectional, but ecosystems obey thermodynamic laws."
+},
+{
+  "id": "q154",
+  "subject": "Biology",
+  "topic": "Ecosystem",
+  "difficulty": "Easy",
+  "question_text": "What is the unit of productivity in an ecosystem?",
+  "image_url": "",
+  "options": [
+    "KCal m^-3",
+    "(KCal m^-2) yr^-1",
+    "g m^-2",
+    "KCal m^-2"
+  ],
+  "correct_answer": "B",
+  "explanation": "Productivity is expressed as energy or biomass per unit area per unit time."
+},
+{
+  "id": "q155",
+  "subject": "Biology",
+  "topic": "Genetics",
+  "difficulty": "Medium",
+  "question_text": "What is the probability of a child being normal but a carrier in F3 generation (sex-linked recessive)?",
+  "image_url": "https://res.cloudinary.com/dmmacwuow/image/upload/v1776817921/bio_q155_zieq5p.png",
+  "options": [
+    "1/8",
+    "Zero",
+    "1/4",
+    "1/2"
+  ],
+  "correct_answer": "C",
+  "explanation": "In X-linked recessive inheritance, probability of carrier offspring is 1/4."
+},
+{
+  "id": "q156",
+  "subject": "Biology",
+  "topic": "Plant Anatomy",
+  "difficulty": "Easy",
+  "question_text": "In cereal seeds, the protein-rich layer separating embryo from endosperm is called:",
+  "image_url": "",
+  "options": [
+    "Integument",
+    "Aleurone layer",
+    "Coleoptile",
+    "Coleorhiza"
+  ],
+  "correct_answer": "B",
+  "explanation": "The aleurone layer is a protein-rich layer present in monocot seeds surrounding the endosperm."
+},
+{
+  "id": "q157",
+  "subject": "Biology",
+  "topic": "Plant Physiology",
+  "difficulty": "Easy",
+  "question_text": "Match List-I with List-II:\n\nA. Chlorophyll a\nB. Chlorophyll b\nC. Xanthophylls\nD. Carotenoids\n\nI. Yellow-green\nII. Yellow\nIII. Blue-green\nIV. Yellow to Yellow-orange\n\nChoose the correct match:",
+  "image_url": "",
+  "options": [
+    "A-I, B-II, C-IV, D-III",
+    "A-I, B-IV, C-III, D-II",
+    "A-III, B-IV, C-II, D-I",
+    "A-III, B-I, C-II, D-IV"
+  ],
+  "correct_answer": "D",
+  "explanation": "Chlorophyll a is blue-green, chlorophyll b is yellow-green, xanthophylls are yellow, and carotenoids are yellow to yellow-orange."
+},
+{
+  "id": "q158",
+  "subject": "Biology",
+  "topic": "Molecular Biology",
+  "difficulty": "Easy",
+  "question_text": "Who proposed that the genetic code for amino acids should be made up of three nucleotides?",
+  "image_url": "",
+  "options": [
+    "Jacque Monod",
+    "Franklin Stahl",
+    "George Gamow",
+    "Francis Crick"
+  ],
+  "correct_answer": "C",
+  "explanation": "George Gamow proposed the triplet nature of the genetic code."
+},
+{
+  "id": "q159",
+  "subject": "Biology",
+  "topic": "Molecular Biology",
+  "difficulty": "Easy",
+  "question_text": "Histones are enriched with:",
+  "image_url": "",
+  "options": [
+    "Phenylalanine & Leucine",
+    "Phenylalanine & Arginine",
+    "Lysine & Arginine",
+    "Leucine & Lysine"
+  ],
+  "correct_answer": "C",
+  "explanation": "Histones are rich in basic amino acids lysine and arginine, which help in DNA binding."
+},
+{
+  "id": "q160",
+  "subject": "Biology",
+  "topic": "Biotechnology",
+  "difficulty": "Medium",
+  "question_text": "Which of the following enzymes are NOT essential for gene cloning?\n\nA. Restriction enzymes\nB. DNA ligase\nC. DNA mutase\nD. DNA recombinase\nE. DNA polymerase\n\nChoose the correct option:",
+  "image_url": "",
+  "options": [
+    "D and E only",
+    "B and C only",
+    "C and D only",
+    "A and B only"
+  ],
+  "correct_answer": "C",
+  "explanation": "DNA mutase and DNA recombinase are not essential for gene cloning, while restriction enzymes, ligase, and polymerase are required."
+},
+{
+  "id": "q161",
+  "subject": "Biology",
+  "topic": "Cell Biology",
+  "difficulty": "Easy",
+  "question_text": "A specialised membranous structure in prokaryotic cells involved in cell wall formation, DNA replication and respiration is:",
+  "image_url": "",
+  "options": [
+    "Cristae",
+    "Endoplasmic Reticulum",
+    "Mesosome",
+    "Chromatophores"
+  ],
+  "correct_answer": "C",
+  "explanation": "Mesosomes are membrane infoldings in prokaryotes involved in respiration, DNA replication, and cell wall formation."
+},
+{
+  "id": "q162",
+  "subject": "Biology",
+  "topic": "Molecular Biology",
+  "difficulty": "Easy",
+  "question_text": "Which factor is important for termination of transcription?",
+  "image_url": "",
+  "options": [
+    "ρ (rho)",
+    "γ (gamma)",
+    "α (alpha)",
+    "σ (sigma)"
+  ],
+  "correct_answer": "A",
+  "explanation": "Rho (ρ) factor is responsible for termination of transcription in prokaryotes."
+},
+{
+  "id": "q163",
+  "subject": "Biology",
+  "topic": "Animal Physiology",
+  "difficulty": "Easy",
+  "question_text": "Where is the male frog copulatory pad located?",
+  "image_url": "",
+  "options": [
+    "Second digit of forelimb",
+    "First digit of forelimb",
+    "First and second digits of forelimb",
+    "First digit of hind limb"
+  ],
+  "correct_answer": "B",
+  "explanation": "In male frogs, copulatory pads are present on the first digit of the forelimbs."
+},
+{
+  "id": "q164",
+  "subject": "Biology",
+  "topic": "Human Physiology",
+  "difficulty": "Medium",
+  "question_text": "Which diagram correctly represents proximal (P) and distal (D) tubules of nephron?",
+  "image_url": "https://res.cloudinary.com/dmmacwuow/image/upload/v1776817920/bio_q164_ep6khs.png",
+  "options": [
+    "Diagram 1",
+    "Diagram 2",
+    "Diagram 3",
+    "Diagram 4"
+  ],
+  "correct_answer": "D",
+  "explanation": "PCT performs secretion of H+, NH3, K+; DCT reabsorbs HCO3− and secretes H+, K+, NH3."
+},
+{
+  "id": "q165",
+  "subject": "Biology",
+  "topic": "Immunology",
+  "difficulty": "Easy",
+  "question_text": "Identify the incorrect statement about antibodies:",
+  "image_url": "",
+  "options": [
+    "Antigen binding site is at C-terminal region",
+    "Constant region is at C-terminal",
+    "Each antibody has two light and two heavy chains",
+    "Chains are held by disulfide bonds"
+  ],
+  "correct_answer": "A",
+  "explanation": "Antigen binding site is located at the N-terminal region, not C-terminal."
+},
+{
+  "id": "q166",
+  "subject": "Biology",
+  "topic": "Plant Anatomy",
+  "difficulty": "Medium",
+  "question_text": "Match List-I with List-II:\n\nA. Scutellum\nB. Non-albuminous seed\nC. Epiblast\nD. Perisperm\n\nI. Persistent nucellus\nII. Cotyledon of monocot seed\nIII. Groundnut\nIV. Rudimentary cotyledon\n\nChoose the correct match:",
+  "image_url": "",
+  "options": [
+    "A-IV, B-III, C-I, D-II",
+    "A-II, B-IV, C-III, D-I",
+    "A-II, B-III, C-IV, D-I",
+    "A-IV, B-III, C-II, D-I"
+  ],
+  "correct_answer": "C",
+  "explanation": "Scutellum is cotyledon of monocot, groundnut is non-albuminous seed, epiblast is rudimentary cotyledon, perisperm is persistent nucellus."
+},
+{
+  "id": "q167",
+  "subject": "Biology",
+  "topic": "Plant Anatomy",
+  "difficulty": "Easy",
+  "question_text": "Identify the incorrect statement about monocot stem:",
+  "image_url": "",
+  "options": [
+    "Vascular bundles are conjoint and closed",
+    "Phloem parenchyma is absent",
+    "Hypodermis is parenchymatous",
+    "Vascular bundles are scattered"
+  ],
+  "correct_answer": "C",
+  "explanation": "In monocot stems, hypodermis is sclerenchymatous, not parenchymatous."
+},
+{
+  "id": "q168",
+  "subject": "Biology",
+  "topic": "Human Reproduction",
+  "difficulty": "Easy",
+  "question_text": "If twins are a boy and a girl, what must be true?",
+  "image_url": "",
+  "options": [
+    "They were conceived through IVF",
+    "They have 75% identical genes",
+    "They are monozygotic twins",
+    "They are fraternal twins"
+  ],
+  "correct_answer": "D",
+  "explanation": "Male and female twins are dizygotic (fraternal), formed from two different zygotes."
+},
+{
+  "id": "q169",
+  "subject": "Biology",
+  "topic": "Evolution",
+  "difficulty": "Easy",
+  "question_text": "Sweet potato and potato represent which type of evolution?",
+  "image_url": "",
+  "options": [
+    "Homology, convergent",
+    "Analogy, divergent",
+    "Analogy, convergent",
+    "Homology, divergent"
+  ],
+  "correct_answer": "C",
+  "explanation": "Sweet potato (root) and potato (stem) perform similar function but differ structurally → analogy and convergent evolution."
+},
+{
+  "id": "q170",
+  "subject": "Biology",
+  "topic": "Plant Physiology",
+  "difficulty": "Easy",
+  "question_text": "Which phytohormone promotes nutrient mobilization and delays leaf senescence?",
+  "image_url": "",
+  "options": [
+    "Gibberellin",
+    "Cytokinin",
+    "Ethylene",
+    "Abscisic acid"
+  ],
+  "correct_answer": "B",
+  "explanation": "Cytokinins delay senescence by promoting nutrient mobilization."
+},
+{
+  "id": "q171",
+  "subject": "Biology",
+  "topic": "Human Physiology",
+  "difficulty": "Easy",
+  "question_text": "Why can't insulin be given orally to diabetic patients?",
+  "image_url": "",
+  "options": [
+    "Because of structural variation",
+    "Its bioavailability will increase",
+    "Body will produce immune response",
+    "It will be digested in GI tract"
+  ],
+  "correct_answer": "D",
+  "explanation": "Insulin is a protein and gets digested in the gastrointestinal tract if taken orally."
+},
+{
+  "id": "q172",
+  "subject": "Biology",
+  "topic": "Biochemistry",
+  "difficulty": "Medium",
+  "question_text": "Which enzyme class catalyzes the reaction: S−G + S′ → S + S′−G ?",
+  "image_url": "",
+  "options": [
+    "Transferase",
+    "Ligase",
+    "Hydrolase",
+    "Lyase"
+  ],
+  "correct_answer": "A",
+  "explanation": "Transferases transfer functional groups (other than hydrogen) from one molecule to another."
+},
+{
+  "id": "q173",
+  "subject": "Biology",
+  "topic": "Biotechnology",
+  "difficulty": "Medium",
+  "question_text": "Assertion (A): DNA fragments extracted from gel electrophoresis can be used in recombinant DNA construction.\n\nReason (R): Smaller DNA fragments move farther towards the anode than larger ones.\n\nChoose the correct option:",
+  "image_url": "",
+  "options": [
+    "Statement I is correct but Statement II is incorrect",
+    "Statement I is incorrect but Statement II is correct",
+    "Both statements are correct",
+    "Both statements are incorrect"
+  ],
+  "correct_answer": "C",
+  "explanation": "DNA fragments can be eluted and used for cloning, and smaller fragments move faster towards the anode."
+},
+{
+  "id": "q174",
+  "subject": "Biology",
+  "topic": "Plant Kingdom",
+  "difficulty": "Medium",
+  "question_text": "Arrange the correct sequence in bryophyte life cycle:\n\nA. Fusion of antherozoid with egg\nB. Attachment of gametophyte to substratum\nC. Meiosis to produce spores\nD. Formation of sporophyte\nE. Release of antherozoids\n\nChoose the correct option:",
+  "image_url": "",
+  "options": [
+    "B, E, A, D, C",
+    "D, E, A, B, C",
+    "D, E, A, C, B",
+    "B, E, A, C, D"
+  ],
+  "correct_answer": "A",
+  "explanation": "Sequence: attachment → release of antherozoids → fertilization → sporophyte formation → meiosis."
+},
+{
+  "id": "q175",
+  "subject": "Biology",
+  "topic": "Genetics",
+  "difficulty": "Easy",
+  "question_text": "What is the phenotypic ratio of F2 generation in a dihybrid cross RRYY × rryy?",
+  "image_url": "",
+  "options": [
+    "9:3:3:1",
+    "9:7",
+    "1:2",
+    "3:1"
+  ],
+  "correct_answer": "A",
+  "explanation": "Independent assortment in dihybrid cross produces 9:3:3:1 phenotypic ratio."
+},
+{
+  "id": "q176",
+  "subject": "Biology",
+  "topic": "Biological Classification",
+  "difficulty": "Medium",
+  "question_text": "Arrange the following kingdoms (Whittaker) in increasing order of body complexity:\n\nA. Multicellular heterotroph with chitin cell wall\nB. Heterotroph with organ system level\nC. Prokaryotes with polysaccharide cell wall\nD. Eukaryotic autotroph with tissue level\nE. Eukaryotes with cellular organization\n\nChoose the correct option:",
+  "image_url": "",
+  "options": [
+    "A, C, E, D, B",
+    "C, E, A, B, D",
+    "A, C, E, B, D",
+    "C, E, A, D, B"
+  ],
+  "correct_answer": "D",
+  "explanation": "Order: Monera → Protista → Fungi → Plantae → Animalia (increasing complexity)."
+},
+{
+  "id": "q177",
+  "subject": "Biology",
+  "topic": "Cell Biology",
+  "difficulty": "Easy",
+  "question_text": "Match List-I with List-II:\n\nA. Centromere\nB. Cilium\nC. Cristae\nD. Cell membrane\n\nI. Mitochondrion\nII. Cell division\nIII. Cell movement\nIV. Phospholipid bilayer\n\nChoose the correct match:",
+  "image_url": "",
+  "options": [
+    "A-IV, B-II, C-III, D-I",
+    "A-II, B-III, C-I, D-IV",
+    "A-I, B-II, C-III, D-IV",
+    "A-II, B-I, C-IV, D-III"
+  ],
+  "correct_answer": "B",
+  "explanation": "Centromere → cell division; Cilium → movement; Cristae → mitochondrion; Cell membrane → phospholipid bilayer."
+},
+{
+  "id": "q178",
+  "subject": "Biology",
+  "topic": "Population Ecology",
+  "difficulty": "Medium",
+  "question_text": "Which equation represents Verhulst-Pearl Logistic Growth of population?",
+  "image_url": "",
+  "options": [
+    "dN/dt = rN(N − K/N)",
+    "dN/dt = N(r − K/K)",
+    "dN/dt = r(K − N/K)",
+    "dN/dt = rN(K − N/K)"
+  ],
+  "correct_answer": "D",
+  "explanation": "Logistic growth is given by the Verhulst-Pearl equation shown below."
+},
+{
+  "id": "q179",
+  "subject": "Biology",
+  "topic": "Human Health and Disease",
+  "difficulty": "Medium",
+  "question_text": "Match List-I with List-II:\n\nA. Emphysema\nB. Angina pectoris\nC. Glomerulonephritis\nD. Tetany\n\nI. Rapid spasms due to low Ca++\nII. Damaged alveoli\nIII. Chest pain due to low oxygen to heart\nIV. Inflammation of glomeruli\n\nChoose the correct match:",
+  "image_url": "",
+  "options": [
+    "A-II, B-IV, C-III, D-I",
+    "A-II, B-III, C-IV, D-I",
+    "A-III, B-I, C-IV, D-II",
+    "A-II, B-I, C-II, D-IV"
+  ],
+  "correct_answer": "B",
+  "explanation": "Emphysema → alveoli damage; Angina → chest pain; Glomerulonephritis → kidney inflammation; Tetany → muscle spasms due to low Ca++."
+},
+{
+  "id": "q180",
+  "subject": "Biology",
+  "topic": "Human Physiology",
+  "difficulty": "Medium",
+  "question_text": "Cardiac activities of the heart are regulated by:\n\nA. Nodal tissue\nB. Neural centre in medulla oblongata\nC. Adrenal medullary hormones\nD. Adrenal cortical hormones\n\nChoose the correct option:",
+  "image_url": "",
+  "options": [
+    "A, C and D only",
+    "A, B and D only",
+    "A, B and C only",
+    "A, B, C and D"
+  ],
+  "correct_answer": "C",
+  "explanation": "Heart activity is regulated by nodal tissue, medulla oblongata, and adrenal medullary hormones; adrenal cortex is not directly involved."
+}
 ]

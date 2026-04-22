@@ -247,3 +247,14 @@ class ScheduledTestPublicResponse(BaseModel):
     duration_seconds: int
     status: str
     seconds_to_start: int
+
+
+class JsonQuizResultSubmit(BaseModel):
+    """Schema for submitting JSON quiz results (local quiz)"""
+    score: int
+    total: int
+    time_taken_seconds: int
+    duration_seconds: int = 10800
+    accuracy_percent: Optional[float] = None
+    test_type: str = "json_mock"
+    subject: Optional[str] = None
