@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/api/api_client.dart';
 import '../../../core/storage/app_storage.dart';
@@ -143,6 +144,7 @@ class QuizState {
   final Set<int> markedForReview;
   final QuizResult? result;
   final String? error;
+  final String? submissionNotice;
 
   QuizState({
     this.timeRemainingSeconds = 10800, // 3 hours
@@ -156,6 +158,7 @@ class QuizState {
     this.markedForReview = const <int>{},
     this.result,
     this.error,
+    this.submissionNotice,
   });
 
   QuizState copyWith({
@@ -170,6 +173,7 @@ class QuizState {
     Set<int>? markedForReview,
     QuizResult? result,
     String? error,
+    String? submissionNotice,
   }) {
     return QuizState(
       timeRemainingSeconds: timeRemainingSeconds ?? this.timeRemainingSeconds,
@@ -183,6 +187,7 @@ class QuizState {
       markedForReview: markedForReview ?? this.markedForReview,
       result: result ?? this.result,
       error: error,
+      submissionNotice: submissionNotice,
     );
   }
 }
@@ -381,17 +386,62 @@ class QuizNotifier extends StateNotifier<QuizState> {
   }
 
   Future<void> autoSubmit(String reason) async {
-    _timer?.cancel();
-    if (state.attemptId != null) {
-      await _dio.post('/quiz/${state.attemptId}/submit');
-      final resultResponse = await _dio.get('/quiz/${state.attemptId}/result');
-      final result =
-          QuizResult.fromJson(resultResponse.data as Map<String, dynamic>);
-      await _storage.clearAttemptId();
-      state = state.copyWith(isSubmitted: true, result: result);
+    if (state.isSubmitted || state.isLoading) {
       return;
     }
-    state = state.copyWith(isSubmitted: true);
+
+    _timer?.cancel();
+    state = state.copyWith(isLoading: true);
+    bool submitSucceeded = false;
+
+    try {
+      if (state.attemptId != null) {
+        await _dio.post('/quiz/${state.attemptId}/submit');
+        submitSucceeded = true;
+
+        try {
+          final resultResponse =
+              await _dio.get('/quiz/${state.attemptId}/result');
+          final result =
+              QuizResult.fromJson(resultResponse.data as Map<String, dynamic>);
+          await _storage.clearAttemptId();
+          state = state.copyWith(
+            isLoading: false,
+            isSubmitted: true,
+            result: result,
+            error: null,
+            submissionNotice: null,
+          );
+        } catch (resultError, resultStackTrace) {
+          debugPrint('Quiz result fetch failed after submit: $resultError');
+          debugPrintStack(stackTrace: resultStackTrace);
+          await _storage.clearAttemptId();
+          state = state.copyWith(
+            isLoading: false,
+            isSubmitted: true,
+            error: null,
+            submissionNotice:
+                'Test submitted successfully. We could not load the detailed result right now.',
+          );
+        }
+
+        return;
+      }
+
+      state = state.copyWith(isLoading: false, isSubmitted: true);
+    } catch (error, stackTrace) {
+      debugPrint('Quiz submit failed ($reason): $error');
+      debugPrintStack(stackTrace: stackTrace);
+      state = state.copyWith(isLoading: false);
+
+      if (!submitSucceeded && !state.isSubmitted && state.timeRemainingSeconds > 0) {
+        startTimer();
+      }
+
+      if (!submitSucceeded) {
+        rethrow;
+      }
+    }
   }
 
   @override

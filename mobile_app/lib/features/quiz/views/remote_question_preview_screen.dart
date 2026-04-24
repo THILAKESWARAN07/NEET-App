@@ -26,6 +26,7 @@ class _RemoteQuestionPreviewScreenState
   final Map<int, int> _selectedAnswers = {};
   int _remainingSeconds = _mockTestDurationSeconds;
   bool _isSubmitted = false;
+  bool _isSubmitting = false;
 
   ({int score, int correct, int wrong, int unattempted, double accuracyPercent})
       _calculateStats(List questions, Map<int, int> selectedAnswers) {
@@ -123,6 +124,7 @@ class _RemoteQuestionPreviewScreenState
           _selectedAnswers.clear();
           _remainingSeconds = _mockTestDurationSeconds;
           _isSubmitted = false;
+          _isSubmitting = false;
         }
         _loading = false;
       });
@@ -214,21 +216,20 @@ class _RemoteQuestionPreviewScreenState
     return attempts;
   }
 
-  void _submitQuiz() {
-    if (_questions.isEmpty || _isSubmitted) {
+  Future<void> _submitQuiz() async {
+    if (_questions.isEmpty || _isSubmitted || _isSubmitting) {
       return;
     }
 
     _timer?.cancel();
     setState(() {
-      _isSubmitted = true;
+      _isSubmitting = true;
     });
 
     final stats = _calculateStats(_questions, _selectedAnswers);
     final timeInSeconds = _mockTestDurationSeconds - _remainingSeconds;
 
-    // Save score to backend (non-blocking)
-    QuestionService.submitQuizScore(
+    final synced = await QuestionService.submitQuizScore(
       score: stats.score,
       total: _questions.length,
       timeInSeconds: timeInSeconds,
@@ -238,40 +239,14 @@ class _RemoteQuestionPreviewScreenState
       questionAttempts: _buildQuestionAttemptsPayload(),
     );
 
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (_) => ResultScreen(
-          score: stats.score,
-          total: _questions.length,
-          questions: _questions,
-          answers: _selectedAnswers,
-        ),
-      ),
-    );
-  }
-
-  void _autoSubmit() {
-    if (_isSubmitted || _questions.isEmpty) {
+    if (!mounted) {
       return;
     }
 
     setState(() {
       _isSubmitted = true;
+      _isSubmitting = false;
     });
-    final stats = _calculateStats(_questions, _selectedAnswers);
-    final timeInSeconds = _mockTestDurationSeconds - _remainingSeconds;
-
-    // Save score to backend (non-blocking)
-    QuestionService.submitQuizScore(
-      score: stats.score,
-      total: _questions.length,
-      timeInSeconds: timeInSeconds,
-      durationSeconds: _mockTestDurationSeconds,
-      testType: 'json_mock',
-      accuracyPercent: stats.accuracyPercent,
-      questionAttempts: _buildQuestionAttemptsPayload(),
-    );
 
     Navigator.pushReplacement(
       context,
@@ -281,6 +256,57 @@ class _RemoteQuestionPreviewScreenState
           total: _questions.length,
           questions: _questions,
           answers: _selectedAnswers,
+          initialSyncFailed: !synced,
+          timeInSeconds: timeInSeconds,
+          durationSeconds: _mockTestDurationSeconds,
+          testType: 'json_mock',
+        ),
+      ),
+    );
+  }
+
+  Future<void> _autoSubmit() async {
+    if (_isSubmitted || _isSubmitting || _questions.isEmpty) {
+      return;
+    }
+
+    setState(() {
+      _isSubmitting = true;
+      _isSubmitted = true;
+    });
+    final stats = _calculateStats(_questions, _selectedAnswers);
+    final timeInSeconds = _mockTestDurationSeconds - _remainingSeconds;
+
+    final synced = await QuestionService.submitQuizScore(
+      score: stats.score,
+      total: _questions.length,
+      timeInSeconds: timeInSeconds,
+      durationSeconds: _mockTestDurationSeconds,
+      testType: 'json_mock',
+      accuracyPercent: stats.accuracyPercent,
+      questionAttempts: _buildQuestionAttemptsPayload(),
+    );
+
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      _isSubmitting = false;
+    });
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ResultScreen(
+          score: stats.score,
+          total: _questions.length,
+          questions: _questions,
+          answers: _selectedAnswers,
+          initialSyncFailed: !synced,
+          timeInSeconds: timeInSeconds,
+          durationSeconds: _mockTestDurationSeconds,
+          testType: 'json_mock',
         ),
       ),
     );
@@ -498,8 +524,8 @@ class _RemoteQuestionPreviewScreenState
           ? SafeArea(
               minimum: const EdgeInsets.all(16),
               child: ElevatedButton(
-                onPressed: _submitQuiz,
-                child: const Text('Submit Quiz'),
+                onPressed: _isSubmitting ? null : _submitQuiz,
+                child: Text(_isSubmitting ? 'Submitting...' : 'Submit Quiz'),
               ),
             )
           : null,

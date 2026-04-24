@@ -186,6 +186,18 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
                 style: Theme.of(context).textTheme.displayLarge,
                 textAlign: TextAlign.center,
               ),
+              if (quizState.submissionNotice != null)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+                  child: Text(
+                    quizState.submissionNotice!,
+                    style: const TextStyle(
+                      color: Colors.orange,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
               if (quizState.cheatWarnings >= 3)
                 const Padding(
                   padding: EdgeInsets.all(16.0),
@@ -341,11 +353,26 @@ class _QuizScreenState extends ConsumerState<QuizScreen> {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ElevatedButton(
-          onPressed: () async {
-            await ref.read(quizProvider.notifier).autoSubmit('completed');
-          },
+          onPressed: quizState.isLoading
+              ? null
+              : () async {
+                  try {
+                    await ref.read(quizProvider.notifier).autoSubmit('completed');
+                  } catch (_) {
+                    if (!context.mounted) {
+                      return;
+                    }
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Unable to submit test right now. Please check your connection and try again.',
+                        ),
+                      ),
+                    );
+                  }
+                },
           style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-          child: const Text('Submit Test'),
+          child: Text(quizState.isLoading ? 'Submitting...' : 'Submit Test'),
         ),
       ),
     );
