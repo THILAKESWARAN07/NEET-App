@@ -39,6 +39,13 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
     return '$day/$month/$year $hour:$minute';
   }
 
+  String _formatTimeline(Map<String, dynamic> entry) {
+    final start = _formatAttemptedAt((entry['start_time'] ?? '').toString());
+    final endRaw = (entry['end_time'] ?? '').toString();
+    final end = endRaw.isEmpty ? 'In progress/unknown' : _formatAttemptedAt(endRaw);
+    return 'Start: $start\nEnd: $end';
+  }
+
   @override
   void initState() {
     super.initState();
@@ -79,6 +86,8 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
     final completedTests = (data!['completed_tests'] as num?)?.toInt() ?? 0;
     final inProgressTests = (data!['in_progress_tests'] as num?)?.toInt() ?? 0;
     final trend = (data!['trend'] as List<dynamic>).cast<Map<String, dynamic>>();
+    // API returns LIFO (latest first) for history; charts are easier to read oldest -> latest.
+    final trendChronological = trend.reversed.toList(growable: false);
 
     // Composite readiness index scaled to 0-100.
     final readiness =
@@ -96,25 +105,25 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
     final spots = <FlSpot>[];
     double highestTrendScore = 0;
     double lowestTrendScore = 720;
-    for (var i = 0; i < trend.length; i++) {
-      final score = (trend[i]['score'] as num).toDouble();
+    for (var i = 0; i < trendChronological.length; i++) {
+      final score = (trendChronological[i]['score'] as num).toDouble();
       highestTrendScore = score > highestTrendScore ? score : highestTrendScore;
       lowestTrendScore = score < lowestTrendScore ? score : lowestTrendScore;
       spots.add(FlSpot(i.toDouble(), score));
     }
-    if (trend.isEmpty) {
+    if (trendChronological.isEmpty) {
       lowestTrendScore = 0;
     }
 
-    final trendDelta = trend.length >= 2
-        ? ((trend.last['score'] as num).toDouble() -
-            (trend.first['score'] as num).toDouble())
+    final trendDelta = trendChronological.length >= 2
+        ? ((trendChronological.last['score'] as num).toDouble() -
+            (trendChronological.first['score'] as num).toDouble())
         : 0.0;
 
-    final consistencySpots = _buildConsistencySpots(trend);
-    final consistencyScore = _computeConsistencyScore(trend);
-    final scatterSpots = _buildTimeScoreSpots(trend);
-    final correlation = _computeTimeScoreCorrelation(trend);
+    final consistencySpots = _buildConsistencySpots(trendChronological);
+    final consistencyScore = _computeConsistencyScore(trendChronological);
+    final scatterSpots = _buildTimeScoreSpots(trendChronological);
+    final correlation = _computeTimeScoreCorrelation(trendChronological);
 
     final recommendation = _buildRecommendation(
       completedTests: completedTests,
@@ -423,6 +432,15 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
               'Score History (Recent)',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
+            const SizedBox(height: 4),
+            Text(
+              'Latest first (LIFO)',
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.grey.shade700,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
             const SizedBox(height: 8),
             Card(
               child: Padding(
@@ -440,7 +458,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                             title: Text(
                               'Score: ${(entry['score'] as num).toStringAsFixed(0)}',
                             ),
-                            subtitle: Text(attemptedAt),
+                            subtitle: Text('$attemptedAt\n${_formatTimeline(entry)}'),
                           );
                         }).toList(),
                       ),
@@ -450,6 +468,15 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
             const Text(
               'Time History (Recent)',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              'Latest first (LIFO)',
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.grey.shade700,
+                fontWeight: FontWeight.w600,
+              ),
             ),
             const SizedBox(height: 8),
             Card(
@@ -468,7 +495,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                             title: Text(
                               'Time: ${_formatDuration((entry['time_taken'] as num).toInt())}',
                             ),
-                            subtitle: Text(attemptedAt),
+                            subtitle: Text('$attemptedAt\n${_formatTimeline(entry)}'),
                           );
                         }).toList(),
                       ),

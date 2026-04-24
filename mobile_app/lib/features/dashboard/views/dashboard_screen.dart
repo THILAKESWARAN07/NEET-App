@@ -70,6 +70,11 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       final avgScoreRaw = (data['avg_score'] as num?)?.toDouble() ?? 0.0;
       final trendRaw = (data['trend'] as List<dynamic>?)?.cast<Map<String, dynamic>>() ?? [];
 
+      // Trend is provided as LIFO (latest attempt first).
+      final latestScoreRaw = trendRaw.isNotEmpty
+          ? (trendRaw.first['score'] as num?)?.toDouble()
+          : null;
+
       if (!mounted) {
         return;
       }
@@ -78,8 +83,11 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         _completedTests = completed;
         _trend = trendRaw;
         // Show 0 for new users with no completed tests.
-        _estimatedScore =
-            completed == 0 ? 0 : avgScoreRaw.round().clamp(0, 720).toInt();
+        // Prefer latest attempt score for "Current Est. Score", fallback to average.
+        final predictorScore = latestScoreRaw ?? avgScoreRaw;
+        _estimatedScore = completed == 0
+            ? 0
+            : predictorScore.round().clamp(0, 720).toInt();
       });
     } catch (_) {
       if (!mounted) {
@@ -336,8 +344,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
 
   Widget _buildMiniTrendGraph() {
     final spots = <FlSpot>[];
-    for (var i = 0; i < _trend.length; i++) {
-      final score = (_trend[i]['score'] as num).toDouble();
+    final chronologicalTrend = _trend.reversed.toList(growable: false);
+    for (var i = 0; i < chronologicalTrend.length; i++) {
+      final score = (chronologicalTrend[i]['score'] as num).toDouble();
       spots.add(FlSpot(i.toDouble(), score));
     }
 

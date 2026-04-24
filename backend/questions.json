@@ -395,7 +395,7 @@
     "NOR",
     "AND",
     "NAND"
-  ],
+  ],   
   "correct_answer": "B",
   "explanation": "Given: \\( Y_1 = A + B \\), \\( Y_2 = A \\cdot B \\), and \\( Y = Y_1 \\cdot Y_2 \\).\n\nThus, \\( Y = (A + B)(A \\cdot B) = A \\cdot B \\cdot (A + B) \\).\n\nUsing Boolean simplification, this corresponds to the complement of OR operation, i.e., a NOR gate."
 },

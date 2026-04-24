@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/utils/latex_renderer.dart';
 import '../providers/quiz_provider.dart';
 import 'wrong_questions_screen.dart';
 
@@ -88,14 +89,14 @@ class ResultScreen extends StatelessWidget {
                               fontWeight: FontWeight.normal,
                             ),
                           ),
-                          subtitle: Text(
+                          subtitle: safeMath(
                             '${isUnattempted
                                 ? 'Unattempted'
                                 : isCorrect
                                     ? 'Correct (+4)'
                                     : 'Wrong (-1)'}\n'
                             'Your answer: ${item.selectedOption ?? 'Not Attempted'}',
-                            style: TextStyle(
+                            textStyle: TextStyle(
                               fontWeight: FontWeight.normal,
                               color: isUnattempted
                                   ? Colors.black54
@@ -104,9 +105,9 @@ class ResultScreen extends StatelessWidget {
                                       : Colors.red,
                             ),
                           ),
-                          trailing: Text(
+                          trailing: safeMath(
                             'Ans: ${item.correctAnswer}',
-                            style: const TextStyle(
+                            textStyle: const TextStyle(
                               fontWeight: FontWeight.normal,
                             ),
                           ),
@@ -222,14 +223,14 @@ class ResultScreen extends StatelessWidget {
                         'Q${index + 1}',
                         style: const TextStyle(fontWeight: FontWeight.normal),
                       ),
-                      subtitle: Text(
+                      subtitle: safeMath(
                         '${isUnattempted
                             ? 'Unattempted'
                             : isCorrect
                                 ? 'Correct (+4)'
                                 : 'Wrong (-1)'}\n'
                         'Your answer: ${selected == null ? 'Not Attempted' : String.fromCharCode(65 + selected)}',
-                        style: TextStyle(
+                        textStyle: TextStyle(
                           fontWeight: FontWeight.normal,
                           color: isUnattempted
                               ? Colors.black54
@@ -238,9 +239,9 @@ class ResultScreen extends StatelessWidget {
                                   : Colors.red,
                         ),
                       ),
-                      trailing: Text(
+                      trailing: safeMath(
                         'Ans: ${q['correct_answer']}',
-                        style: const TextStyle(fontWeight: FontWeight.normal),
+                        textStyle: const TextStyle(fontWeight: FontWeight.normal),
                       ),
                     ),
                   );

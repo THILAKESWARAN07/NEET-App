@@ -71,9 +71,9 @@ class _BookmarksScreenState extends ConsumerState<BookmarksScreen> {
                             const SizedBox(height: 8),
                             ...options.map((option) => safeMath('• $option')),
                             const SizedBox(height: 8),
-                            Text(
+                            safeMath(
                               'Correct answer: ${question['correct_answer']}',
-                              style: const TextStyle(
+                              textStyle: const TextStyle(
                                   color: Colors.green,
                                   fontWeight: FontWeight.bold),
                             ),

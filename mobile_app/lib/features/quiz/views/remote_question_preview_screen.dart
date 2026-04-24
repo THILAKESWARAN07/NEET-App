@@ -286,10 +286,6 @@ class _RemoteQuestionPreviewScreenState
     );
   }
 
-  bool _looksLikeLatex(String text) => looksLikeLatex(text);
-
-  String _stripLatexDelimiters(String text) => stripLatexDelimiters(text);
-
   @override
   Widget build(BuildContext context) {
     final hasQuestions = _questions.isNotEmpty;
@@ -425,22 +421,34 @@ class _RemoteQuestionPreviewScreenState
                             final isCorrect = index == currentCorrectIndex;
                             final backgroundColor = isAnswered
                                 ? isCorrect
-                                    ? Colors.green.shade100
+                                ? Colors.green.shade800
                                     : isSelected
-                                        ? Colors.red.shade100
+                                  ? Colors.red.shade800
                                         : null
                                 : isSelected
                                     ? Colors.blue.shade100
                                     : null;
+                            final textColor = backgroundColor == null
+                              ? null
+                              : (isAnswered ? Colors.white : Colors.black);
 
                             return Card(
                               margin: const EdgeInsets.symmetric(vertical: 6),
                               color: backgroundColor,
                               child: ListTile(
-                                leading: Text(label, style: const TextStyle(fontWeight: FontWeight.normal)),
+                                leading: Text(
+                                  label,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    color: textColor,
+                                  ),
+                                ),
                                 title: safeMath(
                                   currentOptions[index].toString(),
-                                  textStyle: const TextStyle(fontWeight: FontWeight.normal),
+                                  textStyle: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    color: textColor,
+                                  ),
                                 ),
                                 onTap: isAnswered
                                     ? null
@@ -471,16 +479,18 @@ class _RemoteQuestionPreviewScreenState
                               ),
                             ],
                           ),
-                          const SizedBox(height: 20),
-                          const Text(
-                            'Explanation:',
-                            style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
-                          ),
-                          const SizedBox(height: 8),
-                          safeMath(
-                            currentQuestion['explanation'].toString(),
-                            textStyle: const TextStyle(fontWeight: FontWeight.normal),
-                          ),
+                          if (currentAnswered) ...[
+                            const SizedBox(height: 20),
+                            const Text(
+                              'Explanation:',
+                              style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
+                            ),
+                            const SizedBox(height: 8),
+                            safeMath(
+                              currentQuestion['explanation'].toString(),
+                              textStyle: const TextStyle(fontWeight: FontWeight.normal),
+                            ),
+                          ],
                         ],
                       ),
                     ),

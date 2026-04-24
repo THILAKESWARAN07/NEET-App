@@ -47,6 +47,13 @@ from .deps import get_current_user, require_admin
 router = APIRouter()
 
 
+def _to_utc_iso(dt: datetime | None) -> str:
+    if not dt:
+        return ""
+    normalized = dt if dt.tzinfo is not None else dt.replace(tzinfo=timezone.utc)
+    return normalized.astimezone(timezone.utc).isoformat()
+
+
 def _get_ordered_attempt_questions(db: Session, attempt_id: int) -> List[Question]:
     assigned = (
         db.query(QuizAttemptQuestion)
@@ -835,15 +842,20 @@ def dashboard_analytics(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    attempts = (
-        db.query(QuizAttempt).filter(QuizAttempt.user_id == current_user.id).all()
-    )
+    attempts = db.query(QuizAttempt).filter(QuizAttempt.user_id == current_user.id).all()
     completed = [
         a for a in attempts if a.status in ("completed", "timeout", "terminated")
     ]
+    completed.sort(
+        key=lambda attempt: (
+            attempt.end_time or attempt.start_time or datetime.min.replace(tzinfo=timezone.utc),
+            attempt.id,
+        ),
+        reverse=True,
+    )
     in_progress = [a for a in attempts if a.status == "in_progress"]
 
-    avg_score = sum(a.score for a in completed) / len(completed) if completed else 0.0
+    score_total = 0.0
     overall_accuracy = 0.0
     weak_topics: Dict[str, int] = {}
     strong_topics: Dict[str, int] = {}
@@ -852,6 +864,7 @@ def dashboard_analytics(
     attempted_total = 0
     for attempt in completed:
         result = _compute_result(attempt, db)
+        score_total += float(result.score)
         correct_total += result.correct
         attempted_total += result.correct + result.wrong
 
@@ -864,18 +877,39 @@ def dashboard_analytics(
     if attempted_total:
         overall_accuracy = round((correct_total / attempted_total) * 100, 2)
 
+    avg_score = (score_total / len(completed)) if completed else 0.0
+
     trend = []
-    for attempt in completed[-10:]:
+    for attempt in completed[:10]:
+        start_iso = _to_utc_iso(attempt.start_time)
+        end_iso = _to_utc_iso(attempt.end_time)
+        result = _compute_result(attempt, db)
+        time_taken = int(attempt.time_taken or 0)
+        if time_taken <= 0 and attempt.start_time and attempt.end_time:
+            start_dt = (
+                attempt.start_time
+                if attempt.start_time.tzinfo is not None
+                else attempt.start_time.replace(tzinfo=timezone.utc)
+            )
+            end_dt = (
+                attempt.end_time
+                if attempt.end_time.tzinfo is not None
+                else attempt.end_time.replace(tzinfo=timezone.utc)
+            )
+            time_taken = max(0, int((end_dt - start_dt).total_seconds()))
+
         attempted_at = (
-            attempt.end_time.isoformat()
-            if attempt.end_time
-            else (attempt.start_time.isoformat() if attempt.start_time else "")
+            end_iso
+            if end_iso
+            else start_iso
         )
         trend.append(
             {
-                "score": float(attempt.score),
-                "time_taken": float(attempt.time_taken),
+                "score": float(result.score),
+                "time_taken": float(time_taken),
                 "attempted_at": attempted_at,
+                "start_time": start_iso,
+                "end_time": end_iso,
             }
         )
 

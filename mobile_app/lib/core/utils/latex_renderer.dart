@@ -6,6 +6,15 @@ bool looksLikeLatex(String text) {
   final normalized = text.trim();
   if (normalized.isEmpty) return false;
 
+  if (normalized.contains(r'\(') ||
+      normalized.contains(r'\)') ||
+      normalized.contains(r'\[') ||
+      normalized.contains(r'\]') ||
+      normalized.contains(r'$$') ||
+      RegExp(r'(^|[^\\])\$[^$]+\$').hasMatch(normalized)) {
+    return true;
+  }
+
   const latexSignals = <String>[
     '\\frac',
     '\\sqrt',
@@ -34,13 +43,17 @@ String stripLatexDelimiters(String text) {
   if (stripped.startsWith('\\(') && stripped.endsWith('\\)')) {
     stripped = stripped.substring(2, stripped.length - 2).trim();
   }
-  // Strip $ ... $ delimiters
-  else if (stripped.startsWith('\$') && stripped.endsWith('\$')) {
-    stripped = stripped.substring(1, stripped.length - 1).trim();
-  }
   // Strip $$ ... $$ delimiters
   else if (stripped.startsWith('\$\$') && stripped.endsWith('\$\$')) {
     stripped = stripped.substring(2, stripped.length - 2).trim();
+  }
+  // Strip \[ ... \] delimiters
+  else if (stripped.startsWith('\\[') && stripped.endsWith('\\]')) {
+    stripped = stripped.substring(2, stripped.length - 2).trim();
+  }
+  // Strip $ ... $ delimiters
+  else if (stripped.startsWith('\$') && stripped.endsWith('\$')) {
+    stripped = stripped.substring(1, stripped.length - 1).trim();
   }
 
   return stripped;
@@ -52,6 +65,13 @@ Widget safeMath(String text, {TextStyle? textStyle}) {
   final normalized = text.trim();
   if (normalized.isEmpty) {
     return Text('', style: textStyle);
+  }
+
+  final spans = _buildMixedContentSpans(normalized, textStyle: textStyle);
+  if (spans != null) {
+    return Text.rich(
+      TextSpan(children: spans, style: textStyle),
+    );
   }
 
   if (!looksLikeLatex(normalized)) {
@@ -68,4 +88,52 @@ Widget safeMath(String text, {TextStyle? textStyle}) {
   } catch (_) {
     return Text(normalized, style: textStyle);
   }
+}
+
+List<InlineSpan>? _buildMixedContentSpans(String text, {TextStyle? textStyle}) {
+  final delimiterRegex = RegExp(r'\\\((.+?)\\\)|\$\$(.+?)\$\$|\$(.+?)\$');
+  final matches = delimiterRegex.allMatches(text).toList();
+
+  if (matches.isEmpty) {
+    return null;
+  }
+
+  final spans = <InlineSpan>[];
+  var cursor = 0;
+
+  for (final match in matches) {
+    if (match.start > cursor) {
+      final plain = text.substring(cursor, match.start);
+      if (plain.isNotEmpty) {
+        spans.add(TextSpan(text: plain, style: textStyle));
+      }
+    }
+
+    final rawMath = (match.group(1) ?? match.group(2) ?? match.group(3) ?? '').trim();
+    if (rawMath.isNotEmpty) {
+      try {
+        spans.add(
+          WidgetSpan(
+            alignment: PlaceholderAlignment.middle,
+            child: Math.tex(rawMath, textStyle: textStyle),
+          ),
+        );
+      } catch (_) {
+        spans.add(TextSpan(text: match.group(0), style: textStyle));
+      }
+    } else {
+      spans.add(TextSpan(text: match.group(0), style: textStyle));
+    }
+
+    cursor = match.end;
+  }
+
+  if (cursor < text.length) {
+    final tail = text.substring(cursor);
+    if (tail.isNotEmpty) {
+      spans.add(TextSpan(text: tail, style: textStyle));
+    }
+  }
+
+  return spans;
 }

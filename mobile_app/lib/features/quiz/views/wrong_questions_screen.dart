@@ -198,7 +198,7 @@ class _WrongQuestionsScreenState extends ConsumerState<WrongQuestionsScreen> {
                               ),
                             ],
                             const SizedBox(height: 8),
-                            Text(
+                            safeMath(
                               '${item.question.subject} | Your answer: ${item.selectedOption} | Correct: ${item.correctAnswer}',
                             ),
                           ],
