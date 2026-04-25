@@ -125,9 +125,10 @@ def _compute_result(attempt: QuizAttempt, db: Session) -> QuizResultResponse:
     assigned_question_ids = [item.question_id for item in assigned]
 
     if not assigned_question_ids:
+        fallback_score = int(round(float(attempt.score or 0)))
         return QuizResultResponse(
             attempt_id=attempt.id,
-            score=0,
+            score=fallback_score,
             correct=0,
             wrong=0,
             unattempted=0,
@@ -806,6 +807,8 @@ def submit_json_quiz(
             if attempt_item.question_id not in available_questions:
                 continue
 
+            question = available_questions[attempt_item.question_id]
+
             db.add(
                 QuizAttemptQuestion(
                     attempt_id=new_attempt.id,
@@ -818,6 +821,15 @@ def submit_json_quiz(
                 if attempt_item.selected_option
                 else None
             )
+            # Backward compatibility: older clients may send full option text instead
+            # of answer key (A/B/C/D). Convert text to the matching option key.
+            if selected_option and len(selected_option) != 1:
+                options = [str(opt).strip() for opt in (question.options or [])]
+                try:
+                    matched_index = options.index(selected_option)
+                    selected_option = chr(65 + matched_index)
+                except ValueError:
+                    pass
             if selected_option:
                 db.add(
                     Answer(

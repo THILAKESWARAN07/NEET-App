@@ -192,9 +192,13 @@ class _RemoteQuestionPreviewScreenState
     for (int index = 0; index < _questions.length; index++) {
       final question = _questions[index] as Map<String, dynamic>;
       final rawQuestionId = question['id'];
+      final rawQuestionIdText = rawQuestionId?.toString().trim() ?? '';
+      final numericQuestionIdText = rawQuestionIdText.startsWith('q')
+          ? rawQuestionIdText.substring(1)
+          : rawQuestionIdText;
       final questionId = rawQuestionId is int
           ? rawQuestionId
-          : int.tryParse(rawQuestionId?.toString() ?? '');
+          : int.tryParse(numericQuestionIdText);
       if (questionId == null) {
         continue;
       }
@@ -202,11 +206,9 @@ class _RemoteQuestionPreviewScreenState
       final selectedOptionIndex = _selectedAnswers[index];
       String? selectedOption;
       if (selectedOptionIndex != null) {
-        final options = (question['options'] as List<dynamic>)
-            .map((e) => e.toString())
-            .toList();
+        final options = (question['options'] as List<dynamic>? ?? const []);
         if (selectedOptionIndex >= 0 && selectedOptionIndex < options.length) {
-          selectedOption = options[selectedOptionIndex];
+          selectedOption = String.fromCharCode(65 + selectedOptionIndex);
         }
       }
 
