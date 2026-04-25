@@ -396,12 +396,58 @@ class QuizNotifier extends StateNotifier<QuizState> {
 
     try {
       if (state.attemptId != null) {
-        await _dio.post('/quiz/${state.attemptId}/submit');
-        submitSucceeded = true;
+        try {
+          await _dio.post(
+            '/quiz/${state.attemptId}/submit',
+            options: Options(
+              sendTimeout: const Duration(seconds: 15),
+              receiveTimeout: const Duration(seconds: 20),
+            ),
+          );
+          submitSucceeded = true;
+        } on DioException catch (submitError) {
+          // If submit request times out, the backend may still have finalized the test.
+          final timeoutTypes = <DioExceptionType>{
+            DioExceptionType.connectionTimeout,
+            DioExceptionType.sendTimeout,
+            DioExceptionType.receiveTimeout,
+          };
+          if (!timeoutTypes.contains(submitError.type)) {
+            rethrow;
+          }
+
+          try {
+            final fallbackResultResponse = await _dio.get(
+              '/quiz/${state.attemptId}/result',
+              options: Options(
+                receiveTimeout: const Duration(seconds: 12),
+              ),
+            );
+            final fallbackResult = QuizResult.fromJson(
+              fallbackResultResponse.data as Map<String, dynamic>,
+            );
+            await _storage.clearAttemptId();
+            state = state.copyWith(
+              isLoading: false,
+              isSubmitted: true,
+              result: fallbackResult,
+              error: null,
+              submissionNotice: null,
+            );
+            return;
+          } catch (_) {
+            rethrow;
+          }
+        }
 
         try {
           final resultResponse =
-              await _dio.get('/quiz/${state.attemptId}/result');
+              await _dio.get(
+            '/quiz/${state.attemptId}/result',
+            options: Options(
+              receiveTimeout: const Duration(seconds: 12),
+            ),
+          );
           final result =
               QuizResult.fromJson(resultResponse.data as Map<String, dynamic>);
           await _storage.clearAttemptId();

@@ -226,43 +226,62 @@ class _RemoteQuestionPreviewScreenState
       _isSubmitting = true;
     });
 
-    final stats = _calculateStats(_questions, _selectedAnswers);
-    final timeInSeconds = _mockTestDurationSeconds - _remainingSeconds;
+    try {
+      final stats = _calculateStats(_questions, _selectedAnswers);
+      final timeInSeconds = _mockTestDurationSeconds - _remainingSeconds;
 
-    final synced = await QuestionService.submitQuizScore(
-      score: stats.score,
-      total: _questions.length,
-      timeInSeconds: timeInSeconds,
-      durationSeconds: _mockTestDurationSeconds,
-      testType: 'json_mock',
-      accuracyPercent: stats.accuracyPercent,
-      questionAttempts: _buildQuestionAttemptsPayload(),
-    );
+      final synced = await QuestionService.submitQuizScore(
+        score: stats.score,
+        total: _questions.length,
+        timeInSeconds: timeInSeconds,
+        durationSeconds: _mockTestDurationSeconds,
+        testType: 'json_mock',
+        accuracyPercent: stats.accuracyPercent,
+        questionAttempts: _buildQuestionAttemptsPayload(),
+      );
 
-    if (!mounted) {
-      return;
-    }
+      if (!mounted) {
+        return;
+      }
 
-    setState(() {
-      _isSubmitted = true;
-      _isSubmitting = false;
-    });
+      setState(() {
+        _isSubmitted = true;
+      });
 
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (_) => ResultScreen(
-          score: stats.score,
-          total: _questions.length,
-          questions: _questions,
-          answers: _selectedAnswers,
-          initialSyncFailed: !synced,
-          timeInSeconds: timeInSeconds,
-          durationSeconds: _mockTestDurationSeconds,
-          testType: 'json_mock',
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => ResultScreen(
+            score: stats.score,
+            total: _questions.length,
+            questions: _questions,
+            answers: _selectedAnswers,
+            initialSyncFailed: !synced,
+            timeInSeconds: timeInSeconds,
+            durationSeconds: _mockTestDurationSeconds,
+            testType: 'json_mock',
+          ),
         ),
-      ),
-    );
+      );
+    } catch (error) {
+      if (!mounted) {
+        return;
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Unable to submit quiz right now: $error')),
+      );
+
+      if (!_isSubmitted && _remainingSeconds > 0) {
+        _startTimer();
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isSubmitting = false;
+        });
+      }
+    }
   }
 
   Future<void> _autoSubmit() async {
@@ -274,42 +293,58 @@ class _RemoteQuestionPreviewScreenState
       _isSubmitting = true;
       _isSubmitted = true;
     });
-    final stats = _calculateStats(_questions, _selectedAnswers);
-    final timeInSeconds = _mockTestDurationSeconds - _remainingSeconds;
+    try {
+      final stats = _calculateStats(_questions, _selectedAnswers);
+      final timeInSeconds = _mockTestDurationSeconds - _remainingSeconds;
 
-    final synced = await QuestionService.submitQuizScore(
-      score: stats.score,
-      total: _questions.length,
-      timeInSeconds: timeInSeconds,
-      durationSeconds: _mockTestDurationSeconds,
-      testType: 'json_mock',
-      accuracyPercent: stats.accuracyPercent,
-      questionAttempts: _buildQuestionAttemptsPayload(),
-    );
+      final synced = await QuestionService.submitQuizScore(
+        score: stats.score,
+        total: _questions.length,
+        timeInSeconds: timeInSeconds,
+        durationSeconds: _mockTestDurationSeconds,
+        testType: 'json_mock',
+        accuracyPercent: stats.accuracyPercent,
+        questionAttempts: _buildQuestionAttemptsPayload(),
+      );
 
-    if (!mounted) {
-      return;
-    }
+      if (!mounted) {
+        return;
+      }
 
-    setState(() {
-      _isSubmitting = false;
-    });
-
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (_) => ResultScreen(
-          score: stats.score,
-          total: _questions.length,
-          questions: _questions,
-          answers: _selectedAnswers,
-          initialSyncFailed: !synced,
-          timeInSeconds: timeInSeconds,
-          durationSeconds: _mockTestDurationSeconds,
-          testType: 'json_mock',
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => ResultScreen(
+            score: stats.score,
+            total: _questions.length,
+            questions: _questions,
+            answers: _selectedAnswers,
+            initialSyncFailed: !synced,
+            timeInSeconds: timeInSeconds,
+            durationSeconds: _mockTestDurationSeconds,
+            testType: 'json_mock',
+          ),
         ),
-      ),
-    );
+      );
+    } catch (error) {
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        _isSubmitted = false;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Auto-submit failed. Please submit manually: $error')),
+      );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isSubmitting = false;
+        });
+      }
+    }
   }
 
   @override
