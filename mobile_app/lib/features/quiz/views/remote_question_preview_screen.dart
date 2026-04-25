@@ -191,7 +191,10 @@ class _RemoteQuestionPreviewScreenState
     final attempts = <Map<String, dynamic>>[];
     for (int index = 0; index < _questions.length; index++) {
       final question = _questions[index] as Map<String, dynamic>;
-      final questionId = question['id'] as int?;
+      final rawQuestionId = question['id'];
+      final questionId = rawQuestionId is int
+          ? rawQuestionId
+          : int.tryParse(rawQuestionId?.toString() ?? '');
       if (questionId == null) {
         continue;
       }
